@@ -1,18 +1,21 @@
-const CACHE_NAME = 'iyi-beslen-shell-v6';
+const CACHE_NAME = 'iyi-beslen-shell-v7';
 const APP_FILES = [
   './',
   './index.html',
   './gizlilik.html',
   './manifest.webmanifest',
-  './app.css?v=20261020.1',
-  './app-enhancements.js?v=20261020.1',
+  './app.css?v=20261020.2',
+  './app-enhancements.js?v=20261020.2',
   './icons/icon-192.svg',
   './icons/icon-512.svg'
 ];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE_NAME).then((cache) => cache.addAll(APP_FILES)));
-  self.skipWaiting();
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data?.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', (event) => {
