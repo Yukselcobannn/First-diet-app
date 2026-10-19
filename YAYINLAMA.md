@@ -19,6 +19,7 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 2. İstersen beslenme tercihini, alerjileri ve kaçınmak istediğin yiyecekleri ekle.
 3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Porsiyon belirtilmemişse uygulama varsayımını gösterir.
 4. **Sana özel plan** bölümünden günlük veya haftalık örnek plan oluştur.
+5. Üstteki tarih seçicisiyle geçmiş günleri görüntüleyip o güne öğün veya kilo kaydı ekleyebilir; sağ üstten koyu görünümü açabilirsin.
 
 Hesaplamalar ve besin değerleri tahminidir; uygulama tıbbi öneri vermez. Sağlık durumun varsa kişisel hedefler için doktor veya diyetisyene danış.
 
