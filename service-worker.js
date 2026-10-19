@@ -1,7 +1,8 @@
-const CACHE_NAME = 'iyi-beslen-shell-v4';
+const CACHE_NAME = 'iyi-beslen-shell-v5';
 const APP_FILES = [
   './',
   './index.html',
+  './gizlilik.html',
   './manifest.webmanifest',
   './app.css',
   './app-enhancements.js',
@@ -30,11 +31,13 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put('./index.html', copy));
+          if (response.ok) {
+            const copy = response.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put(request, copy));
+          }
           return response;
         })
-        .catch(() => caches.match('./index.html'))
+        .catch(() => caches.match(request).then((cached) => cached || caches.match('./index.html')))
     );
     return;
   }
