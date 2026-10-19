@@ -251,3 +251,6 @@ body[data-theme="dark"] .update-apply { background: #9abc9d; color: #16251a; }
   .update-banner span { flex: 0 0 100%; }
   .update-apply, .update-dismiss { flex: 1; }
 }
+.backup-card > p { margin: -4px 0 12px; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.backup-card .data-actions { margin-top: 0; }
+.backup-card .estimate { margin-top: 11px; }
