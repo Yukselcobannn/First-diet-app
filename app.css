@@ -143,6 +143,7 @@ main { padding-top: 34px; }
 .mobile-nav button { min-width: 58px; padding: 5px 8px; border-radius: 10px; }
 .mobile-nav button.active { background: #edf4eb; }
 .notice { color: #727d74; }
+.notice a { color: var(--green); font-weight: 650; }
 .danger:hover { background: #fff6f4; border-color: #e8c7c1; }
 
 body[data-theme="dark"] {
