@@ -23,7 +23,7 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 
 Hesaplamalar ve besin değerleri tahminidir; uygulama tıbbi öneri vermez. Sağlık durumun varsa kişisel hedefler için doktor veya diyetisyene danış.
 
-Uygulama kabuğu çevrimdışı kullanım için önbelleğe alınır. İlk açılış ve kurulum için internet gerekir.
+Uygulama kabuğu çevrimdışı kullanım için önbelleğe alınır. İlk açılış ve kurulum için internet gerekir. Yeni sürüm yayımlandığında ekranda **Şimdi güncelle** bildirimi görünür; güncelleme seçildiğinde uygulama yenilenir, bu cihazdaki kayıtların korunur.
 
 ## Veri ve gizlilik
 
