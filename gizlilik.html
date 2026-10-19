@@ -29,8 +29,9 @@
   <h2>Verilerini koruma ve silme</h2>
   <ul>
     <li>Kayıtlar cihazındaki bu tarayıcı/uygulama kurulumuyla sınırlıdır. Tarayıcı verisini temizlemek, uygulamayı kaldırmak veya cihaz değiştirmek kayıtları kaybettirebilir.</li>
-    <li>Uygulamadaki <strong>Yedek indir</strong> ile JSON kopyası alıp <strong>Yedeği geri yükle</strong> ile geri aktarabilirsin. Yedek dosyası şifrelenmez; yalnızca güvendiğin ve korumalı bir yerde sakla.</li>
-    <li><strong>Tüm verileri sil</strong>, bu uygulamanın bu tarayıcıdaki profil, öğün, kilo, yedek tarihi ve görünüm tercihini siler. Önceden indirilmiş JSON dosyaları cihazında kalır; onları ayrıca silmen gerekir.</li>
+    <li><strong>Yedek indir</strong> ile alınan JSON dosyası şifrelenmez. Daha güvenli taşınabilir kopya için <strong>Şifreli yedek indir</strong> seçeneğini kullanabilirsin. Dosya, tarayıcının Web Crypto API'siyle AES-GCM ve PBKDF2 kullanılarak cihazında şifrelenir; parola uygulamaya kaydedilmez ve sunucuya gönderilmez.</li>
+    <li>Şifreli yedek parolasını unutursan dosya kurtarılamaz. Dosyayı ve parolayı ayrı, güvenli yerlerde sakla. Yeni telefonda <strong>Şifreli yedeği geri yükle</strong> ile dosyanı açabilirsin.</li>
+    <li><strong>Tüm verileri sil</strong>, bu uygulamanın bu tarayıcıdaki profil, öğün, kilo, yedek tarihi ve görünüm tercihini siler. Önceden indirilmiş JSON ve şifreli yedek dosyaları cihazında kalır; onları ayrıca silmen gerekir.</li>
     <li>Bu cihazı başkalarıyla paylaşıyorsan ekran kilidini kullan ve uygulama verilerini/yedek dosyalarını başkalarının erişemeyeceği biçimde sakla.</li>
   </ul>
 
