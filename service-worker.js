@@ -1,11 +1,11 @@
-const CACHE_NAME = 'iyi-beslen-shell-v5';
+const CACHE_NAME = 'iyi-beslen-shell-v6';
 const APP_FILES = [
   './',
   './index.html',
   './gizlilik.html',
   './manifest.webmanifest',
-  './app.css',
-  './app-enhancements.js',
+  './app.css?v=20261020.1',
+  './app-enhancements.js?v=20261020.1',
   './icons/icon-192.svg',
   './icons/icon-512.svg'
 ];
@@ -28,8 +28,11 @@ self.addEventListener('fetch', (event) => {
   if (request.method !== 'GET' || new URL(request.url).origin !== self.location.origin) return;
 
   if (request.mode === 'navigate') {
+    const versionedUrl = new URL(request.url);
+    versionedUrl.searchParams.set('__appShell', CACHE_NAME);
+    const versionedRequest = new Request(versionedUrl.toString(), request);
     event.respondWith(
-      fetch(request)
+      fetch(versionedRequest)
         .then((response) => {
           if (response.ok) {
             const copy = response.clone();
