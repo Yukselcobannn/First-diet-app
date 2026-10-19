@@ -27,7 +27,7 @@ Uygulama kabuğu çevrimdışı kullanım için önbelleğe alınır. İlk açı
 
 ## Veri ve gizlilik
 
-Kaynak kodu, GitHub kullanıcı adın ve commit geçmişi herkese görünür. Profil, öğün, kilo, alerji/tercih ve sağlık bildirimleri bu cihazdaki uygulama/tarayıcı depolamasına kaydedilir; uygulama kodu bu kayıtları GitHub'a veya başka bir uygulama sunucusuna göndermez ve cihazlar arasında eşitlemez. GitHub Pages ise ziyaretçilerin IP adreslerini güvenlik amacıyla kaydettiğini belirtir. Ayrıntı için uygulamadaki **Gizlilik ve uygulama bilgisi** sayfasını oku.
+Kaynak kodu, GitHub kullanıcı adın ve commit geçmişi herkese görünür. Profil, öğün, kilo, alerji/tercih ve sağlık bildirimleri bu cihazdaki uygulama/tarayıcı depolamasına kaydedilir; uygulama kodu bu kayıtları GitHub'a veya başka bir uygulama sunucusuna göndermez ve cihazlar arasında eşitlemez. Bu yerel kayıtlar uygulama tarafından şifrelenmez; aynı cihaz veya tarayıcı profiline erişen biri görebilir. GitHub Pages ise ziyaretçilerin IP adreslerini güvenlik amacıyla kaydettiğini belirtir. Ayrıntı için uygulamadaki **Gizlilik ve uygulama bilgisi** sayfasını oku.
 
 Tarayıcı verisini silmek veya uygulamayı kaldırmak yerel kayıtları silebilir. Düzenli olarak **Yedek indir** seçeneğini kullan; yeni telefon veya yeniden kurulumda **Yedeği geri yükle** ile JSON yedeğini seç. Yedek JSON şifrelenmez ve cihazında güvenli saklanmalıdır. Mevcut kayıtların varsa geri yükleme öncesinde uygulama ayrıca yedek indirir. Otomatik cihaz yedeği/senkronizasyonu yoktur. **Tüm verileri sil** uygulamanın bu tarayıcıdaki kayıtlarını ve görünüm tercihini siler; indirilmiş dosyaları ayrıca silmen gerekir.
 
