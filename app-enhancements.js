@@ -51,4 +51,52 @@
   });
 
   document.querySelector('#mealInput')?.setAttribute('enterkeyhint', 'done');
+
+  if ('serviceWorker' in navigator && location.protocol !== 'file:') {
+    const banner = document.querySelector('#updateBanner');
+    const applyButton = document.querySelector('#applyUpdate');
+    const dismissButton = document.querySelector('#dismissUpdate');
+    let registration = null;
+    let applyRequested = false;
+    let reloaded = false;
+
+    const offerUpdate = () => {
+      if (banner) banner.hidden = false;
+    };
+
+    applyButton?.addEventListener('click', () => {
+      const waiting = registration?.waiting;
+      if (!waiting) return;
+      applyRequested = true;
+      applyButton.disabled = true;
+      applyButton.textContent = 'Güncelleniyor…';
+      waiting.postMessage({ type: 'SKIP_WAITING' });
+    });
+    dismissButton?.addEventListener('click', () => {
+      if (banner) banner.hidden = true;
+    });
+
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+      if (applyRequested && !reloaded) {
+        reloaded = true;
+        location.reload();
+      }
+    });
+
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./service-worker.js').then((reg) => {
+        registration = reg;
+        if (reg.waiting && navigator.serviceWorker.controller) offerUpdate();
+        reg.addEventListener('updatefound', () => {
+          const installing = reg.installing;
+          installing?.addEventListener('statechange', () => {
+            if (installing.state === 'installed' && navigator.serviceWorker.controller) offerUpdate();
+          });
+        });
+        document.addEventListener('visibilitychange', () => {
+          if (document.visibilityState === 'visible') reg.update().catch(() => {});
+        });
+      }).catch(() => {});
+    });
+  }
 })();
