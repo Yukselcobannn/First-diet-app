@@ -45,6 +45,10 @@
     applyTheme(theme);
     try { localStorage.setItem(themeKey, theme); } catch { /* Görünüm tercihi bu oturumda uygulanır. */ }
   });
+  window.addEventListener('iyibeslen:reset-theme', () => {
+    theme = 'light';
+    applyTheme(theme);
+  });
 
   document.querySelector('#mealInput')?.setAttribute('enterkeyhint', 'done');
 })();
