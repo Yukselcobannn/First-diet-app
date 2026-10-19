@@ -6,6 +6,13 @@ Uygulama GitHub Pages üzerinden ücretsiz yayınlanıyor:
 
 Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://github.com/Yukselcobannn/First-diet-app) herkese açıktır. Yayın `main` dalının kök klasöründen yapılır; bu dala gönderilen yeni sürümler Pages tarafından yayımlanır. Özel alan adı veya ücretli sunucu gerekmez.
 
+## Telefonda uygulama gibi kullanma
+
+- **Android:** Bağlantıyı Chrome'da aç. Uygulama yükleme düğmesi görünürse ona dokun; görünmezse `⋮ → Ana ekrana ekle` veya `Uygulamayı yükle` seç.
+- **iPhone:** Bağlantıyı Safari'de aç, `Paylaş → Ana Ekrana Ekle` seç.
+
+İlk açılışta profilini oluştur. Sonra ana ekrana eklenen simgeden tam ekran uygulama gibi açabilirsin.
+
 ## İlk kullanım
 
 1. Uygulamayı açıp **Şimdi başla** ile yaş, boy, kilo, cinsiyet, hareket düzeyi ve hedef bilgilerini gir.
@@ -15,13 +22,10 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 
 Hesaplamalar ve besin değerleri tahminidir; uygulama tıbbi öneri vermez. Sağlık durumun varsa kişisel hedefler için doktor veya diyetisyene danış.
 
-## Telefona ekleme
-
-- **Android:** Bağlantıyı Chrome'da aç, menüden **Uygulamayı yükle** veya **Ana ekrana ekle** seç.
-- **iPhone:** Bağlantıyı Safari'de aç, **Paylaş → Ana Ekrana Ekle** seç.
-
 Uygulama kabuğu çevrimdışı kullanım için önbelleğe alınır. İlk açılış ve kurulum için internet gerekir.
 
 ## Veri ve gizlilik
 
-Kaynak kodu, GitHub kullanıcı adın ve commit geçmişi herkese görünür. Uygulama profilini, öğünlerini ve kilo kayıtlarını bu cihazdaki bu tarayıcının yerel depolamasında tutar; bunları GitHub'a veya başka bir sunucuya göndermez ve cihazlar arasında eşitlemez. Aynı cihaz ve tarayıcı profiline erişen biri kayıtlarını görebilir. Tarayıcı verisini silmek kayıtları kaldırabilir; yedek için **Verilerimi indir** seçeneğini kullan.
+Kaynak kodu, GitHub kullanıcı adın ve commit geçmişi herkese görünür. Profil, öğün, kilo ve plan verileri otomatik olarak bu cihazdaki uygulama/tarayıcı depolamasına kaydedilir; GitHub'a veya başka bir sunucuya gönderilmez ve cihazlar arasında eşitlenmez. Aynı cihazdaki aynı uygulama/tarayıcı kurulumundan devam edersen kayıtların kalır.
+
+Tarayıcı verisini silmek veya uygulamayı kaldırmak yerel kayıtları silebilir. Düzenli olarak **Yedek indir** seçeneğini kullan; yeni telefon veya yeniden kurulumda **Yedeği geri yükle** ile JSON yedeğini seç. Mevcut kayıtların varsa geri yükleme öncesinde uygulama ayrıca yedek indirir. Otomatik cihaz yedeği/senkronizasyonu yoktur.
