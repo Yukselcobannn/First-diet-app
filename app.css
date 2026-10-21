@@ -255,3 +255,4 @@ body[data-theme="dark"] .update-apply { background: #9abc9d; color: #16251a; }
 .backup-card .data-actions { margin-top: 0; }
 .backup-card .estimate { margin-top: 11px; }
 .saved-plan-text { white-space: pre-wrap; overflow-wrap: anywhere; font: inherit; color: var(--text); background: var(--surface-2); border-radius: 12px; padding: 12px; margin: 8px 0 0; font-size: 12px; line-height: 1.6; }
+.day-note { resize: vertical; margin-top: 6px; margin-bottom: 7px; min-height: 78px; line-height: 1.5; font: inherit; font-size: 13px; }
