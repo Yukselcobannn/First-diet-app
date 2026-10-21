@@ -23,7 +23,7 @@
     @media(max-width:600px){.app{display:block;padding-bottom:66px}aside{display:none}main{padding:22px 15px 30px}.topbar{margin-bottom:22px}.topbar h1{font-size:24px}.date-pill{font-size:11px;padding:9px}.welcome{align-items:flex-start}.welcome h2{font-size:17px}.grid{gap:13px}.leftcol,.rightcol{gap:13px}.rightcol{grid-template-columns:1fr}.plan-card{grid-row:auto}.card{padding:17px}.summary{gap:8px}.target{padding:14px}.target-val{font-size:21px}.meal{padding:10px 8px;gap:8px}.meal-actions{flex-direction:column}.addrow{flex-wrap:wrap}.addrow input{flex-basis:100%}.primary.add{width:100%}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:3}.mobile-nav button{border:0;background:none;color:#79837a;display:grid;place-items:center;gap:3px;font-size:9px}.mobile-nav button.active{color:var(--green-dark)}.mobile-nav svg{width:19px;height:19px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.modal{padding:20px}}
     .data-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.danger{color:#9e5148;border-color:#efddda}.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check-item{display:flex!important;align-items:center;gap:7px;font-weight:500!important;margin:0!important}.check-item input{width:auto!important}.topbar-actions{display:flex;align-items:center;gap:8px}.install-btn[hidden]{display:none}
   </style>
-  <link rel="stylesheet" href="./app.css?v=20261021.9" />
+  <link rel="stylesheet" href="./app.css?v=20261021.10" />
 </head>
 <body>
 <div class="update-banner" id="updateBanner" role="status" aria-live="polite" hidden>
@@ -34,7 +34,7 @@
 <div class="app">
   <aside>
     <div class="brand"><div class="brand-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21c-5-2-8-6-8-11 5 0 8 3 8 8 0-6 3-10 8-12 1 7-1 12-8 15Z"/><path d="M12 18c0-4 2-7 6-10"/></svg></div><span>iyi<span style="color:#66806a">beslen</span></span></div>
-    <nav class="nav"><button class="active" data-scroll="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span class="nav-label">Genel bakış</span></button><button data-scroll="meals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11h16a8 8 0 0 1-16 0Z"/><path d="M3 21h18M12 3v4M5.5 5.5l2 2M18.5 5.5l-2 2"/></svg><span class="nav-label">Öğün günlüğü</span></button><button data-scroll="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 10h16M4 15h10M4 20h10"/><path d="m18 16 2 2 4-5"/></svg><span class="nav-label">Beslenme planı</span></button><button id="profileNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nav-label">Profilim</span></button></nav>
+    <nav class="nav"><button class="active" data-scroll="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg><span class="nav-label">Genel bakış</span></button><button data-scroll="meals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11h16a8 8 0 0 1-16 0Z"/><path d="M3 21h18M12 3v4M5.5 5.5l2 2M18.5 5.5l-2 2"/></svg><span class="nav-label">Öğün günlüğü</span></button><button data-scroll="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 10h16M4 15h10M4 20h10"/><path d="m18 16 2 2 4-5"/></svg><span class="nav-label">Beslenme planı</span></button><button data-scroll="waterTracker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s-6.5 7.1-6.5 11.5a6.5 6.5 0 0 0 13 0C18.5 10.1 12 3 12 3Z"/></svg><span class="nav-label">Su takibi</span></button><button id="profileNav"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg><span class="nav-label">Profilim</span></button></nav>
     <div class="side-bottom"><div class="side-note"><b>✨ Küçük adımlar</b>Her öğün, hedeflerine biraz daha yaklaşman için yeni bir fırsat.</div><div class="userbox"><div class="avatar" id="avatar">?</div><div class="user-meta"><strong id="sideName">Profilini tamamla</strong><small id="sideGoal">Sana özel hedefler</small></div></div></div>
   </aside>
   <main id="overview">
@@ -53,8 +53,23 @@
         <section class="card"><div class="card-head"><div><h3>Son 7 gün</h3><span class="subtle">Seçilen gün dahil 7 günlük görünüm</span></div><div class="switcher"><button class="on" id="calorieView">Kalori</button><button id="proteinView">Protein</button><button id="weightView">Kilo</button></div></div><div class="chart-info"><span class="subtle" id="chartSummary">Henüz yeterli kayıt yok</span><div class="weight-entry" id="weightEntry" style="display:none"><input id="weightInput" type="number" step="0.1" class="field tiny" placeholder="kg"><button id="saveWeight" class="secondary tiny">Kaydet</button></div></div><div class="chart-wrap" id="chart"></div><div class="estimate">Eksik öğün kayıtları ve tartım sıklığı nedeniyle haftalık görünüm yaklaşık bir özettir.</div></section>
       </div>
       <div class="rightcol">
+        <section class="card water-card" id="waterTracker" aria-labelledby="waterTitle">
+          <div class="card-head">
+            <div class="water-heading"><span class="water-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s-6.5 7.1-6.5 11.5a6.5 6.5 0 0 0 13 0C18.5 10.1 12 3 12 3Z"/><path d="M9 15a3.2 3.2 0 0 0 3 3"/></svg></span><div><h3 id="waterTitle">Su takibi</h3><span class="subtle" id="waterDateLabel">Bugün</span></div></div>
+            <button class="secondary tiny water-undo" id="waterUndo" type="button" disabled>Son kaydı geri al</button>
+          </div>
+          <div class="water-reading"><div><strong id="waterTotal">0</strong><span>ml su</span></div><span class="tag" id="waterGoalLabel">Hedef isteğe bağlı</span></div>
+          <div class="water-progress-track" id="waterProgress" role="progressbar" aria-label="Günlük su takibi" aria-valuemin="0" aria-valuemax="1" aria-valuenow="0" aria-valuetext="Henüz su kaydı yok"><span id="waterProgressFill"></span></div>
+          <div class="water-progress-caption"><span id="waterRemaining">İstersen kendine bir hedef belirle</span><span id="waterPercent" aria-live="polite">—</span></div>
+          <div class="water-quick"><span class="subtle">Hızlı ekle</span><button class="secondary" type="button" data-water-add="250">+250 ml</button><button class="secondary" type="button" data-water-add="500">+500 ml</button></div>
+          <form class="water-custom-form" id="waterCustomForm"><label for="waterCustomAmount">İçtiğin su miktarı</label><div><input class="field" id="waterCustomAmount" type="number" min="50" max="5000" step="50" inputmode="numeric" placeholder="Örn. 350 ml" required><button class="primary" type="submit">Su ekle</button></div></form>
+          <div class="water-history-head"><strong>Son 7 gün</strong><span class="subtle" id="waterWeekAverage">Henüz kayıt yok</span></div>
+          <div class="water-week" id="waterWeek" role="group" aria-label="Seçili gün dahil son 7 günlük su kayıtları"></div>
+          <details class="water-settings"><summary>Günlük su hedefimi ayarla</summary><form id="waterGoalForm"><label for="waterGoalAmount">Kendi hedefin (250–8.000 ml)</label><div><input class="field" id="waterGoalAmount" type="number" min="250" max="8000" step="50" inputmode="numeric" placeholder="Örn. 2000 ml"><button class="secondary" type="submit">Hedefi kaydet</button><button class="secondary tiny" id="clearWaterGoal" type="button">Hedefi kaldır</button></div></form></details>
+          <p class="estimate water-note">Yalnızca içtiğin suyu kaydet. Hedef isteğe bağlıdır; kişisel ihtiyacına veya uzmanın önerisine göre ayarla. Bu takip tıbbi öneri değildir.</p>
+        </section>
         <section class="card plan-card" id="plan"><div class="card-head"><div style="display:flex;align-items:center;gap:10px"><div class="plan-icon">✦</div><div><h3>Sana özel plan</h3><span class="subtle">Günlük veya haftalık örnek</span></div></div></div><p>Hedeflerine ve tercih ettiğin beslenme biçimine göre kolay uygulanabilir bir örnek oluştur.</p><select id="planPeriod" class="field" style="margin-bottom:9px"><option value="day">Günlük plan</option><option value="week">7 günlük plan</option></select><button id="makePlan" class="primary">Plan oluştur</button><div class="plan-result" id="planResult"></div><p class="subtle" style="margin-bottom:0">Son oluşturduğun plan bu cihazda saklanır ve yedeğine eklenir.</p></section>
-        <section class="card"><div class="card-head"><h3>Günlük not</h3><span>☀️</span></div><div class="advice"><div class="advice-icon">💧</div><div id="adviceText">Dengeli bir gün, tek bir öğünden değil zaman içindeki alışkanlıklarından oluşur. Küçük ve sürdürülebilir adımlara odaklan.</div></div><label class="subtle" for="dayNote">Seçili gün için kişisel not</label><textarea id="dayNote" class="field day-note" maxlength="3000" rows="3" placeholder="Örn. yürüyüş yaptım, öğleden sonra daha aç hissettim…"></textarea><div class="subtle" id="dayNoteStatus" aria-live="polite">Notlar bu cihazda saklanır ve yedeğe eklenir.</div><div class="notice">Bu uygulamadaki hesaplamalar tahminidir ve tıbbi öneri yerine geçmez. Sağlık durumunda kişisel hedef üretimi durur; doktor veya diyetisyenden destek al. Profil, öğün, kilo, not, alerji/tercih ve sağlık bildirimlerin yalnızca bu cihazdaki tarayıcıda tutulur; uygulama kodu bunları sunucuya göndermez. Uygulama bu kayıtları şifrelemez; paylaşılan cihazlarda erişilebilir olabilir. Tarayıcı verisi silinirse kayıtların kaybolabilir.</div><div class="notice" id="storageStatus" role="status" aria-live="polite">Kayıtların bu cihazda saklanıyor. Veri kaybına karşı düzenli yedek al.</div><div class="notice" id="backupStatus">Henüz yedek indirmedin. İndirilen JSON yedeği şifrelenmez; güvenli bir yerde sakla.</div><div class="notice">GitHub Pages, uygulamaya yapılan ziyaretlerde IP adresini güvenlik amacıyla kaydeder. Uygulama kişisel kayıtlarını sunucuya göndermez. Kaynak bağlantısı açıldığında yalnızca genel gıda adı USDA’ya iletilir; reklam veya analiz aracı yoktur. Ayrıntılar: <a href="./gizlilik.html">Gizlilik ve uygulama bilgisi</a>.</div><div class="notice">Telefona eklemek için Android Chrome menüsünden “Ana ekrana ekle”; iPhone Safari’de Paylaş → Ana Ekrana Ekle seç.</div><div class="data-actions"><button class="secondary tiny" id="exportData">Yedek indir</button><button class="secondary tiny" id="importData">Yedeği geri yükle</button><input id="importFile" type="file" accept=".json,application/json" hidden/><button class="secondary tiny danger" id="deleteData">Tüm verileri sil</button></div></section>
+        <section class="card"><div class="card-head"><h3>Günlük not</h3><span>☀️</span></div><div class="advice"><div class="advice-icon">💧</div><div id="adviceText">Dengeli bir gün, tek bir öğünden değil zaman içindeki alışkanlıklarından oluşur. Küçük ve sürdürülebilir adımlara odaklan.</div></div><label class="subtle" for="dayNote">Seçili gün için kişisel not</label><textarea id="dayNote" class="field day-note" maxlength="3000" rows="3" placeholder="Örn. yürüyüş yaptım, öğleden sonra daha aç hissettim…"></textarea><div class="subtle" id="dayNoteStatus" aria-live="polite">Notlar bu cihazda saklanır ve yedeğe eklenir.</div><div class="notice">Bu uygulamadaki hesaplamalar tahminidir ve tıbbi öneri yerine geçmez. Sağlık durumunda kişisel hedef üretimi durur; doktor veya diyetisyenden destek al. Profil, öğün, kilo, su kayıtları ve belirlediğin su hedefi, not, alerji/tercih ve sağlık bildirimlerin yalnızca bu cihazdaki tarayıcıda tutulur; uygulama kodu bunları sunucuya göndermez. Uygulama bu kayıtları şifrelemez; paylaşılan cihazlarda erişilebilir olabilir. Tarayıcı verisi silinirse kayıtların kaybolabilir.</div><div class="notice" id="storageStatus" role="status" aria-live="polite">Kayıtların bu cihazda saklanıyor. Veri kaybına karşı düzenli yedek al.</div><div class="notice" id="backupStatus">Henüz yedek indirmedin. İndirilen JSON yedeği şifrelenmez; güvenli bir yerde sakla.</div><div class="notice">GitHub Pages, uygulamaya yapılan ziyaretlerde IP adresini güvenlik amacıyla kaydeder. Uygulama kişisel kayıtlarını sunucuya göndermez. Kaynak bağlantısı açıldığında yalnızca genel gıda adı USDA’ya iletilir; reklam veya analiz aracı yoktur. Ayrıntılar: <a href="./gizlilik.html">Gizlilik ve uygulama bilgisi</a>.</div><div class="notice">Telefona eklemek için Android Chrome menüsünden “Ana ekrana ekle”; iPhone Safari’de Paylaş → Ana Ekrana Ekle seç.</div><div class="data-actions"><button class="secondary tiny" id="exportData">Yedek indir</button><button class="secondary tiny" id="importData">Yedeği geri yükle</button><input id="importFile" type="file" accept=".json,application/json" hidden/><button class="secondary tiny danger" id="deleteData">Tüm verileri sil</button></div></section>
       </div>
     </div>
         <section class="card backup-card" id="backup">
@@ -65,7 +80,7 @@
         </section>
   </main>
 </div>
-<nav class="mobile-nav"><button class="active" data-scroll="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Özet</button><button data-scroll="meals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11h16a8 8 0 0 1-16 0Z"/><path d="M3 21h18M12 3v4"/></svg>Öğünler</button><button data-scroll="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 10h16M4 15h10M4 20h10"/></svg>Plan</button><button id="mobileProfile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</button></nav>
+<nav class="mobile-nav"><button class="active" data-scroll="overview"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="8" height="8" rx="2"/><rect x="13" y="3" width="8" height="5" rx="2"/><rect x="13" y="10" width="8" height="11" rx="2"/><rect x="3" y="13" width="8" height="8" rx="2"/></svg>Özet</button><button data-scroll="meals"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 11h16a8 8 0 0 1-16 0Z"/><path d="M3 21h18M12 3v4"/></svg>Öğünler</button><button data-scroll="plan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M4 10h16M4 15h10M4 20h10"/></svg>Plan</button><button data-scroll="waterTracker"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3s-6.5 7.1-6.5 11.5a6.5 6.5 0 0 0 13 0C18.5 10.1 12 3 12 3Z"/></svg>Su</button><button id="mobileProfile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>Profil</button></nav>
 <div class="modal-backdrop" id="profileModal"><div class="modal"><h2>Profilini oluşturalım</h2><p>Günlük hedeflerini tahmini olarak hesaplamak için birkaç bilgi yeterli.</p><form id="profileForm"><div class="form-grid">
   <div class="form-group"><label for="name">Adın (isteğe bağlı)</label><input class="field" id="name" placeholder="Adın"/></div><div class="form-group"><label for="age">Yaş</label><input class="field" id="age" type="number" min="1" max="100" required placeholder="Örn. 30"/></div>
   <div class="form-group"><label for="height">Boy (cm)</label><input class="field" id="height" type="number" min="120" max="230" required placeholder="Örn. 170"/></div><div class="form-group"><label for="weight">Kilo (kg)</label><input class="field" id="weight" type="number" min="35" max="250" step="0.1" required placeholder="Örn. 70"/></div>
@@ -217,7 +232,7 @@
   function openEncryptedBackup(mode){encryptedBackupMode=mode;$('#encryptedBackupForm').reset();$('#backupPasswordConfirmGroup').hidden=mode!=='export';$('#backupPasswordConfirm').required=mode==='export';$('#encryptedBackupTitle').textContent=mode==='export'?'Şifreli yedek oluştur':'Şifreli yedeği aç';$('#encryptedBackupDescription').textContent=mode==='export'?'Bu parola, indirilecek dosyayı AES-GCM ile şifrelemek için yalnızca bu cihazda kullanılır; uygulamaya veya internete gönderilmez. Parolanı unutursan dosyayı açamazsın.':'Dosyayı şifrelerken kullandığın parolayı gir. Parola uygulamaya kaydedilmez veya sunucuya gönderilmez.';$('#submitEncryptedBackup').textContent=mode==='export'?'Şifreli dosyayı indir':'Yedeği aç ve geri yükle';$('#encryptedBackupModal').classList.add('show');$('#backupPassword').focus()}
   function closeEncryptedBackup(){ $('#encryptedBackupModal').classList.remove('show');$('#encryptedBackupForm').reset();encryptedBackupFile=null;$('#encryptedBackupFile').value=''}
   function hasSavedData(s){return !!s.profile||Object.keys(s.days||{}).length>0||Object.keys(s.weights||{}).length>0||Object.keys(s.dayTargets||{}).length>0||(s.favorites||[]).length>0||Object.keys(s.notes||{}).length>0||!!s.lastPlan}
-  function validBackup(value){const record=x=>x&&typeof x==='object'&&!Array.isArray(x),finite=(x,min=0,max=1e7)=>typeof x==='number'&&Number.isFinite(x)&&x>=min&&x<=max,dateKey=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&!Number.isNaN(new Date(x+'T12:00:00').getTime())&&new Date(x+'T12:00:00').toLocaleDateString('sv-SE')===x;if(!record(value)||!('profile'in value||'days'in value||'weights'in value||'favorites'in value||'lastPlan'in value||'notes'in value))return null;let profile=null;if(value.profile!=null){const p=value.profile;if(!record(p)||!finite(p.age,1,100)||!finite(p.height,100,230)||!finite(p.weight,25,300))return null;profile={...p,name:typeof p.name==='string'?p.name.slice(0,1000):'',sex:['range','female','male'].includes(p.sex)?p.sex:'range',activity:finite(p.activity,1,2.5)?p.activity:1.2,goal:['lose','maintain','gain'].includes(p.goal)?p.goal:'maintain',mealsPerDay:[2,3,4,5].includes(p.mealsPerDay)?p.mealsPerDay:3,diet:['none','vegetarian','vegan','pescatarian'].includes(p.diet)?p.diet:'none',avoid:typeof p.avoid==='string'?p.avoid.slice(0,3000):'',exerciseType:['none','strength','cardio','mixed','other'].includes(p.exerciseType)?p.exerciseType:'none',exerciseDays:finite(p.exerciseDays,0,7)?p.exerciseDays:0,proteinChoice:[.8,.83,1.4,1.6,1.8,2].includes(p.proteinChoice)?(p.proteinChoice===.8?.83:p.proteinChoice):.83,pregnancy:['no','pregnant','nursing'].includes(p.pregnancy)?p.pregnancy:'no',healthFlags:Array.isArray(p.healthFlags)?p.healthFlags.filter(x=>typeof x==='string').map(x=>x.slice(0,100)):[]}}const meal=m=>{if(!record(m)||typeof m.name!=='string'||!m.name.trim()||m.name.length>10000||!finite(m.kcal)||!finite(m.protein))return null;const text=(x,max=10000)=>x==null?'':typeof x==='string'&&x.length<=max?x:null,emoji=text(m.emoji,64),assumption=text(m.assumption),source=text(m.source);if(emoji===null||assumption===null||source===null)return null;return{name:m.name.trim(),kcal:m.kcal,protein:m.protein,category:['breakfast','lunch','dinner','snack','other'].includes(m.category)?m.category:'other',emoji:emoji||'🍽️',assumption,source,approx:m.approx!==false,unknown:!!m.unknown,requiresConfirm:false}};const dateMap=(source,convert)=>{if(source==null)return{};if(!record(source))return null;const result={};for(const[key,item]of Object.entries(source)){if(!dateKey(key))return null;const parsed=convert(item);if(parsed===null)return null;result[key]=parsed}return result};const days=dateMap(value.days,items=>Array.isArray(items)?items.map(meal).every(Boolean)?items.map(meal):null:null),weights=dateMap(value.weights,w=>finite(w,25,300)?w:null),dayTargets=dateMap(value.dayTargets,g=>{if(!record(g))return null;const keys=['ree','reeMin','reeMax','tdee','tdeeMin','tdeeMax','kcal','kcalMin','kcalMax','mult','bmi'];if(keys.some(k=>!finite(g[k]))||!(g.protein===null||finite(g.protein)))return null;const p=g.profile;if(!record(p)||!finite(p.age,1,100)||!finite(p.height,100,230)||!finite(p.weight,25,300)||!finite(p.activity,1,2.5)||!['range','female','male'].includes(p.sex)||!['lose','maintain','gain'].includes(p.goal))return null;return{ree:g.ree,reeMin:g.reeMin,reeMax:g.reeMax,tdee:g.tdee,tdeeMin:g.tdeeMin,tdeeMax:g.tdeeMax,kcal:g.kcal,kcalMin:g.kcalMin,kcalMax:g.kcalMax,protein:g.protein,mult:g.mult,bmi:g.bmi,profile:{age:p.age,height:p.height,weight:p.weight,sex:p.sex,activity:p.activity,goal:p.goal,proteinChoice:p.proteinChoice}}});if(days===null||weights===null||dayTargets===null||!Array.isArray(value.favorites||[]))return null;const notes=dateMap(value.notes,n=>typeof n==='string'&&n.length<=3000?n:null);if(notes===null)return null;const favorites=(value.favorites||[]).map(meal),lastPlan=value.lastPlan&&record(value.lastPlan)&&dateKey(value.lastPlan.date)&&['day','week'].includes(value.lastPlan.period)&&typeof value.lastPlan.text==='string'&&value.lastPlan.text.length<=20000?{date:value.lastPlan.date,period:value.lastPlan.period,text:value.lastPlan.text}:null;if(favorites.some(x=>!x))return null;if(!profile&&!Object.keys(days).length&&!Object.keys(weights).length&&!Object.keys(dayTargets).length&&!favorites.length&&!lastPlan&&!Object.keys(notes).length)return null;return{profile,days,weights,dayTargets,favorites,lastPlan,notes}}
+  function validBackup(value){const record=x=>x&&typeof x==='object'&&!Array.isArray(x),finite=(x,min=0,max=1e7)=>typeof x==='number'&&Number.isFinite(x)&&x>=min&&x<=max,dateKey=x=>typeof x==='string'&&/^\d{4}-\d{2}-\d{2}$/.test(x)&&!Number.isNaN(new Date(x+'T12:00:00').getTime())&&new Date(x+'T12:00:00').toLocaleDateString('sv-SE')===x;if(!record(value)||!('profile'in value||'days'in value||'weights'in value||'favorites'in value||'lastPlan'in value||'notes'in value||'waterEntries'in value||'waterGoalMl'in value))return null;let profile=null;if(value.profile!=null){const p=value.profile;if(!record(p)||!finite(p.age,1,100)||!finite(p.height,100,230)||!finite(p.weight,25,300))return null;profile={...p,name:typeof p.name==='string'?p.name.slice(0,1000):'',sex:['range','female','male'].includes(p.sex)?p.sex:'range',activity:finite(p.activity,1,2.5)?p.activity:1.2,goal:['lose','maintain','gain'].includes(p.goal)?p.goal:'maintain',mealsPerDay:[2,3,4,5].includes(p.mealsPerDay)?p.mealsPerDay:3,diet:['none','vegetarian','vegan','pescatarian'].includes(p.diet)?p.diet:'none',avoid:typeof p.avoid==='string'?p.avoid.slice(0,3000):'',exerciseType:['none','strength','cardio','mixed','other'].includes(p.exerciseType)?p.exerciseType:'none',exerciseDays:finite(p.exerciseDays,0,7)?p.exerciseDays:0,proteinChoice:[.8,.83,1.4,1.6,1.8,2].includes(p.proteinChoice)?(p.proteinChoice===.8?.83:p.proteinChoice):.83,pregnancy:['no','pregnant','nursing'].includes(p.pregnancy)?p.pregnancy:'no',healthFlags:Array.isArray(p.healthFlags)?p.healthFlags.filter(x=>typeof x==='string').map(x=>x.slice(0,100)):[]}}const meal=m=>{if(!record(m)||typeof m.name!=='string'||!m.name.trim()||m.name.length>10000||!finite(m.kcal)||!finite(m.protein))return null;const text=(x,max=10000)=>x==null?'':typeof x==='string'&&x.length<=max?x:null,emoji=text(m.emoji,64),assumption=text(m.assumption),source=text(m.source);if(emoji===null||assumption===null||source===null)return null;return{name:m.name.trim(),kcal:m.kcal,protein:m.protein,category:['breakfast','lunch','dinner','snack','other'].includes(m.category)?m.category:'other',emoji:emoji||'🍽️',assumption,source,approx:m.approx!==false,unknown:!!m.unknown,requiresConfirm:false}};const dateMap=(source,convert)=>{if(source==null)return{};if(!record(source))return null;const result={};for(const[key,item]of Object.entries(source)){if(!dateKey(key))return null;const parsed=convert(item);if(parsed===null)return null;result[key]=parsed}return result};const days=dateMap(value.days,items=>Array.isArray(items)?items.map(meal).every(Boolean)?items.map(meal):null:null),weights=dateMap(value.weights,w=>finite(w,25,300)?w:null),dayTargets=dateMap(value.dayTargets,g=>{if(!record(g))return null;const keys=['ree','reeMin','reeMax','tdee','tdeeMin','tdeeMax','kcal','kcalMin','kcalMax','mult','bmi'];if(keys.some(k=>!finite(g[k]))||!(g.protein===null||finite(g.protein)))return null;const p=g.profile;if(!record(p)||!finite(p.age,1,100)||!finite(p.height,100,230)||!finite(p.weight,25,300)||!finite(p.activity,1,2.5)||!['range','female','male'].includes(p.sex)||!['lose','maintain','gain'].includes(p.goal))return null;return{ree:g.ree,reeMin:g.reeMin,reeMax:g.reeMax,tdee:g.tdee,tdeeMin:g.tdeeMin,tdeeMax:g.tdeeMax,kcal:g.kcal,kcalMin:g.kcalMin,kcalMax:g.kcalMax,protein:g.protein,mult:g.mult,bmi:g.bmi,profile:{age:p.age,height:p.height,weight:p.weight,sex:p.sex,activity:p.activity,goal:p.goal,proteinChoice:p.proteinChoice}}});if(days===null||weights===null||dayTargets===null||!Array.isArray(value.favorites||[]))return null;const notes=dateMap(value.notes,n=>typeof n==='string'&&n.length<=3000?n:null);if(notes===null)return null;const favorites=(value.favorites||[]).map(meal),lastPlan=value.lastPlan&&record(value.lastPlan)&&dateKey(value.lastPlan.date)&&['day','week'].includes(value.lastPlan.period)&&typeof value.lastPlan.text==='string'&&value.lastPlan.text.length<=20000?{date:value.lastPlan.date,period:value.lastPlan.period,text:value.lastPlan.text}:null;if(favorites.some(x=>!x))return null;if(!profile&&!Object.keys(days).length&&!Object.keys(weights).length&&!Object.keys(dayTargets).length&&!favorites.length&&!lastPlan&&!Object.keys(notes).length&&!Object.keys(value.waterEntries||{}).length&&!value.waterGoalMl)return null;return{profile,days,weights,dayTargets,favorites,lastPlan,notes}}
   let noteSaveTimer;function saveDayNote(date,value){if(value.trim())state.notes[date]=value.trim();else delete state.notes[date];if(save())$('#dayNoteStatus').textContent=`${date===today()?'Bugünün':new Date(date+'T12:00:00').toLocaleDateString('tr-TR',{day:'numeric',month:'long'})+' gününün'} notu kaydedildi · yalnızca bu cihazda`}$('#dayNote').addEventListener('input',()=>{const date=selectedDate,value=$('#dayNote').value;clearTimeout(noteSaveTimer);noteSaveTimer=setTimeout(()=>saveDayNote(date,value),350)});$('#dayNote').addEventListener('change',()=>{clearTimeout(noteSaveTimer);saveDayNote(selectedDate,$('#dayNote').value)});window.addEventListener('pagehide',()=>{clearTimeout(noteSaveTimer);saveDayNote(selectedDate,$('#dayNote').value)});
   $('#exportData').onclick=downloadBackup;
   $('#createEncryptedBackup').onclick=()=>{if(!window.isSecureContext||!window.crypto?.subtle){showToast('Bu tarayıcı şifreli yedeklemeyi desteklemiyor.');return}openEncryptedBackup('export')};
@@ -228,8 +243,171 @@
   $('#encryptedBackupForm').addEventListener('submit',async e=>{e.preventDefault();const password=$('#backupPassword').value,confirmPassword=$('#backupPasswordConfirm').value,button=$('#submitEncryptedBackup');if(password.length<12){showToast('En az 12 karakterli bir yedek parolası belirle.');return}button.disabled=true;try{if(encryptedBackupMode==='export'){if(password!==confirmPassword){showToast('İki parola aynı değil.');return}await downloadEncryptedBackup(password);closeEncryptedBackup();showToast('Şifreli yedek indirildi · parolanı ayrı ve güvenli sakla')}else{if(!encryptedBackupFile)throw new Error('missing');const imported=await readEncryptedBackup(encryptedBackupFile,password);if(hasSavedData(state)){if(!confirm('Bu cihazdaki mevcut kayıtların önce aynı parola ile şifreli bir yedek olarak indirilecek; ardından seçtiğin yedek geri yüklenecek. Devam edilsin mi?'))return;await downloadEncryptedBackup(password,state)}const previous=state;state=imported;if(!save()){state=previous;return}closeEncryptedBackup();$('#profileModal').classList.remove('show');render();showToast('Şifreli yedek açıldı ve geri yüklendi')} }catch(error){showToast(error?.name==='OperationError'?'Parola yanlış olabilir veya şifreli dosya bozuk.':'Yedek açılamadı. Doğru .iyb dosyasını ve parolayı kontrol et.')}finally{button.disabled=false;$('#backupPassword').value='';$('#backupPasswordConfirm').value=''}});
   $('#importData').onclick=()=>$('#importFile').click();
   $('#importFile').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{if(file.size>25*1024*1024)throw new Error('size');const imported=validBackup(JSON.parse(await file.text()));if(!imported)throw new Error('invalid');if(hasSavedData(state)){if(!confirm('Bu yedek mevcut kayıtlarının yerine geçecek. Önce mevcut verilerin için ayrıca yedek indirilecek. Devam edilsin mi?'))return;downloadBackup()}state=imported;if(!save())return;$('#profileModal').classList.remove('show');render();showToast('Yedek geri yüklendi')}catch{showToast('Yedek dosyası okunamadı. Uygulamanın indirdiği .json dosyasını seç.')}finally{e.target.value=''}});
-  $('#deleteData').onclick=()=>{if(!confirm('Profil, öğün, kilo, günlük not, plan ve sık kullanılan kayıtlarının bu tarayıcıdan silinmesini onaylıyor musun? Bu işlem geri alınamaz.'))return;localStorage.removeItem(KEY);localStorage.removeItem(BACKUP_KEY);localStorage.removeItem(BACKUP_KEY+'-kind');localStorage.removeItem('iyibeslen-theme-v1');window.dispatchEvent(new CustomEvent('iyibeslen:reset-theme'));state={profile:null,days:{},weights:{},dayTargets:{},favorites:[],lastPlan:null,notes:{}};lastSavedState=JSON.stringify(state);updateBackupStatus();$('#storageStatus').textContent='Bu cihazdaki uygulama kayıtları silindi.';render();openProfile();showToast('Bu cihazdaki uygulama verileri silindi')};
+  $('#deleteData').onclick=()=>{if(!confirm('Profil, öğün, kilo, su kayıtları ve su hedefi, günlük not, plan ve sık kullanılan kayıtlarının bu tarayıcıdan silinmesini onaylıyor musun? Bu işlem geri alınamaz.'))return;localStorage.removeItem(KEY);localStorage.removeItem(BACKUP_KEY);localStorage.removeItem(BACKUP_KEY+'-kind');localStorage.removeItem('iyibeslen-theme-v1');window.dispatchEvent(new CustomEvent('iyibeslen:reset-theme'));state={profile:null,days:{},weights:{},dayTargets:{},favorites:[],lastPlan:null,notes:{}};lastSavedState=JSON.stringify(state);updateBackupStatus();$('#storageStatus').textContent='Bu cihazdaki uygulama kayıtları silindi.';render();openProfile();showToast('Bu cihazdaki uygulama verileri silindi')};
   window.addEventListener('iyibeslen:select-day',e=>{const date=e.detail,parsed=new Date(date+'T12:00:00');if(typeof date!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(date)||Number.isNaN(parsed.getTime())||parsed.toLocaleDateString('sv-SE')!==date||date>today())return;selectedDate=date;render()});$('#profileModal').addEventListener('click',e=>{if(e.target.id==='profileModal')closeProfile()});$('#mealModal').addEventListener('click',e=>{if(e.target.id==='mealModal')$('#mealModal').classList.remove('show')});render();if(state.lastPlan&&typeof state.lastPlan.text==='string'){const saved=document.createElement('div');saved.className='estimate';saved.textContent=`Son planın · ${state.lastPlan.period==='week'?'7 günlük':'günlük'} · ${state.lastPlan.date}`;const body=document.createElement('pre');body.className='saved-plan-text';body.textContent=state.lastPlan.text;$('#planResult').append(saved,body);$('#planPeriod').value=state.lastPlan.period==='week'?'week':'day'}updateBackupStatus();updateStorageStatus();if(!state.profile)setTimeout(openProfile,450);
+  // Su kaydı, diğer kişisel uygulama verileriyle aynı cihazda saklanır.
+  const waterGoalMin = 250, waterGoalMax = 8000, waterEntryMax = 5000;
+  const waterFormat = value => new Intl.NumberFormat('tr-TR').format(value);
+  const validWaterGoal = value => Number.isInteger(value) && value >= waterGoalMin && value <= waterGoalMax;
+  const validWaterDate = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(value) && !Number.isNaN(new Date(value + 'T12:00:00').getTime()) && new Date(value + 'T12:00:00').toLocaleDateString('sv-SE') === value;
+  function ensureWaterState() {
+    if (!state.waterEntries || typeof state.waterEntries !== 'object' || Array.isArray(state.waterEntries)) state.waterEntries = {};
+    else for (const [date, entries] of Object.entries(state.waterEntries)) {
+      if (!validWaterDate(date) || !Array.isArray(entries) || entries.length > 100 || entries.some(item => !Number.isInteger(item) || item < 50 || item > waterEntryMax) || entries.reduce((sum, item) => sum + item, 0) > 50000) delete state.waterEntries[date];
+      else if (!entries.length) delete state.waterEntries[date];
+    }
+    if (!validWaterGoal(state.waterGoalMl)) state.waterGoalMl = null;
+  }
+  function waterEntriesFor(date = selectedDate) {
+    ensureWaterState();
+    const entries = state.waterEntries[date];
+    return Array.isArray(entries) ? entries : [];
+  }
+  function waterTotalFor(entries) { return entries.reduce((sum, value) => sum + value, 0); }
+  function renderWaterWeek() {
+    const container = $('#waterWeek');
+    if (!container) return;
+    container.replaceChildren();
+    const days = [];
+    for (let offset = 6; offset >= 0; offset--) {
+      const date = new Date(selectedDate + 'T12:00:00');
+      date.setDate(date.getDate() - offset);
+      const key = date.toLocaleDateString('sv-SE');
+      const entries = waterEntriesFor(key);
+      days.push({ key, date, count: entries.length, total: waterTotalFor(entries) });
+    }
+    const logged = days.filter(day => day.count > 0);
+    const mean = logged.length ? Math.round(logged.reduce((sum, day) => sum + day.total, 0) / logged.length) : null;
+    $('#waterWeekAverage').textContent = mean === null ? 'Henüz kayıt yok' : waterFormat(mean) + ' ml / kayıtlı gün';
+    const scale = Math.max(1, state.waterGoalMl || 0, ...days.map(day => day.total));
+    days.forEach(day => {
+      const item = document.createElement('div');
+      const label = day.date.toLocaleDateString('tr-TR', { weekday: 'short' }).replace('.', '');
+      item.className = 'water-day' + (day.key === selectedDate ? ' is-selected' : '');
+      item.setAttribute('aria-label', day.date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long' }) + ': ' + (day.count ? waterFormat(day.total) + ' ml' : 'kayıt yok'));
+      const amount = document.createElement('span');
+      amount.className = 'water-day-value';
+      amount.textContent = day.count ? (day.total >= 1000 ? (day.total / 1000).toLocaleString('tr-TR', { maximumFractionDigits: 1 }) + 'k' : waterFormat(day.total)) : '·';
+      const bar = document.createElement('div');
+      bar.className = 'water-day-bar';
+      bar.setAttribute('aria-hidden', 'true');
+      const fill = document.createElement('span');
+      fill.style.height = day.total ? Math.max(8, Math.min(100, day.total / scale * 100)) + '%' : '0';
+      bar.append(fill);
+      const dayName = document.createElement('span');
+      dayName.className = 'water-day-label';
+      dayName.textContent = label;
+      item.append(amount, bar, dayName);
+      container.append(item);
+    });
+  }
+  function renderWater() {
+    const card = $('#waterTracker');
+    if (!card) return;
+    ensureWaterState();
+    const entries = waterEntriesFor();
+    const total = waterTotalFor(entries);
+    const goal = state.waterGoalMl;
+    const percent = goal ? Math.min(100, Math.round(total / goal * 100)) : null;
+    const bar = $('#waterProgress');
+    const date = new Date(selectedDate + 'T12:00:00');
+    $('#waterDateLabel').textContent = selectedDate === today() ? 'Bugün' : date.toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' });
+    $('#waterTotal').textContent = waterFormat(total);
+    $('#waterGoalLabel').textContent = goal ? 'Hedef ' + waterFormat(goal) + ' ml' : 'Hedef isteğe bağlı';
+    $('#waterRemaining').textContent = goal ? (total >= goal ? 'Hedefe ulaştın; kayıtlarına devam edebilirsin' : waterFormat(goal - total) + ' ml kaldı') : (total ? 'Bugün ' + waterFormat(total) + ' ml su kaydettin' : 'İstersen kendine bir hedef belirle');
+    $('#waterPercent').textContent = goal ? '%' + percent : 'Hedef yok';
+    $('#waterEntryCount').textContent = entries.length + ' kayıt';
+    $('#waterProgressFill').style.width = (goal ? percent : 0) + '%';
+    bar.setAttribute('aria-valuemax', String(goal || Math.max(total, 1)));
+    bar.setAttribute('aria-valuenow', String(goal ? Math.min(total, goal) : total));
+    bar.setAttribute('aria-valuetext', goal ? waterFormat(total) + ' ml; ' + waterFormat(goal) + ' ml hedefin %' + percent + ' kadarı' : waterFormat(total) + ' ml su kaydı; hedef belirlenmedi');
+    $('#waterUndo').disabled = entries.length === 0;
+    const goalInput = $('#waterGoalAmount');
+    if (document.activeElement !== goalInput) goalInput.value = goal || '';
+    renderWaterWeek();
+  }
+  function saveWaterChange(message) {
+    if (save()) showToast(message);
+  }
+  function addWater(amount) {
+    ensureWaterState();
+    if (!Number.isInteger(amount) || amount < 50 || amount > waterEntryMax) {
+      showToast('Miktarı 50–5.000 ml arasında gir.');
+      return false;
+    }
+    const entries = waterEntriesFor();
+    if (entries.length >= 100 || waterTotalFor(entries) + amount > 50000) {
+      showToast('Bu gün için daha fazla su kaydı eklenemedi.');
+      return false;
+    }
+    entries.push(amount);
+    state.waterEntries[selectedDate] = entries;
+    saveWaterChange(waterFormat(amount) + ' ml su kaydedildi');
+    return true;
+  }
+  const waterSave = save;
+  save = function(...args) {
+    const result = waterSave(...args);
+    renderWater();
+    return result;
+  };
+  const waterHasSavedData = hasSavedData;
+  hasSavedData = function(data) {
+    return waterHasSavedData(data) || !!(data && (validWaterGoal(data.waterGoalMl) || Object.values(data.waterEntries || {}).some(items => Array.isArray(items) && items.length)));
+  };
+  const waterValidBackup = validBackup;
+  validBackup = function(value) {
+    const backup = waterValidBackup(value);
+    if (!backup) return null;
+    const rawEntries = value.waterEntries == null ? {} : value.waterEntries;
+    if (typeof rawEntries !== 'object' || Array.isArray(rawEntries)) return null;
+    const safeEntries = {};
+    for (const [date, items] of Object.entries(rawEntries)) {
+      if (!validWaterDate(date) || !Array.isArray(items) || items.length > 100 || items.some(item => !Number.isInteger(item) || item < 50 || item > waterEntryMax) || items.reduce((sum, item) => sum + item, 0) > 50000) return null;
+      if (items.length) safeEntries[date] = [...items];
+    }
+    if (value.waterGoalMl != null && !validWaterGoal(value.waterGoalMl)) return null;
+    backup.waterEntries = safeEntries;
+    backup.waterGoalMl = value.waterGoalMl ?? null;
+    return backup;
+  };
+  $('#waterCustomForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const field = $('#waterCustomAmount');
+    if (addWater(Number(field.value))) field.value = '';
+  });
+  document.querySelectorAll('[data-water-add]').forEach(button => button.addEventListener('click', () => addWater(Number(button.dataset.waterAdd))));
+  $('#waterUndo').addEventListener('click', () => {
+    const entries = waterEntriesFor();
+    const amount = entries.pop();
+    if (!Number.isInteger(amount)) return;
+    if (entries.length) state.waterEntries[selectedDate] = entries;
+    else delete state.waterEntries[selectedDate];
+    saveWaterChange(waterFormat(amount) + ' ml son su kaydı geri alındı');
+  });
+  $('#waterGoalForm').addEventListener('submit', event => {
+    event.preventDefault();
+    const goal = Number($('#waterGoalAmount').value);
+    if (!validWaterGoal(goal)) {
+      showToast('Su hedefini 250–8.000 ml arasında belirle.');
+      return;
+    }
+    state.waterGoalMl = goal;
+    saveWaterChange('Kişisel su hedefin kaydedildi');
+  });
+  $('#clearWaterGoal').addEventListener('click', () => {
+    state.waterGoalMl = null;
+    saveWaterChange('Su hedefi kaldırıldı');
+  });
+  window.addEventListener('iyibeslen:select-day', renderWater);
+  $('#deleteData').addEventListener('click', () => setTimeout(renderWater, 0));
+  document.querySelectorAll('[data-scroll]').forEach(button => button.addEventListener('click', () => {
+    const destination = button.dataset.scroll;
+    document.querySelectorAll('.nav [data-scroll], .mobile-nav [data-scroll]').forEach(item => item.classList.toggle('active', item.dataset.scroll === destination));
+  }));
+  ensureWaterState();
+  renderWater();
+
 })();
 </script>
 <script src="./app-enhancements.js?v=20261021.4"></script>
