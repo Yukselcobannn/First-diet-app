@@ -1,10 +1,10 @@
-const CACHE_NAME = 'iyi-beslen-shell-v13';
+const CACHE_NAME = 'iyi-beslen-shell-v14';
 const APP_FILES = [
   './',
   './index.html',
   './gizlilik.html',
   './manifest.webmanifest',
-  './app.css?v=20261021.4',
+  './app.css?v=20261021.5',
   './app-enhancements.js?v=20261021.4',
   './icons/icon-192.svg',
   './icons/icon-512.svg'
