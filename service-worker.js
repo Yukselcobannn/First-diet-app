@@ -1,8 +1,8 @@
-const CACHE_NAME = 'iyi-beslen-shell-v16';
+const CACHE_NAME = 'iyi-beslen-shell-v17';
 const APP_FILES = [
   './',
   './index.html',
-  './nutrition-data.js?v=20261021.7',
+  './nutrition-data.js?v=20261021.8',
   './gizlilik.html',
   './manifest.webmanifest',
   './app.css?v=20261021.5',
