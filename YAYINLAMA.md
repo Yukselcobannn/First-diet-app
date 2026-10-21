@@ -17,7 +17,7 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 
 1. Uygulamayı açıp **Şimdi başla** ile yaş, boy, kilo, cinsiyet, hareket düzeyi ve hedef bilgilerini gir.
 2. İstersen beslenme tercihini, alerjileri ve kaçınmak istediğin yiyecekleri ekle.
-3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Tanınan yiyecekler için uygulama porsiyon varsayımını gösterir; belirsiz tarif ve tanınmayan malzemeler toplamı eksiltmemek için otomatik sayılmaz. Bu durumda ürün etiketi değerlerini elle gir veya bilinen malzemeleri ayrı kaydet.
+3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Besin değeri bilinmeyen öğünler artık sıfır kabul edilmez: günlük hedef kalanları ve haftalık ortalamalar eksik kayıt olduğunu belirtir; düzenleme bağlantısından etiketteki değerleri ekleyebilirsin. Tanınan yiyecekler için uygulama porsiyon varsayımını gösterir; belirsiz tarif ve tanınmayan malzemeler toplamı eksiltmemek için otomatik sayılmaz. Bu durumda ürün etiketi değerlerini elle gir veya bilinen malzemeleri ayrı kaydet.
    Besin kartındaki **Besin listesinden seçip gramla hesapla** alanında gıdayı arayabilir, yenebilir gram miktarını girip 100 g besin verisinden hesaplanan kaloriyi ve proteini kaydetmeden önce gözden geçirebilirsin.
 4. **Sana özel plan** bölümünden günlük veya haftalık örnek plan oluştur. Uygun yemekleri kalori ve protein hedeflerine göre seçer, haftalık planda tekrarları azaltmaya çalışır; hedefe yaklaşamadığı günleri açıkça belirtir.
 5. Üstteki tarih seçicisiyle geçmiş günleri görüntüleyip o güne öğün veya kilo kaydı ekleyebilir; sağ üstten koyu görünümü açabilirsin.
