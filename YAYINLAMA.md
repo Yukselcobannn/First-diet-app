@@ -17,13 +17,19 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 
 1. Uygulamayı açıp **Şimdi başla** ile yaş, boy, kilo, cinsiyet, hareket düzeyi ve hedef bilgilerini gir.
 2. İstersen beslenme tercihini, alerjileri ve kaçınmak istediğin yiyecekleri ekle.
-3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Porsiyon belirtilmemişse uygulama varsayımını gösterir.
+3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Tanınan yiyecekler için uygulama porsiyon varsayımını gösterir; belirsiz tarif ve tanınmayan malzemeler toplamı eksiltmemek için otomatik sayılmaz. Bu durumda ürün etiketi değerlerini elle gir veya bilinen malzemeleri ayrı kaydet.
 4. **Sana özel plan** bölümünden günlük veya haftalık örnek plan oluştur.
 5. Üstteki tarih seçicisiyle geçmiş günleri görüntüleyip o güne öğün veya kilo kaydı ekleyebilir; sağ üstten koyu görünümü açabilirsin.
 
 Hesaplamalar ve besin değerleri tahminidir; uygulama tıbbi öneri vermez. Sağlık durumun varsa kişisel hedefler için doktor veya diyetisyene danış.
 
-Uygulama kabuğu çevrimdışı kullanım için önbelleğe alınır. İlk açılış ve kurulum için internet gerekir. Yeni sürüm yayımlandığında ekranda **Şimdi güncelle** bildirimi görünür; güncelleme seçildiğinde uygulama yenilenir, bu cihazdaki kayıtların korunur.
+## Hesapların dayanağı
+
+Öğünlerdeki çevrimdışı gıda listesi USDA FoodData Central SR Legacy genel kayıtlarından seçilmiştir; uygulama USDA’ya arama isteği göndermez. Besin yoğunluğu 100 g içindir; adet, bardak ve dilim miktarları yaklaşık porsiyon varsayımlarıdır. Ambalaj etiketi ve tartılmış gram miktarı varsa onları kullan. Pilav, çorba, yağ/sos eklenmiş veya içeriği belirsiz tarifler tek bir genel kayıtla güvenilir hesaplanamayacağı için otomatik toplamın dışında tutulur.
+
+Dinlenme enerjisi Mifflin–St Jeor denklemiyle; günlük enerji seçilen hareket katsayısıyla tahmin edilir. Yetişkin protein temel referansı 0,83 g/kg, egzersiz yapan yetişkinler için isteğe bağlı seçenekler 1,4–2,0 g/kg’dır. Formül, kaynak ve varsayımlar uygulamadaki **Nasıl hesaplandı?** ve **Gizlilik ve uygulama bilgisi** alanlarında açıklanır.
+
+Uygulama kabuğu ve USDA genel besin listesinin yerel alt kümesi çevrimdışı kullanım için önbelleğe alınır. İlk açılış ve kurulum için internet gerekir. Yeni sürüm yayımlandığında ekranda **Şimdi güncelle** bildirimi görünür; güncelleme seçildiğinde uygulama yenilenir, bu cihazdaki kayıtların korunur.
 
 ## Veri ve gizlilik
 
