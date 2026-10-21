@@ -311,3 +311,167 @@ body[data-theme="dark"] .coverage-action { color: #f0d59f; }
 .meal-source-link { color: var(--green-dark); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
 .meal-source-link:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 3px; }
 body[data-theme="dark"] .meal-source-link { color: #a9d2ad; }
+
+/* Refined dashboard surfaces and touch-friendly controls. */
+.app {
+  background:
+    radial-gradient(ellipse at 84% 0%, rgba(219, 234, 216, .48), transparent 34rem),
+    var(--bg);
+}
+aside {
+  background: rgba(255, 255, 255, .92);
+  backdrop-filter: blur(16px);
+}
+.brand-icon {
+  background: linear-gradient(145deg, #315b3c, #244a34 72%);
+}
+.nav button { border: 1px solid transparent; }
+.nav button.active { border-color: #dce9db; box-shadow: inset 3px 0 #5b8062; }
+.welcome {
+  isolation: isolate;
+  min-height: 140px;
+  padding: clamp(22px, 3vw, 30px);
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 87% 32%, rgba(168, 199, 150, .24), transparent 16rem),
+    linear-gradient(116deg, #203f2c 0%, #315a3d 58%, #527654 100%);
+}
+.welcome::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  width: 176px;
+  height: 176px;
+  right: 7%;
+  bottom: -120px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: 50%;
+  box-shadow: 0 0 0 20px rgba(255, 255, 255, .035), 0 0 0 42px rgba(255, 255, 255, .025);
+  pointer-events: none;
+}
+.welcome h2 { font-size: clamp(20px, 2.3vw, 25px); }
+.welcome p { max-width: 430px; font-size: 13px; line-height: 1.6; }
+.welcome .linkbtn { min-height: 42px; padding: 10px 14px; }
+.card {
+  border-color: rgba(222, 231, 221, .9);
+  border-radius: 21px;
+  background: linear-gradient(160deg, rgba(255, 255, 255, .99), rgba(252, 253, 251, .98));
+}
+.card-head { margin-bottom: 19px; }
+.card-head h3 { font-size: 15px; }
+.tag {
+  border: 1px solid #e3ebe1;
+  background: #f5f8f3;
+  color: #526b55;
+  font-size: 10px;
+  font-weight: 700;
+}
+.target {
+  position: relative;
+  overflow: hidden;
+  min-height: 145px;
+  padding: 19px;
+  border-color: #e5ece3;
+  border-radius: 17px;
+  background: linear-gradient(145deg, #fbfdf9 0%, #f1f6ef 100%);
+}
+.target.protein {
+  border-color: #eee6dd;
+  background: linear-gradient(145deg, #fdfbf8 0%, #f7f0e9 100%);
+}
+.target-top { font-size: 12px; }
+.target-top .dot { box-shadow: 0 4px 10px rgba(44, 77, 51, .08); }
+.target-val { font-size: clamp(24px, 2.5vw, 30px); }
+.track { height: 9px; margin-top: 9px; }
+.track span { background: linear-gradient(90deg, #527d58, #83a876); }
+.protein .track span { background: linear-gradient(90deg, #bc7951, #dda67a); }
+.meal {
+  border-color: #edf1eb;
+  border-radius: 14px;
+  background: #fbfcfa;
+}
+.meal-emoji {
+  flex: 0 0 42px;
+  width: 42px;
+  height: 42px;
+  border: 1px solid #edf1eb;
+  border-radius: 13px;
+}
+.meal-kcal b { color: #334b38; }
+.icon-btn { min-width: 34px; min-height: 34px; }
+.food-picker {
+  padding: 13px;
+  border-color: #e3eae1;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #fff, #f8faf6);
+}
+.food-picker summary { min-height: 24px; display: flex; align-items: center; }
+.food-picker[open] summary { margin-bottom: 3px; }
+.food-preview { border: 1px solid #e8eee6; border-radius: 11px; }
+.plan-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 21px;
+  background:
+    radial-gradient(circle at 100% 0%, rgba(184, 211, 169, .34), transparent 15rem),
+    linear-gradient(145deg, #f0f6ed 0%, #e6f0e4 100%);
+}
+.plan-card::after {
+  content: "";
+  position: absolute;
+  width: 152px;
+  height: 152px;
+  right: -88px;
+  bottom: -88px;
+  border: 1px solid rgba(84, 121, 82, .12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 17px rgba(84, 121, 82, .035);
+  pointer-events: none;
+}
+.plan-card > * { position: relative; z-index: 1; }
+.plan-card .primary { min-height: 44px; border-radius: 12px; }
+.chart-wrap {
+  overflow: hidden;
+  padding: 8px 10px 2px;
+  border: 1px solid #edf1eb;
+  border-radius: 15px;
+  background: linear-gradient(180deg, #fbfcfa, #f7f9f5);
+}
+.date-navigation .date-step,
+.date-input,
+.date-navigation .secondary { border-radius: 11px; }
+.primary, .secondary { min-height: 40px; border-radius: 11px; }
+
+@media (hover: hover) and (pointer: fine) {
+  .target, .meal { transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+  .target:hover, .meal:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(37, 65, 42, .055); }
+}
+
+body[data-theme="dark"] .app {
+  background:
+    radial-gradient(ellipse at 84% 0%, rgba(55, 83, 58, .16), transparent 34rem),
+    var(--bg);
+}
+body[data-theme="dark"] aside { background: rgba(26, 36, 29, .94); }
+body[data-theme="dark"] .nav button.active { border-color: #3c5140; box-shadow: inset 3px 0 #91b397; }
+body[data-theme="dark"] .card { background: linear-gradient(160deg, #1d2921, #19231d); border-color: #2c3a30; }
+body[data-theme="dark"] .tag { border-color: #344438; background: #263229; color: #c5d8c6; }
+body[data-theme="dark"] .target { border-color: #35463a; background: linear-gradient(145deg, #202d23, #1b281f); }
+body[data-theme="dark"] .target.protein { border-color: #4a3c30; background: linear-gradient(145deg, #2b2822, #24231f); }
+body[data-theme="dark"] .meal { border-color: #2c3a30; background: #1b261f; }
+body[data-theme="dark"] .meal-emoji { border-color: #35463a; background: #263229; }
+body[data-theme="dark"] .meal-kcal b { color: #d5e4d6; }
+body[data-theme="dark"] .food-picker { border-color: #344438; background: linear-gradient(145deg, #1d2921, #19231d); }
+body[data-theme="dark"] .food-preview,
+body[data-theme="dark"] .chart-wrap { border-color: #344438; background: linear-gradient(180deg, #202d23, #1a241d); }
+body[data-theme="dark"] .plan-card { background: radial-gradient(circle at 100% 0%, rgba(102, 144, 97, .13), transparent 15rem), linear-gradient(145deg, #25352a, #202f25); }
+body[data-theme="dark"] .date-navigation .date-step,
+body[data-theme="dark"] .date-input { border-color: var(--line); }
+
+@media (max-width: 600px) {
+  .welcome { min-height: 126px; padding: 19px 17px; border-radius: 20px; }
+  .welcome p { max-width: 255px; }
+  .card { border-radius: 18px; }
+  .target { min-height: 135px; padding: 15px; border-radius: 15px; }
+  .mobile-nav { border-radius: 18px 18px 0 0; }
+}
