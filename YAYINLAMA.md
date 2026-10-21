@@ -18,6 +18,7 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 1. Uygulamayı açıp **Şimdi başla** ile yaş, boy, kilo, cinsiyet, hareket düzeyi ve hedef bilgilerini gir.
 2. İstersen beslenme tercihini, alerjileri ve kaçınmak istediğin yiyecekleri ekle.
 3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Tanınan yiyecekler için uygulama porsiyon varsayımını gösterir; belirsiz tarif ve tanınmayan malzemeler toplamı eksiltmemek için otomatik sayılmaz. Bu durumda ürün etiketi değerlerini elle gir veya bilinen malzemeleri ayrı kaydet.
+   Besin kartındaki **Besin listesinden seçip gramla hesapla** alanında gıdayı arayabilir, yenebilir gram miktarını girip 100 g besin verisinden hesaplanan kaloriyi ve proteini kaydetmeden önce gözden geçirebilirsin.
 4. **Sana özel plan** bölümünden günlük veya haftalık örnek plan oluştur.
 5. Üstteki tarih seçicisiyle geçmiş günleri görüntüleyip o güne öğün veya kilo kaydı ekleyebilir; sağ üstten koyu görünümü açabilirsin.
 
@@ -26,6 +27,7 @@ Hesaplamalar ve besin değerleri tahminidir; uygulama tıbbi öneri vermez. Sağ
 ## Hesapların dayanağı
 
 Öğünlerdeki çevrimdışı gıda listesi USDA FoodData Central SR Legacy genel kayıtlarından seçilmiştir; uygulama USDA’ya arama isteği göndermez. Besin yoğunluğu 100 g içindir; adet, bardak ve dilim miktarları yaklaşık porsiyon varsayımlarıdır. Miktarı yiyecek adından önce veya sonra, birimiyle yazabilirsin (ör. “2 yumurta” ya da “yumurta 2 adet”, “tavuk göğsü 150 g ızgara”). Ambalaj etiketi ve tartılmış gram miktarı varsa onları kullan. Pişmiş kayıtlar için pişme durumunu belirt; çiğ ve pişmiş ağırlıklar aynı değildir. Pilav, çorba, yağ/sos eklenmiş veya içeriği belirsiz tarifler tek bir genel kayıtla güvenilir hesaplanamayacağı için otomatik toplamın dışında tutulur. Günlük ve haftalık örnek planlar da malzemeleri gramlarıyla bu aynı tablodan hesaplar; öğün türleri örnektir ve ürün/marka farkı nedeniyle toplamlar yaklaşık kalır.
+Besin listesinden doğrudan seçimde kullanıcı gram miktarını girer; sistem aynı 100 g değerini bu miktarla orantılar ve onay ekranı gösterir. Kaynağı ve gıdanın pişme hâlini kayıtta açık tutar. Liste sınırlıdır; gıda bulunmuyorsa ürün etiketindeki kalori ve protein değerlerini elle girmek gerekir.
 
 Dinlenme enerjisi Mifflin–St Jeor denklemiyle; günlük enerji seçilen hareket katsayısıyla tahmin edilir. Yetişkin protein temel referansı 0,83 g/kg, egzersiz yapan yetişkinler için isteğe bağlı seçenekler 1,4–2,0 g/kg’dır. Formül, kaynak ve varsayımlar uygulamadaki **Nasıl hesaplandı?** ve **Gizlilik ve uygulama bilgisi** alanlarında açıklanır.
 
