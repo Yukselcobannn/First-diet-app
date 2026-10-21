@@ -1,0 +1,21 @@
+/*
+ * Small offline subset of USDA FoodData Central SR Legacy values.
+ * USDA states FDC data are public domain (CC0 1.0); see gizlilik.html for attribution.
+ * Nutrient density is per 100 g edible food. Serving weights are practical estimates,
+ * not a guarantee: package labels and weighing the edible portion are preferred.
+ */
+window.NUTRITION_DATA = [
+  {terms:['yumurta'],name:'Yumurta, haşlanmış (yağ eklenmemiş)',unit:'adet',countPerServing:1,servingGrams:50,kcal100:155,protein100:12.58,emoji:'🥚',fdc:'Egg, whole, cooked, hard-boiled',query:'egg cooked hard-boiled',assumption:'Haşlanmış, yenebilir kısmı 50 g/adet varsayıldı; kızartma yağı dahil değil.'},
+  {terms:['tam buğday ekmeği'],name:'Tam buğday ekmeği (genel referans)',unit:'dilim',countPerServing:1,servingGrams:30,kcal100:252,protein100:12.45,emoji:'🍞',fdc:'Bread, whole-wheat, commercially prepared',query:'whole wheat bread',assumption:'Genel tam buğday ekmeği kaydı; 1 dilim 30 g varsayıldı. Marka etiketi daha doğrudur.'},
+  {terms:['süt'],name:'İnek sütü, tam yağlı sade',unit:'bardak',servingGrams:206,kcal100:61,protein100:3.15,mlToGrams:1.03,emoji:'🥛',fdc:'Milk, whole, 3.25% milkfat',query:'milk whole 3.25%',assumption:'Sade tam yağlı inek sütü referansı; 200 ml yaklaşık 206 g. Yağ oranı/marka farklıysa etiketi kullan.'},
+  {terms:['yoğurt','yogurt'],name:'Yoğurt, sade tam yağlı (genel referans)',unit:'kase',servingGrams:200,kcal100:61,protein100:3.47,emoji:'🥣',fdc:'Yogurt, plain, whole milk',query:'yogurt plain whole milk',assumption:'Sade, tam yağlı yoğurt referansı; süzme, meyveli veya az yağlı ürünler farklıdır.'},
+  {terms:['tavuk göğsü'],name:'Tavuk göğsü, pişmiş ve derisiz',unit:'100 g',servingGrams:100,kcal100:165,protein100:31.02,emoji:'🍗',fdc:'Chicken, broilers or fryers, breast, meat only, cooked, roasted',query:'chicken breast cooked roasted meat only',assumption:'Pişmiş, derisiz göğüs eti için genel değer; eklenen yağ/sos ve çiğ ağırlık dahil değil.'},
+  {terms:['pirinç'],name:'Beyaz pirinç, sade pişmiş',unit:'porsiyon',servingGrams:150,kcal100:130,protein100:2.69,emoji:'🍚',fdc:'Rice, white, long-grain, regular, enriched, cooked',query:'rice white long grain cooked',requiresCooked:true,assumption:'Sade pişmiş uzun taneli beyaz pirinç; 150 g porsiyon varsayımı. Pilav yağı dahil değil.'},
+  {terms:['bulgur'],name:'Bulgur, sade pişmiş',unit:'porsiyon',servingGrams:150,kcal100:83,protein100:3.08,emoji:'🌾',fdc:'Bulgur, cooked',query:'bulgur cooked',requiresCooked:true,assumption:'Sade pişmiş bulgur; 150 g porsiyon varsayımı. Pilav yağı dahil değil.'},
+  {terms:['elma'],name:'Elma, kabuklu çiğ',unit:'adet',countPerServing:1,servingGrams:182,kcal100:52,protein100:0.26,emoji:'🍎',fdc:'Apples, raw, with skin',query:'apples raw with skin',assumption:'Kabuklu orta boy elma 182 g yenebilir kısım varsayıldı.'},
+  {terms:['muz'],name:'Muz, çiğ',unit:'adet',countPerServing:1,servingGrams:118,kcal100:89,protein100:1.09,emoji:'🍌',fdc:'Bananas, raw',query:'bananas raw',assumption:'Orta boy muz 118 g yenebilir kısım varsayıldı.'},
+  {terms:['yulaf ezmesi','yulaf'],name:'Yulaf ezmesi, kuru',unit:'porsiyon',servingGrams:40,kcal100:379,protein100:13.15,emoji:'🥣',fdc:'Oats, regular and quick, not fortified, dry',query:'oats dry',assumption:'Kuru yulaf için genel değer; süt, su, şeker ve ek malzemeler ayrıca kaydedilmeli.'},
+  {terms:['badem'],name:'Badem, çiğ',unit:'10 adet',countPerServing:10,servingGrams:12,kcal100:579,protein100:21.15,emoji:'🌰',fdc:'Nuts, almonds',query:'almonds raw',assumption:'Çiğ badem referansı; 10 adet yaklaşık 12 g. Kavrulmuş/tuzlu ürün değişebilir.'},
+  {terms:['nohut'],name:'Nohut, sade pişmiş',unit:'porsiyon',servingGrams:100,kcal100:164,protein100:8.86,emoji:'🫘',fdc:'Chickpeas (garbanzo beans, bengal gram), mature seeds, cooked, boiled, without salt',query:'chickpeas cooked boiled',requiresCooked:true,assumption:'Haşlanmış sade nohut; yağlı nohut yemeği ve sos dahil değil.'},
+  {terms:['somon'],name:'Somon, pişmiş',unit:'100 g',servingGrams:100,kcal100:206,protein100:22.1,emoji:'🐟',fdc:'Fish, salmon, Atlantic, farmed, cooked, dry heat',query:'salmon Atlantic farmed cooked',requiresCooked:true,assumption:'Pişmiş Atlantik somonu genel kaydı; tür, üretim ve eklenen yağ değiştirir.'}
+];
