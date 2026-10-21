@@ -307,3 +307,7 @@ body[data-theme="dark"] .toast-action { color: #c9e8cb; }
 .coverage-action { display: inline-block; margin-top: 7px; padding: 0; border: 0; background: transparent; color: #705022; font: inherit; font-weight: 750; text-decoration: underline; cursor: pointer; }
 body[data-theme="dark"] .incomplete-notice { border-color: #64523a; background: #332c22; color: #ead4ad; }
 body[data-theme="dark"] .coverage-action { color: #f0d59f; }
+
+.meal-source-link { color: var(--green-dark); font-weight: 650; text-decoration: underline; text-underline-offset: 2px; }
+.meal-source-link:focus-visible { outline: 2px solid var(--green); outline-offset: 2px; border-radius: 3px; }
+body[data-theme="dark"] .meal-source-link { color: #a9d2ad; }
