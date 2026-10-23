@@ -933,3 +933,56 @@ body[data-theme="dark"] .inline-status { color:#d2e2d2; }
   .topbar-actions .screen-back { flex:1 1 100%; }
 }
 @media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; } }
+
+/* Optional tracking preferences hide associated values across app screens. */
+body.tracking-calories-off #calorieTargetCard,
+body.tracking-calories-off #calorieView,
+body.tracking-calories-off .energy-metric,
+body.tracking-calories-off .macro-reference,
+body.tracking-calories-off .meal-kcal b,
+body.tracking-calories-off .meal-detail-calories,
+body.tracking-calories-off .recipe-calories,
+body.tracking-calories-off .plan-calories,
+body.tracking-calories-off .profile-calorie-value { display:none!important; }
+body.tracking-calories-off .weekly-review-grid > div:first-child { display:none; }
+body.tracking-protein-off #proteinTargetCard,
+body.tracking-protein-off #proteinView,
+body.tracking-protein-off .protein-metric,
+body.tracking-protein-off .meal-kcal small,
+body.tracking-protein-off .meal-detail-protein,
+body.tracking-protein-off .recipe-protein,
+body.tracking-protein-off .plan-protein,
+body.tracking-protein-off .profile-protein-value { display:none!important; }
+body.tracking-protein-off .weekly-review-grid > div:nth-child(2) { display:none; }
+body.tracking-weight-off #weightView,
+body.tracking-weight-off #weightEntry,
+body.tracking-weight-off .profile-weight-fact { display:none!important; }
+body.tracking-weight-off .weekly-review-grid > div:nth-child(3) { display:none; }
+body.tracking-all-off #chartSummary,
+body.tracking-all-off .chart-wrap { display:none!important; }
+.tracking-setting { display:block!important; }
+.tracking-setting fieldset { display:grid; gap:10px; margin:0; padding:14px; border:1px solid #e6e9e1; border-radius:14px; }
+.tracking-setting legend { padding:0 5px; color:#34483a; font-size:13px; font-weight:750; }
+.tracking-setting .check-item { display:flex; align-items:center; gap:9px; min-height:32px; color:#526255; font-size:12px; }
+.tracking-setting .check-item input { width:18px; height:18px; accent-color:#527b59; }
+.tracking-setting small { display:block; color:#68766a; font-size:11px; line-height:1.5; }
+.goal-explainer-copy h4 { margin:18px 0 7px; color:#354a39; font-size:13px; }
+.muscle-habits { display:grid; gap:7px; margin:8px 0; padding-left:19px; }
+.muscle-habits li { padding-left:2px; }
+.recipe-nutrition .recipe-calories,.recipe-nutrition .recipe-protein { color:inherit; padding-inline:0; }
+body.tracking-calories-off .summary,
+body.tracking-protein-off .summary { grid-template-columns:1fr; }
+body.tracking-calories-off .weekly-review-grid,
+body.tracking-protein-off .weekly-review-grid,
+body.tracking-weight-off .weekly-review-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+body.tracking-calories-off.tracking-protein-off .weekly-review-grid,
+body.tracking-calories-off.tracking-weight-off .weekly-review-grid,
+body.tracking-protein-off.tracking-weight-off .weekly-review-grid { grid-template-columns:1fr; }
+body.tracking-calories-off .meal-detail-macros,
+body.tracking-protein-off .meal-detail-macros { grid-template-columns:1fr; }
+body.tracking-calories-off.tracking-protein-off .meal-detail-macros { display:none; }
+body[data-theme="dark"] .tracking-setting fieldset { border-color:#344238; }
+body[data-theme="dark"] .tracking-setting legend,
+body[data-theme="dark"] .goal-explainer-copy h4 { color:#dce9dd; }
+body[data-theme="dark"] .tracking-setting .check-item,
+body[data-theme="dark"] .tracking-setting small { color:#c3d0c4; }
