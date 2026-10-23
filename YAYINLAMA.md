@@ -13,14 +13,24 @@ Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://gith
 
 İlk açılışta profilini oluştur. Sonra ana ekrana eklenen simgeden tam ekran uygulama gibi açabilirsin.
 
+## Uygulamadaki bölümler
+
+- **Bugün:** Günlük kalori/protein hedefi, öğün günlüğü, su ve isteğe bağlı uyku, hareket, açlık hissi ve ruh hâli notları.
+- **Plan:** Günlük veya 7 günlük örnek menü, su takibi ve düzenlenebilir alışveriş listesi.
+- **Tarifler:** Arama, beslenme tercihine göre filtreleme, kaydetme, porsiyon ölçekleme ve tarifi öğünlere ya da alışveriş listene ekleme.
+- **İlerleme:** Kalori/protein grafikleri, haftalık değerlendirme, kilo kayıtları ve seçtiğin yaşam notlarının özeti.
+- **Profil:** Kişisel bilgiler, hedef formülü, yedekleme ve gizlilik ayarları.
+
 ## İlk kullanım
 
 1. Uygulamayı açıp **Şimdi başla** ile yaş, boy, kilo, cinsiyet, hareket düzeyi ve hedef bilgilerini gir.
 2. İstersen beslenme tercihini, alerjileri ve kaçınmak istediğin yiyecekleri ekle.
 3. Ana ekranda yediğini veya içtiğini doğal dille yazıp **Öğün ekle** seç. Besin değeri bilinmeyen öğünler artık sıfır kabul edilmez: günlük hedef kalanları ve haftalık ortalamalar eksik kayıt olduğunu belirtir; düzenleme bağlantısından etiketteki değerleri ekleyebilirsin. Tanınan yiyecekler için uygulama porsiyon varsayımını gösterir; belirsiz tarif ve tanınmayan malzemeler toplamı eksiltmemek için otomatik sayılmaz. Bu durumda ürün etiketi değerlerini elle gir veya bilinen malzemeleri ayrı kaydet.
    Besin kartındaki **Besin listesinden seçip gramla hesapla** alanında gıdayı arayabilir, yenebilir gram miktarını girip 100 g besin verisinden hesaplanan kaloriyi ve proteini kaydetmeden önce gözden geçirebilirsin.
-4. **Sana özel plan** bölümünden günlük veya haftalık örnek plan oluştur. Uygun yemekleri kalori ve protein hedeflerine göre seçer, haftalık planda tekrarları azaltmaya çalışır; hedefe yaklaşamadığı günleri açıkça belirtir.
-5. Üstteki tarih seçicisiyle geçmiş günleri görüntüleyip o güne öğün veya kilo kaydı ekleyebilir; sağ üstten koyu görünümü açabilirsin.
+4. **Plan** bölümünden günlük veya haftalık örnek plan oluştur. Uygun yemekleri kalori ve protein hedeflerine göre seçer, haftalık planda tekrarları azaltmaya çalışır; hedefe yaklaşamadığı günleri açıkça belirtir.
+5. **Tarifler** bölümünde porsiyonu değiştir. Tarifi bugüne eklediğinde malzemeler ve yaklaşık değerler öğün günlüğüne kaydedilir; alışveriş listesine eklediğinde ürünleri miktarlarıyla aktarır. Ürün adlarını ve miktarlarını listede düzenleyebilirsin.
+6. **İlerleme** bölümündeki grafikler ve haftalık özet yalnızca kaydedilmiş günlere dayanır. Eksik kayıtlar gerçek tüketimini göstermez; tek bir günden kalıcı eğilim çıkarma.
+7. Üstteki tarih seçicisiyle geçmiş günleri görüntüleyip o güne öğün, kilo veya isteğe bağlı yaşam notu ekleyebilir; sağ üstten koyu görünümü açabilirsin.
 
 Hesaplamalar ve besin değerleri tahminidir; uygulama tıbbi öneri vermez. Sağlık durumun varsa kişisel hedefler için doktor veya diyetisyene danış.
 
@@ -35,7 +45,7 @@ Uygulama kabuğu ve USDA genel besin listesinin yerel alt kümesi çevrimdışı
 
 ## Veri ve gizlilik
 
-Kaynak kodu, GitHub kullanıcı adın ve commit geçmişi herkese görünür. Profil, öğün, kilo, alerji/tercih ve sağlık bildirimleri bu cihazdaki uygulama/tarayıcı depolamasına kaydedilir; uygulama kodu bu kayıtları GitHub'a veya başka bir uygulama sunucusuna göndermez ve cihazlar arasında eşitlemez. Bu yerel kayıtlar uygulama tarafından şifrelenmez; aynı cihaz veya tarayıcı profiline erişen biri görebilir. GitHub Pages ise ziyaretçilerin IP adreslerini güvenlik amacıyla kaydettiğini belirtir. Ayrıntı için uygulamadaki **Gizlilik ve uygulama bilgisi** sayfasını oku.
+Kaynak kodu, GitHub kullanıcı adın ve commit geçmişi herkese görünür. Profil, öğün, kilo, su, alışveriş listesi, tarif favorileri, günlük yaşam notları, alerji/tercih ve sağlık bildirimleri bu cihazdaki uygulama/tarayıcı depolamasına kaydedilir; uygulama kodu bu kayıtları GitHub'a veya başka bir uygulama sunucusuna göndermez ve cihazlar arasında eşitlemez. Bu yerel kayıtlar uygulama tarafından şifrelenmez; aynı cihaz veya tarayıcı profiline erişen biri görebilir. GitHub Pages ise ziyaretçilerin IP adreslerini güvenlik amacıyla kaydettiğini belirtir. Ayrıntı için uygulamadaki **Gizlilik ve uygulama bilgisi** sayfasını oku.
 
 Tarayıcı verisini silmek veya uygulamayı kaldırmak yerel kayıtları silebilir. **Şifreli yedek indir** tüm profil, öğün, kilo, hedef ve sık kullanılan kayıtlarını AES-GCM ile korunan bir `.iyb` dosyasına aktarır; dosyayı başka telefonda **Şifreli yedeği geri yükle** ile açabilirsin. Parola yalnızca işlem sırasında cihazında kullanılır; uygulamaya kaydedilmez ve sunucuya gönderilmez. Parolayı unutursan dosya açılamaz; dosya ile parolayı ayrı ve güvenli sakla. **Yedek indir** seçeneği hâlâ şifresiz JSON oluşturur. Mevcut kayıtların varsa geri yüklemeden önce uygulama onları da aynı parola ile şifreli olarak indirir. Otomatik cihaz yedeği/senkronizasyonu yoktur. **Tüm verileri sil** uygulamanın bu tarayıcıdaki kayıtlarını ve görünüm tercihini siler; indirilmiş yedek dosyalarını ayrıca silmen gerekir.
 
