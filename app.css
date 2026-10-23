@@ -251,6 +251,14 @@ body[data-theme="dark"] .estimate { color: #a6b2a7; }
   *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
 }
 
+@media (max-width: 600px) {
+  .meal-list { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+  .meal-list > .meal { min-width: 0; width: 100%; max-width: 100%; }
+  .meal-info { min-width: 0; overflow-wrap: anywhere; }
+  .meal-info small,
+  .meal-info small a { overflow-wrap: anywhere; word-break: break-word; }
+}
+
 .update-banner {
   position: fixed;
   z-index: 20;
