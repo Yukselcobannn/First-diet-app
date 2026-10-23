@@ -565,23 +565,80 @@ body[data-theme="dark"] .weekly-review > p { color: #aebbb0; }
   .weekly-review-grid > div:last-child { grid-column: 1 / -1; }
 }
 
-/* Screen-based navigation keeps daily tasks short on phones. */
+/* Five clear sections keep the app usable on small screens. */
 body[data-app-screen] .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
 body[data-app-screen] .leftcol, body[data-app-screen] .rightcol { display: contents; }
 body[data-app-screen] [data-app-view] { display: none !important; }
-body[data-app-screen="overview"] [data-app-view~="overview"],
-body[data-app-screen="meals"] [data-app-view~="meals"],
-body[data-app-screen="goals"] [data-app-view~="goals"],
-body[data-app-screen="analysis"] [data-app-view~="analysis"],
-body[data-app-screen="more"] [data-app-view~="more"] { display: block !important; }
-body[data-app-screen="overview"] .welcome { display: flex !important; }
-body[data-app-screen="overview"] .grid { grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); }
-body[data-app-screen="overview"] .welcome { margin-bottom: 18px; }
-body[data-app-screen]:not([data-app-screen="overview"]) .welcome { display: none !important; }
-body[data-app-screen="goals"] .grid,
-body[data-app-screen="meals"] .grid,
-body[data-app-screen="analysis"] .grid,
-body[data-app-screen="more"] .grid { max-width: 880px; margin-inline: auto; }
+body[data-app-screen="today"] [data-app-view~="today"],
+body[data-app-screen="plan"] [data-app-view~="plan"],
+body[data-app-screen="recipes"] [data-app-view~="recipes"],
+body[data-app-screen="progress"] [data-app-view~="progress"],
+body[data-app-screen="profile"] [data-app-view~="profile"] { display: block !important; }
+body[data-app-screen="today"] .welcome { display: flex !important; }
+body[data-app-screen="today"] .grid { grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); }
+body[data-app-screen="today"] .welcome { margin-bottom: 18px; }
+body[data-app-screen]:not([data-app-screen="today"]) .welcome { display: none !important; }
+body[data-app-screen]:not([data-app-screen="today"]):not([data-app-screen="progress"]) .date-navigation { display: none; }
+body[data-app-screen="plan"] .grid,
+body[data-app-screen="recipes"] .grid,
+body[data-app-screen="progress"] .grid,
+body[data-app-screen="profile"] .grid { max-width: 920px; margin-inline: auto; }
+body[data-app-screen="recipes"] .recipe-card { grid-column: 1 / -1; }
+body[data-app-screen="recipes"] .recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.recipe-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(145px, .35fr); gap: 9px; margin-bottom: 13px; }
+.recipe-grid { display: grid; grid-template-columns: 1fr; gap: 11px; }
+.recipe-tile { min-width: 0; padding: 14px; border: 1px solid #e8eee6; border-radius: 14px; background: #fbfcfa; }
+.recipe-title { display: flex; align-items: center; gap: 9px; }
+.recipe-title > div { min-width: 0; flex: 1; }
+.recipe-title strong, .recipe-title small { display: block; }
+.recipe-title strong { font-size: 13px; line-height: 1.4; }
+.recipe-title small { margin-top: 3px; color: var(--muted); font-size: 10px; }
+.recipe-emoji { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 10px; background: #eef3eb; font-size: 18px; }
+.recipe-nutrition { margin: 11px 0 8px; color: #375941; font-weight: 750; font-size: 12px; }
+.recipe-nutrition span { color: #a5afa3; padding-inline: 3px; }
+.portion-control { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 11px; }
+.portion-control select { width: auto; min-width: 82px; padding: 6px 8px; }
+.recipe-ingredients { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px 12px; padding-left: 17px; color: #58655a; font-size: 11px; }
+.recipe-steps { margin: 8px 0; color: #59665b; font-size: 11px; }
+.recipe-steps summary { color: var(--green-dark); font-weight: 700; cursor: pointer; }
+.recipe-steps ol { padding-left: 19px; line-height: 1.55; }
+.recipe-actions { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+.habit-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.habit-form label { display: grid; gap: 5px; color: #536154; font-size: 11px; font-weight: 700; }
+.habit-form button { grid-column: 1 / -1; }
+.habit-week-summary { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.habit-week-summary > div { padding: 12px; border: 1px solid #e8eee6; border-radius: 12px; background: #fafcf9; }
+.habit-week-summary span, .habit-week-summary strong, .habit-week-summary small { display: block; }
+.habit-week-summary span { color: var(--muted); font-size: 10px; }
+.habit-week-summary strong { margin: 6px 0 3px; color: #304d38; font-size: 16px; }
+.habit-week-summary small { color: var(--muted); font-size: 10px; }
+.shopping-form { display: grid; grid-template-columns: minmax(0, 1fr) minmax(70px, .45fr) auto; gap: 7px; }
+.shopping-form .primary { padding: 8px 10px; }
+.shopping-list { display: grid; gap: 7px; margin-top: 12px; }
+.shopping-row { display: grid; grid-template-columns: 20px minmax(0, 1fr) minmax(65px, .35fr) 27px; align-items: center; gap: 6px; }
+.shopping-row input[type="checkbox"] { width: 17px; height: 17px; accent-color: var(--green); }
+.shopping-row .field { min-width: 0; padding: 8px; font-size: 11px; }
+.shopping-row.is-checked .shopping-item-name { color: var(--muted); text-decoration: line-through; }
+.profile-facts { display: flex; flex-wrap: wrap; gap: 7px; }
+.profile-facts span { padding: 7px 9px; border: 1px solid #e5ece3; border-radius: 9px; background: #f8faf7; color: #415447; font-size: 11px; font-weight: 700; }
+@media (max-width: 600px) {
+  body[data-app-screen="today"] .grid { grid-template-columns: minmax(0, 1fr); }
+  body[data-app-screen="recipes"] .recipe-grid { grid-template-columns: 1fr; }
+  .recipe-controls { grid-template-columns: 1fr; }
+  .shopping-form { grid-template-columns: minmax(0, 1fr) minmax(72px, .5fr); }
+  .shopping-form .primary { grid-column: 1 / -1; }
+  .habit-form { grid-template-columns: 1fr 1fr; }
+}
+body[data-theme="dark"] .recipe-tile,
+body[data-theme="dark"] .habit-week-summary > div { border-color: #344438; background: #1b261f; }
+body[data-theme="dark"] .recipe-nutrition,
+body[data-theme="dark"] .habit-week-summary strong { color: #b9d9bc; }
+body[data-theme="dark"] .recipe-ingredients,
+body[data-theme="dark"] .recipe-steps,
+body[data-theme="dark"] .habit-form label { color: #bdc9be; }
+body[data-theme="dark"] .recipe-emoji { background: #2a3a2d; }
+body[data-theme="dark"] .profile-facts span { border-color: #344438; background: #1b261f; color: #c5d8c7; }
+body[data-theme="dark"] .shopping-row .field { background: #1b261f; color: var(--ink); border-color: #344438; }
 .goal-metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
 .goal-metric-grid > div { min-width: 0; padding: 14px; border: 1px solid #e8eee6; border-radius: 13px; background: #fbfcfa; }
 .goal-metric-grid > div > span { display: block; color: #6d796e; font-size: 11px; line-height: 1.4; }
@@ -608,7 +665,7 @@ body[data-theme="dark"] .nav button[aria-current="page"] { color: #d5ecd6; }
 .welcome-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
 .welcome-actions .primary { min-height: 42px; }
 @media (max-width: 900px) {
-  body[data-app-screen="overview"] .grid { grid-template-columns: minmax(0, 1fr); }
+  body[data-app-screen="today"] .grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (max-width: 600px) {
   body[data-app-screen] .grid { gap: 13px; }
