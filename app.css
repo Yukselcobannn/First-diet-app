@@ -564,3 +564,60 @@ body[data-theme="dark"] .weekly-review > p { color: #aebbb0; }
   .weekly-review-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .weekly-review-grid > div:last-child { grid-column: 1 / -1; }
 }
+
+/* Screen-based navigation keeps daily tasks short on phones. */
+body[data-app-screen] .grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 16px; }
+body[data-app-screen] .leftcol, body[data-app-screen] .rightcol { display: contents; }
+body[data-app-screen] [data-app-view] { display: none !important; }
+body[data-app-screen="overview"] [data-app-view~="overview"],
+body[data-app-screen="meals"] [data-app-view~="meals"],
+body[data-app-screen="goals"] [data-app-view~="goals"],
+body[data-app-screen="analysis"] [data-app-view~="analysis"],
+body[data-app-screen="more"] [data-app-view~="more"] { display: block !important; }
+body[data-app-screen="overview"] .welcome { display: flex !important; }
+body[data-app-screen="overview"] .grid { grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); }
+body[data-app-screen="overview"] .welcome { margin-bottom: 18px; }
+body[data-app-screen]:not([data-app-screen="overview"]) .welcome { display: none !important; }
+body[data-app-screen="goals"] .grid,
+body[data-app-screen="meals"] .grid,
+body[data-app-screen="analysis"] .grid,
+body[data-app-screen="more"] .grid { max-width: 880px; margin-inline: auto; }
+.goal-metric-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; }
+.goal-metric-grid > div { min-width: 0; padding: 14px; border: 1px solid #e8eee6; border-radius: 13px; background: #fbfcfa; }
+.goal-metric-grid > div > span { display: block; color: #6d796e; font-size: 11px; line-height: 1.4; }
+.goal-metric-grid strong { display: block; margin: 7px 0 3px; color: #294332; font: 800 clamp(17px, 3vw, 22px)/1.2 Manrope, sans-serif; font-variant-numeric: tabular-nums; }
+.goal-metric-grid small { color: var(--muted); font-size: 10px; line-height: 1.45; }
+.goal-metric-highlight { border-color: #d8e7d6 !important; background: linear-gradient(145deg, #f2f7ef, #eaf3e8) !important; }
+.goal-metric-highlight strong { color: #315b3c; }
+.goal-explainer { line-height: 1.7; }
+.goal-explainer-copy { margin-top: 13px; padding: 15px; border-left: 3px solid #82a77e; border-radius: 0 12px 12px 0; background: #f5f8f3; color: #59675b; font-size: 12px; line-height: 1.65; }
+.goal-explainer-copy strong { color: #2c4a34; }
+.goal-explainer-copy p { margin: 6px 0 0; }
+.goal-sources { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; margin: 14px 1px 0; font-size: 11px; }
+.goal-sources strong { flex: 0 0 100%; color: #4d5c4f; }
+.goal-sources a, .goal-detail-link { color: var(--green-dark); font-weight: 700; text-decoration: underline; text-underline-offset: 2px; }
+.goal-detail-link { display: block; margin-top: 7px; padding: 0; border: 0; background: transparent; font: inherit; font-size: 11px; cursor: pointer; }
+body[data-theme="dark"] .goal-metric-grid > div { border-color: #344438; background: #1b261f; }
+body[data-theme="dark"] .goal-metric-grid > div > span, body[data-theme="dark"] .goal-metric-grid small { color: #aebbb0; }
+body[data-theme="dark"] .goal-metric-grid strong { color: #d4e4d5; }
+body[data-theme="dark"] .goal-metric-highlight { border-color: #3c5940 !important; background: linear-gradient(145deg, #24342a, #1f2e24) !important; }
+body[data-theme="dark"] .goal-explainer-copy { background: #202d23; color: #c0ccc1; }
+body[data-theme="dark"] .goal-explainer-copy strong, body[data-theme="dark"] .goal-sources strong { color: #d4e4d5; }
+body[data-theme="dark"] .goal-sources a, body[data-theme="dark"] .goal-detail-link { color: #a9d2ad; }
+body[data-theme="dark"] .nav button[aria-current="page"] { color: #d5ecd6; }
+.welcome-actions { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.welcome-actions .primary { min-height: 42px; }
+@media (max-width: 900px) {
+  body[data-app-screen="overview"] .grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 600px) {
+  body[data-app-screen] .grid { gap: 13px; }
+  .goal-metric-grid { gap: 7px; }
+  .goal-metric-grid > div { padding: 12px 10px; }
+  .goal-explainer-copy { padding: 13px; }
+  .mobile-nav button { min-width: 0; min-height: 48px; flex: 1 1 0; padding: 5px 2px; font-size: 10px; }
+  .mobile-nav button svg { width: 20px; height: 20px; }
+  .welcome-actions { flex-wrap: wrap; gap: 5px; }
+  .welcome-actions .primary { min-height: 38px; padding: 8px 10px; font-size: 11px; }
+  .welcome-actions .linkbtn { font-size: 10px; }
+}
