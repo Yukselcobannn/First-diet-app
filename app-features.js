@@ -235,7 +235,7 @@
   function renderProfileSummary() {
     const box = $('#profileSummary'), profile = state().profile;
     if (!profile) { box.innerHTML = '<p class="subtle">Henüz profil oluşturmadın. İstersen temel bilgilerini girerek yaklaşık günlük hedef alabilirsin.</p>'; return; }
-    const goal = { lose: 'Yavaşça kilo vermek', maintain: 'Kiloyu korumak', gain: 'Kilo almak', balanced: 'Daha dengeli beslenmek', track: 'Yalnızca kayıt tutmak' }[profile.goal] || 'Takip modu';
+    const goal = { lose: 'Yavaşça kilo vermek', maintain: 'Kiloyu korumak', gain: 'Kilo almak', muscle: 'Kas gelişimini desteklemek', balanced: 'Daha dengeli beslenmek', track: 'Yalnızca kayıt tutmak' }[profile.goal] || 'Takip modu';
     const diet = { none: 'Özel tercih yok', vegetarian: 'Vejetaryen', vegan: 'Vegan', pescatarian: 'Pesketaryen' }[profile.diet] || 'Özel tercih yok';
     const target = app.goalForDay(), tracking = state().trackingPreferences || { calories: true, protein: true, weight: true };
     const kcalText = tracking.calories === false ? 'Kalori takibi kapalı' : profile.goal === 'track' ? 'Kişisel hedef gösterilmiyor' : target ? `${Math.round(target.kcalMin ?? target.kcal)}–${Math.round(target.kcalMax ?? target.kcal)} kcal` : 'Kalori hedefi uzmanla belirlenmeli';
