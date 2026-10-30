@@ -44,6 +44,8 @@
       });
     });
   }
+  const pantryHas = (id, pantry) => { const food = foodFor(id); return !!food && pantry.some(term => [food.name, food.planName, ...food.terms].some(name => normalize(name).includes(term) || term.includes(normalize(name)))); };
+  const pantryMatches = (recipe, pantry) => recipe.ingredients.filter(([id]) => pantryHas(id, pantry)).length;
 
   $('.leftcol').insertAdjacentHTML('beforeend', `
     <section class="home-flow" data-app-view="today" aria-labelledby="homeFlowTitle">
@@ -63,11 +65,13 @@
     </section>
     <section class="card recipe-card" data-app-view="recipes">
       <div class="card-head"><div><h3>Kolay tarifler</h3><span class="subtle">Çevrimdışı · yaklaşık değerler</span></div><span class="tag" id="recipeCount">6 tarif</span></div>
-      <div class="recipe-controls"><input class="field" id="recipeSearch" type="search" placeholder="Tarif veya malzeme ara" aria-label="Tarif veya malzeme ara"><select class="field" id="recipeFilter" aria-label="Tarif türü"><option value="all">Tüm tarifler</option><option value="kahvalti">Kahvaltı</option><option value="ana">Ana öğün</option><option value="vegan">Bitkisel</option><option value="quick">15 dakika ve altı</option><option value="saved">Kaydettiklerim</option></select></div>
+      <div class="recipe-controls"><input class="field" id="recipeSearch" type="search" placeholder="Tarif veya malzeme ara" aria-label="Tarif veya malzeme ara"><select class="field" id="recipeFilter" aria-label="Tarif türü"><option value="all">Tüm tarifler</option><option value="kahvalti">Kahvaltı</option><option value="ana">Ana öğün</option><option value="vegan">Bitkisel</option><option value="quick">15 dakika ve altı</option><option value="saved">Kaydettiklerim</option><option value="pantry">Evdekilerle tarifler</option></select></div>
+      <form id="pantryForm" class="pantry-form"><label for="pantryInput">Evdeki malzemeler <span class="subtle">virgülle ayır</span></label><div><input class="field" id="pantryInput" maxlength="300" placeholder="Örn. nohut, domates, yoğurt"><button class="secondary" type="submit">Tarif bul</button></div><small>Yazdıklarından en az birini içeren tarifleri ve tarifte eksik kalan malzemeleri gösterir. Liste bu cihazda saklanır.</small></form>
       <div class="recipe-grid" id="recipeGrid"></div><p class="estimate">Porsiyon ve besin değerleri USDA FoodData Central genel verileriyle hesaplanan tahminlerdir. Yağ, marka ve pişirme farkı değişiklik yaratır. Alerjen eşleşmesi çapraz bulaşmayı veya ürün etiketini doğrulamaz.</p>
     </section>
     <section class="card habit-week-card" data-app-view="progress"><div class="card-head"><div><h3>Yaşam notlarının özeti</h3><span class="subtle">Son 7 gün · yalnızca doldurulan alanlar</span></div></div><div class="habit-week-summary" id="habitWeekSummary"></div><p class="estimate">Bu kayıtlar kilo veya beslenme sonucu hakkında tek başına çıkarım yaptırmaz.</p></section>
   `);
+
   $('.rightcol').insertAdjacentHTML('beforeend', `
     <section class="card shopping-card" data-app-view="shopping"><div class="card-head"><div><h3>Alışveriş listem</h3><span class="subtle" id="shoppingCount">0 ürün</span></div><span>🛒</span></div>
       <form id="shoppingForm" class="shopping-form"><input class="field" id="shoppingName" maxlength="120" placeholder="Ürün ekle" required><input class="field" id="shoppingAmount" maxlength="40" placeholder="Miktar" aria-label="Miktar, isteğe bağlı"><button class="primary" type="submit">Ekle</button></form>
@@ -89,22 +93,36 @@
     <section class="card utility-page" data-app-view="help"><div class="card-head"><div><h3>Yardım ve kullanım</h3><span class="subtle">Kısa yanıtlar</span></div><span aria-hidden="true">❔</span></div><details class="help-item"><summary>Uygulamaya nasıl başlarım?</summary><p>Başlangıç bölümünden yaş, boy, kilo ve hareket düzeyini gir. E-posta veya hesap gerekmez; bilgiler bu tarayıcıda kalır.</p></details><details class="help-item"><summary>Kalori ve protein değerleri kesin mi?</summary><p>Hayır. Hedefler bir denklem ve hareket varsayımına dayanır; öğün değerleri genel gıda verisi ve porsiyon tahminidir. Ürün etiketi ve tartılmış miktar daha doğru sonuç verir.</p></details><details class="help-item"><summary>Telefon değiştirirsem kayıtlarım ne olur?</summary><p>Kayıtları eski cihazda şifreli yedekle, yeni cihazda aynı parolayla geri yükle. Parolayı unutursan şifreli yedeği açmak mümkün değildir.</p></details><details class="help-item"><summary>Hatırlatıcı uygulama kapalıyken çalışır mı?</summary><p>Garanti edilmez. Uygulama sunucu kullanmaz; işletim sistemi tarayıcıyı uykuya alabilir. Bildirimler ancak bu cihazın izinleri uygunsa ve uygulama etkin durumdaysa gösterilebilir.</p></details><details class="help-item"><summary>Alerjiler tariflerde nasıl ele alınır?</summary><p>Yazdığın kaçınılan gıda adları eşleştirilerek tarif filtrelenir. Bu, ürün etiketini veya çapraz bulaşmayı doğrulamaz; alerji varsa malzeme ve etiketleri ayrıca kontrol et.</p></details><div class="utility-actions"><button class="secondary" data-go-screen="privacy" type="button">Gizlilik bilgisi</button><button class="secondary" data-go-screen="welcome" type="button">Başlangıca dön</button></div></section>
   `);
 
+  const helpPanel = document.querySelector('[data-app-view="help"]');
+  if (helpPanel) {
+    const helpSearch = document.createElement('label'); helpSearch.className = 'help-search'; helpSearch.innerHTML = '<span>Yardımda ara</span><input class="field" id="helpSearchInput" type="search" placeholder="Örn. yedek, alerji, hedef" aria-label="Yardım konularında ara">';
+    const helpEmpty = document.createElement('p'); helpEmpty.className = 'empty'; helpEmpty.textContent = 'Bu ifadeyle eşleşen yardım başlığı yok.'; helpEmpty.hidden = true;
+    helpPanel.insertBefore(helpSearch, helpPanel.querySelector('details')); helpPanel.insertBefore(helpEmpty, helpPanel.querySelector('details'));
+    $('#helpSearchInput').addEventListener('input', () => {
+      const query = normalize($('#helpSearchInput').value.trim()), items = [...helpPanel.querySelectorAll('details.help-item')]; let visible = 0;
+      for (const item of items) { const show = !query || normalize(item.textContent).includes(query); item.hidden = !show; if (show) visible++; }
+      helpEmpty.hidden = visible > 0;
+    });
+  }
+
   function renderRecipes() {
-    const grid = $('#recipeGrid'), query = normalize($('#recipeSearch').value.trim()), filter = $('#recipeFilter').value;
+    const grid = $('#recipeGrid'), query = normalize($('#recipeSearch').value.trim()), filter = $('#recipeFilter').value, pantry = (state().pantryItems || []).map(normalize).filter(Boolean);
+    if (document.activeElement !== $('#pantryInput')) $('#pantryInput').value = (state().pantryItems || []).join(', ');
     const visible = recipes.filter(recipe => {
       if (excluded(recipe)) return false;
       if (filter === 'quick' && recipe.minutes > 15) return false;
       if (filter === 'saved' && !(state().savedRecipes || []).includes(recipe.id)) return false;
       if (filter === 'vegan' && recipe.diet !== 'vegan') return false;
-      if (!['all', 'quick', 'saved', 'vegan'].includes(filter) && filter !== recipe.type) return false;
+      if (filter === 'pantry' && (!pantry.length || !recipe.ingredients.some(([id]) => { const food = foodFor(id); return food && pantry.some(term => [food.name, food.planName, ...food.terms].some(name => normalize(name).includes(term) || term.includes(normalize(name)))); }))) return false;
+      if (!['all', 'quick', 'saved', 'vegan', 'pantry'].includes(filter) && filter !== recipe.type) return false;
       const searchText = normalize(recipe.name + ' ' + recipe.ingredients.map(([id]) => foodFor(id)?.name || '').join(' '));
       return !query || searchText.includes(query);
-    });
+    }).sort((a, b) => filter !== 'pantry' ? 0 : pantryMatches(b, pantry) - pantryMatches(a, pantry));
     $('#recipeCount').textContent = `${visible.length} tarif`;
     grid.replaceChildren();
     if (!visible.length) {
       const empty = document.createElement('div'); empty.className = 'empty';
-      empty.textContent = state().profile && (state().profile.avoid || state().profile.diet !== 'none') ? 'Tercih ve kaçındığın gıdalara uygun tarif bulunamadı. Profil ayarlarını gözden geçirebilirsin.' : 'Eşleşen tarif bulunamadı.';
+      empty.textContent = filter === 'pantry' && !pantry.length ? 'Önce evdeki malzemeleri yazıp “Tarif bul” düğmesine bas.' : state().profile && (state().profile.avoid || state().profile.diet !== 'none') ? 'Tercih ve kaçındığın gıdalara uygun tarif bulunamadı. Profil ayarlarını gözden geçirebilirsin.' : 'Eşleşen tarif bulunamadı.';
       grid.append(empty); return;
     }
     for (const recipe of visible) {
@@ -112,7 +130,8 @@
       card.className = 'recipe-tile';
       const ingredients = recipe.ingredients.map(([id, grams]) => `${foodFor(id)?.planName || foodFor(id)?.name || id} ${Math.round(grams * factor)} g`);
       const favorite = (state().savedRecipes || []).includes(recipe.id);
-      card.innerHTML = `<div class="recipe-photo-wrap"><img class="recipe-photo" src="./${recipe.image}" alt="${esc(recipe.name)} için özgün yemek çizimi" loading="lazy" decoding="async" width="800" height="500"><span class="recipe-time">${recipe.minutes} dk</span></div><div class="recipe-body"><div class="recipe-title"><span class="recipe-emoji" aria-hidden="true">${recipe.emoji}</span><div><strong>${esc(recipe.name)}</strong><small>${recipe.type === 'kahvalti' ? 'Kahvaltı' : recipe.type === 'vegan' ? 'Bitkisel' : 'Ana öğün'} · ${recipe.diet === 'vegan' ? 'Vegan' : recipe.diet === 'vegetarian' ? 'Vejetaryen' : recipe.diet === 'pescatarian' ? 'Pesketaryen' : 'Genel'}</small></div><button class="icon-btn recipe-favorite" data-recipe="${recipe.id}" type="button" aria-label="${favorite ? 'Kaydedilenlerden çıkar' : 'Tarifi kaydet'}" aria-pressed="${favorite}">${favorite ? '★' : '☆'}</button></div><div class="recipe-nutrition"><span class="recipe-calories">~${Math.round(total.kcal * factor)} kcal</span> <span>·</span> <span class="recipe-protein">~${(total.protein * factor).toFixed(1)} g protein</span> <span>·</span> ${factor.toLocaleString('tr-TR')} porsiyon</div><label class="portion-control">Porsiyon <select class="field" data-portion="${recipe.id}"><option value="0.5" ${factor === .5 ? 'selected' : ''}>½</option><option value="1" ${factor === 1 ? 'selected' : ''}>1</option><option value="1.5" ${factor === 1.5 ? 'selected' : ''}>1½</option><option value="2" ${factor === 2 ? 'selected' : ''}>2</option><option value="3" ${factor === 3 ? 'selected' : ''}>3</option></select></label><div class="recipe-actions"><button class="secondary tiny recipe-detail" data-recipe="${recipe.id}" type="button">Tarif ayrıntısı</button><button class="primary tiny recipe-add-meal" data-recipe="${recipe.id}" type="button">Öğüne ekle</button></div></div>`;
+      const pantryNote = filter === 'pantry' ? `<p class="estimate pantry-match">Evinde var: ${esc(recipe.ingredients.filter(([id]) => pantryHas(id, pantry)).map(([id]) => foodFor(id)?.planName || foodFor(id)?.name || id).join(', '))}<br>Tarif için gereken diğer malzemeler: ${esc(recipe.ingredients.filter(([id]) => !pantryHas(id, pantry)).map(([id]) => foodFor(id)?.planName || foodFor(id)?.name || id).join(', ') || 'Yazdıkların yeterli görünüyor')}</p>` : '';
+      card.innerHTML = `<div class="recipe-photo-wrap"><img class="recipe-photo" src="./${recipe.image}" alt="${esc(recipe.name)} için özgün yemek çizimi" loading="lazy" decoding="async" width="800" height="500"><span class="recipe-time">${recipe.minutes} dk</span></div><div class="recipe-body"><div class="recipe-title"><span class="recipe-emoji" aria-hidden="true">${recipe.emoji}</span><div><strong>${esc(recipe.name)}</strong><small>${recipe.type === 'kahvalti' ? 'Kahvaltı' : recipe.type === 'vegan' ? 'Bitkisel' : 'Ana öğün'} · ${recipe.diet === 'vegan' ? 'Vegan' : recipe.diet === 'vegetarian' ? 'Vejetaryen' : recipe.diet === 'pescatarian' ? 'Pesketaryen' : 'Genel'}</small></div><button class="icon-btn recipe-favorite" data-recipe="${recipe.id}" type="button" aria-label="${favorite ? 'Kaydedilenlerden çıkar' : 'Tarifi kaydet'}" aria-pressed="${favorite}">${favorite ? '★' : '☆'}</button></div><div class="recipe-nutrition"><span class="recipe-calories">~${Math.round(total.kcal * factor)} kcal</span> <span>·</span> <span class="recipe-protein">~${(total.protein * factor).toFixed(1)} g protein</span> <span>·</span> ${factor.toLocaleString('tr-TR')} porsiyon</div>${pantryNote}<label class="portion-control">Porsiyon <select class="field" data-portion="${recipe.id}"><option value="0.5" ${factor === .5 ? 'selected' : ''}>½</option><option value="1" ${factor === 1 ? 'selected' : ''}>1</option><option value="1.5" ${factor === 1.5 ? 'selected' : ''}>1½</option><option value="2" ${factor === 2 ? 'selected' : ''}>2</option><option value="3" ${factor === 3 ? 'selected' : ''}>3</option></select></label><div class="recipe-actions"><button class="secondary tiny recipe-detail" data-recipe="${recipe.id}" type="button">Tarif ayrıntısı</button><button class="primary tiny recipe-add-meal" data-recipe="${recipe.id}" type="button">Öğüne ekle</button></div></div>`;
       grid.append(card);
     }
     grid.querySelectorAll('[data-portion]').forEach(select => select.addEventListener('change', () => { portions[select.dataset.portion] = Number(select.value); renderRecipes(); }));
@@ -129,14 +148,14 @@
       }
     }));
     grid.querySelectorAll('.recipe-add-shopping').forEach(button => button.addEventListener('click', () => {
-      const recipe = recipes.find(item => item.id === button.dataset.recipe), factor = portions[recipe.id] || 1, data = state(); data.shoppingList = data.shoppingList || [];
+      const recipe = recipes.find(item => item.id === button.dataset.recipe), factor = portions[recipe.id] || 1, data = state(); data.shoppingList = data.shoppingList || []; const previous = JSON.parse(JSON.stringify(data.shoppingList));
       for (const [id, grams] of recipe.ingredients) {
         const food = foodFor(id); if (!food) continue;
         const key = `food-${id}`, existing = data.shoppingList.find(item => item.id === key), amount = Math.round(grams * factor);
         if (existing) { const current = parseFloat(existing.amount); existing.amount = Number.isFinite(current) ? `${Math.round(current + amount)} g` : `${amount} g`; }
         else data.shoppingList.push({ id: key, name: food.planName || food.name, amount: `${amount} g`, checked: false });
       }
-      if (app.save()) { renderShoppingList(); app.setScreen('shopping'); app.toast('Malzemeler alışveriş listene eklendi'); }
+      if (app.save()) { renderShoppingList(); app.setScreen('shopping'); app.toast('Malzemeler alışveriş listene eklendi', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Tarif malzemeleri geri alındı'); } } }); }
     }));
     grid.querySelectorAll('.recipe-detail').forEach(button => button.addEventListener('click', () => showRecipeDetail(button.dataset.recipe)));
   }
@@ -170,7 +189,7 @@
       list.append(row);
     });
     list.querySelectorAll('[data-shopping-check]').forEach(input => input.addEventListener('change', () => { data.shoppingList[Number(input.dataset.shoppingCheck)].checked = input.checked; if (app.save()) renderShoppingList(); }));
-    list.querySelectorAll('[data-shopping-delete]').forEach(button => button.addEventListener('click', () => { data.shoppingList.splice(Number(button.dataset.shoppingDelete), 1); if (app.save()) renderShoppingList(); }));
+    list.querySelectorAll('[data-shopping-delete]').forEach(button => button.addEventListener('click', () => { const previous = JSON.parse(JSON.stringify(data.shoppingList)); data.shoppingList.splice(Number(button.dataset.shoppingDelete), 1); if (app.save()) { renderShoppingList(); app.toast('Ürün listeden kaldırıldı', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Ürün geri eklendi'); } } }); } }));
     list.querySelectorAll('[data-shopping-name],[data-shopping-amount]').forEach(input => input.addEventListener('change', () => {
       const index = Number(input.dataset.shoppingName ?? input.dataset.shoppingAmount), item = data.shoppingList[index]; if (!item) return;
       if (input.hasAttribute('data-shopping-name')) { const value = input.value.trim(); if (!value) { renderShoppingList(); app.toast('Ürün adı boş bırakılamaz'); return; } item.name = value; }
@@ -178,6 +197,28 @@
       if (app.save()) renderShoppingList();
     }));
   }
+
+  function renderPlanFreshness() {
+    const result = $('#planResult'), button = $('#addPlanShopping'), data = state(), plan = data.lastPlan;
+    result.querySelector('.plan-stale-notice')?.remove();
+    const currentSignature = app.profileFingerprint(data.profile), stale = !!plan && (!data.planSignature || data.planSignature !== currentSignature);
+    button.hidden = !plan || stale || !Array.isArray(data.planShoppingItems) || !data.planShoppingItems.length;
+    if (stale) {
+      const notice = document.createElement('div'); notice.className = 'notice plan-stale-notice'; notice.setAttribute('role', 'status');
+      notice.textContent = 'Profilin, hedefin veya beslenme tercihlerin son plandan sonra değişti. Bu plan eski bilgileri yansıtabilir; alışverişe aktarmadan önce yeniden oluştur.';
+      const regenerate = document.createElement('button'); regenerate.type = 'button'; regenerate.className = 'secondary tiny'; regenerate.textContent = 'Güncel plan oluştur'; regenerate.addEventListener('click', () => $('#makePlan').click());
+      notice.append(document.createElement('br'), regenerate); result.prepend(notice);
+    }
+  }
+
+  $('#addPlanShopping').addEventListener('click', () => {
+    const data = state(); if (!data.lastPlan || data.planSignature !== app.profileFingerprint(data.profile)) { renderPlanFreshness(); app.toast('Önce güncel tercihlerinle plan oluştur'); return; }
+    const previous = JSON.parse(JSON.stringify(data.shoppingList || [])), generated = (data.planShoppingItems || []).map(item => ({ id: `plan-generated-${item.id}`, name: item.name, amount: `${item.grams} g`, checked: false }));
+    data.shoppingList = [...previous.filter(item => !String(item.id).startsWith('plan-generated-')), ...generated];
+    if (!app.save()) return;
+    renderShoppingList(); app.setScreen('shopping');
+    app.toast('Plan malzemeleri alışveriş listene eklendi', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Alışveriş listesi önceki hâline döndü'); } } });
+  });
 
   function renderHabits() {
     const data = state(), key = app.getSelectedDate(), record = data.habits?.[key] || {};
@@ -194,17 +235,18 @@
   function renderProfileSummary() {
     const box = $('#profileSummary'), profile = state().profile;
     if (!profile) { box.innerHTML = '<p class="subtle">Henüz profil oluşturmadın. İstersen temel bilgilerini girerek yaklaşık günlük hedef alabilirsin.</p>'; return; }
-    const goal = { lose: 'Kilo vermek', maintain: 'Kiloyu korumak', gain: 'Kilo almak' }[profile.goal] || 'Takip modu';
+    const goal = { lose: 'Yavaşça kilo vermek', maintain: 'Kiloyu korumak', gain: 'Kilo almak', balanced: 'Daha dengeli beslenmek', track: 'Yalnızca kayıt tutmak' }[profile.goal] || 'Takip modu';
     const diet = { none: 'Özel tercih yok', vegetarian: 'Vejetaryen', vegan: 'Vegan', pescatarian: 'Pesketaryen' }[profile.diet] || 'Özel tercih yok';
     const target = app.goalForDay(), tracking = state().trackingPreferences || { calories: true, protein: true, weight: true };
-    const kcalText = tracking.calories === false ? 'Kalori takibi kapalı' : target ? `${Math.round(target.kcalMin ?? target.kcal)}–${Math.round(target.kcalMax ?? target.kcal)} kcal` : 'Kalori hedefi uzmanla belirlenmeli';
+    const kcalText = tracking.calories === false ? 'Kalori takibi kapalı' : profile.goal === 'track' ? 'Kişisel hedef gösterilmiyor' : target ? `${Math.round(target.kcalMin ?? target.kcal)}–${Math.round(target.kcalMax ?? target.kcal)} kcal` : 'Kalori hedefi uzmanla belirlenmeli';
     const proteinLow = target?.proteinMin ?? target?.protein, proteinHigh = target?.proteinMax ?? target?.protein;
-    const proteinText = tracking.protein === false ? 'Protein takibi kapalı' : proteinLow != null ? `${Math.round(proteinLow)}${proteinLow === proteinHigh ? '' : `–${Math.round(proteinHigh)}`} g protein` : 'Protein hedefi uzmanla belirlenmeli';
+    const proteinText = tracking.protein === false ? 'Protein takibi kapalı' : profile.goal === 'track' ? 'Kişisel hedef gösterilmiyor' : proteinLow != null ? `${Math.round(proteinLow)}${proteinLow === proteinHigh ? '' : `–${Math.round(proteinHigh)}`} g protein` : 'Protein hedefi uzmanla belirlenmeli';
     const targetParts = [];
     if (tracking.calories !== false) targetParts.push(`<span class="profile-calorie-value">${esc(kcalText)}</span>`);
     if (tracking.protein !== false) targetParts.push(`<span class="profile-protein-value">${esc(proteinText)}</span>`);
     const targetSummary = targetParts.length ? targetParts.join(' · ') : 'Günlük hedef özetleri Ayarlar bölümünde kapalı.';
-    box.innerHTML = `<div class="profile-facts"><span>${esc(profile.age)} yaş</span><span>${esc(profile.height)} cm</span><span class="profile-weight-fact">${esc(profile.weight)} kg</span><span>${esc(goal)}</span></div><p class="subtle">Beslenme: ${esc(diet)}${profile.avoid ? ` · Kaçındıkların: ${esc(profile.avoid)}` : ''}</p><p class="subtle">Günlük hedef: ${targetSummary}</p>`;
+    const weightGoal = profile.targetWeight && ['lose', 'gain'].includes(profile.goal) ? `Hedef kilo: ${Number(profile.targetWeight).toLocaleString('tr-TR')} kg${profile.goalWeeks ? ` · tercih edilen süre ${profile.goalWeeks} hafta` : ''}${profile.milestoneWeight ? ` · ara hedef ${Number(profile.milestoneWeight).toLocaleString('tr-TR')} kg` : ''}` : '';
+    box.innerHTML = `<div class="profile-facts"><span>${esc(profile.age)} yaş</span><span>${esc(profile.height)} cm</span><span class="profile-weight-fact">${esc(profile.weight)} kg</span><span>${esc(goal)}</span></div><p class="subtle">Beslenme: ${esc(diet)}${profile.avoid ? ` · Kaçındıkların: ${esc(profile.avoid)}` : ''}</p>${weightGoal ? `<p class="subtle">${esc(weightGoal)} · tahmini kontrol; kalori formülünü değiştirmez.</p>` : ''}<p class="subtle">Günlük hedef: ${targetSummary}</p>`;
   }
 
   window.addEventListener('iyibeslen:tracking-change', () => { renderProfileSummary(); renderHomeFlow(); });
@@ -309,14 +351,22 @@
 
   $('#recipeSearch').addEventListener('input', renderRecipes);
   $('#recipeFilter').addEventListener('change', renderRecipes);
+  $('#pantryForm').addEventListener('submit', event => {
+    event.preventDefault(); const data = state(), previous = [...(data.pantryItems || [])];
+    const items = [...new Set($('#pantryInput').value.split(/[,;\n]/).map(value => value.trim().slice(0, 40)).filter(Boolean))].slice(0, 20);
+    if (!items.length) { data.pantryItems = []; if (app.save()) { renderRecipes(); app.toast('Evdeki malzeme listesi temizlendi', { label: 'Geri al', run: () => { state().pantryItems = previous; if (app.save()) renderRecipes(); } }); } return; }
+    data.pantryItems = items;
+    if (app.save()) { $('#recipeFilter').value = 'pantry'; renderRecipes(); app.toast(`${items.length} malzeme kaydedildi · tarifler güncellendi`, { label: 'Geri al', run: () => { state().pantryItems = previous; if (app.save()) { renderRecipes(); app.toast('Malzeme listen geri alındı'); } } }); }
+  });
   $('#shoppingForm').addEventListener('submit', event => {
     event.preventDefault(); const data = state(); data.shoppingList = data.shoppingList || [];
     if (data.shoppingList.length >= 500) return;
+    const previous = JSON.parse(JSON.stringify(data.shoppingList));
     data.shoppingList.push({ id: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, name: $('#shoppingName').value.trim(), amount: $('#shoppingAmount').value.trim(), checked: false });
-    if (app.save()) { $('#shoppingName').value = ''; $('#shoppingAmount').value = ''; renderShoppingList(); }
+    if (app.save()) { $('#shoppingName').value = ''; $('#shoppingAmount').value = ''; renderShoppingList(); app.toast('Ürün eklendi', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Ürün eklemesi geri alındı'); } } }); }
   });
-  $('#clearCheckedShopping').addEventListener('click', () => { const data = state(); data.shoppingList = (data.shoppingList || []).filter(item => !item.checked); if (app.save()) renderShoppingList(); });
-  $('#clearShopping').addEventListener('click', () => { const data = state(); if (!data.shoppingList?.length) return; if (confirm('Alışveriş listesindeki bütün ürünleri silmek istiyor musun?')) { data.shoppingList = []; if (app.save()) renderShoppingList(); } });
+  $('#clearCheckedShopping').addEventListener('click', () => { const data = state(), previous = JSON.parse(JSON.stringify(data.shoppingList || [])); data.shoppingList = (data.shoppingList || []).filter(item => !item.checked); if (app.save()) { renderShoppingList(); app.toast('Tamamlanan ürünler kaldırıldı', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) renderShoppingList(); } }); } });
+  $('#clearShopping').addEventListener('click', () => { const data = state(); if (!data.shoppingList?.length) return; if (confirm('Alışveriş listesindeki bütün ürünleri silmek istiyor musun?')) { const previous = JSON.parse(JSON.stringify(data.shoppingList)); data.shoppingList = []; if (app.save()) { renderShoppingList(); app.toast('Alışveriş listesi temizlendi', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Alışveriş listesi geri yüklendi'); } } }); } } });
   $('#habitForm').addEventListener('submit', event => {
     event.preventDefault();
     const sleep = $('#habitSleep').value === '' ? null : Number($('#habitSleep').value), activity = $('#habitActivity').value === '' ? null : Number($('#habitActivity').value), hunger = $('#habitHunger').value === '' ? null : Number($('#habitHunger').value), mood = $('#habitMood').value;
@@ -329,7 +379,7 @@
   $('#profileEditButton').addEventListener('click', app.openProfile);
   window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); });
   window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); });
-  window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); });
+  window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderPlanFreshness(); });
   $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); }, 0));
 
   app.registerBackupExtension((value, backup) => {
@@ -361,10 +411,24 @@
         shoppingList.push({ id: item.id, name: item.name.trim(), amount: item.amount || '', checked: item.checked });
       }
     }
-    backup.savedRecipes = savedRecipes; backup.habits = habits; backup.shoppingList = shoppingList;
+    const planShoppingItems = [];
+    if (value.planShoppingItems != null) {
+      if (!Array.isArray(value.planShoppingItems) || value.planShoppingItems.length > 200) return null;
+      for (const item of value.planShoppingItems) {
+        if (!isRecord(item) || typeof item.id !== 'string' || !foodDB.some(food => food.id === item.id) || typeof item.name !== 'string' || !item.name.trim() || item.name.length > 120 || !Number.isInteger(item.grams) || item.grams < 1 || item.grams > 100000) return null;
+        planShoppingItems.push({ id: item.id, name: item.name.trim(), grams: item.grams });
+      }
+    }
+    const planSignature = typeof value.planSignature === 'string' && value.planSignature.length <= 32 ? value.planSignature : '';
+    const pantryItems = [];
+    if (value.pantryItems != null) {
+      if (!Array.isArray(value.pantryItems) || value.pantryItems.length > 20 || value.pantryItems.some(item => typeof item !== 'string' || !item.trim() || item.length > 40)) return null;
+      pantryItems.push(...[...new Set(value.pantryItems.map(item => item.trim()))]);
+    }
+    backup.savedRecipes = savedRecipes; backup.habits = habits; backup.shoppingList = shoppingList; backup.planShoppingItems = planShoppingItems; backup.planSignature = planSignature; backup.pantryItems = pantryItems;
     return backup;
   });
-  app.registerSavedDataCheck(data => !!data && ((data.savedRecipes || []).length > 0 || Object.keys(data.habits || {}).length > 0 || (data.shoppingList || []).length > 0));
+  app.registerSavedDataCheck(data => !!data && ((data.savedRecipes || []).length > 0 || Object.keys(data.habits || {}).length > 0 || (data.shoppingList || []).length > 0 || (data.planShoppingItems || []).length > 0 || (data.pantryItems || []).length > 0));
   const trackingKeys = [['trackCalories', 'calories'], ['trackProtein', 'protein'], ['trackWeight', 'weight']];
   const currentTracking = state().trackingPreferences || { calories: true, protein: true, weight: true };
   for (const [id, key] of trackingKeys) $(`#${id}`).checked = currentTracking[key] !== false;
@@ -386,5 +450,5 @@
     app.toast('Takip görünümü güncellendi. Kayıtların cihazında duruyor.');
   });
   updateTrackingStatus();
-  renderRecipes(); renderShoppingList(); renderHabits(); renderProfileSummary(); renderHomeFlow();
+  renderRecipes(); renderShoppingList(); renderHabits(); renderProfileSummary(); renderHomeFlow(); renderPlanFreshness();
 })();
