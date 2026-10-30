@@ -70,6 +70,7 @@
       <div class="recipe-grid" id="recipeGrid"></div><p class="estimate">Porsiyon ve besin değerleri USDA FoodData Central genel verileriyle hesaplanan tahminlerdir. Yağ, marka ve pişirme farkı değişiklik yaratır. Alerjen eşleşmesi çapraz bulaşmayı veya ürün etiketini doğrulamaz.</p>
     </section>
     <section class="card habit-week-card" data-app-view="progress"><div class="card-head"><div><h3>Yaşam notlarının özeti</h3><span class="subtle">Son 7 gün · yalnızca doldurulan alanlar</span></div></div><div class="habit-week-summary" id="habitWeekSummary"></div><p class="estimate">Bu kayıtlar kilo veya beslenme sonucu hakkında tek başına çıkarım yaptırmaz.</p></section>
+    <section class="card report-card" data-app-view="progress"><div class="card-head"><div><h3>Tarih aralığı raporu</h3><span class="subtle">Sadece gerçekten kaydedilen veriler</span></div><span aria-hidden="true">📊</span></div><div class="report-controls"><label>Başlangıç<input class="field" id="reportFrom" type="date"></label><label>Bitiş<input class="field" id="reportTo" type="date"></label><button class="secondary" id="reportRefresh" type="button">Raporu göster</button><button class="primary" id="reportExport" type="button">CSV indir</button></div><div id="reportSummary" class="report-summary" role="status" aria-live="polite"></div><p class="estimate">Öğün toplamı yalnızca kaydedilen öğünleri kapsar; eksik öğünler tamamlanmış gün gibi yorumlanmaz. CSV dosyası cihazında hazırlanır, uygulama sunucusuna gönderilmez. Dosya kişisel veriler içerebilir.</p></section>
   `);
 
   $('.rightcol').insertAdjacentHTML('beforeend', `
@@ -232,6 +233,47 @@
     $('#habitWeekSummary').innerHTML = `<div><span>Uyku ortalaması</span><strong>${sleep.length ? mean(sleep) + ' saat' : '—'}</strong><small>${sleep.length} kayıtlı gün</small></div><div><span>Hareket</span><strong>${activity.length ? mean(activity) + ' dk' : '—'}</strong><small>${activity.length} kayıtlı gün ortalaması</small></div><div><span>Ruh hâli notu</span><strong>${moods.length ? `${moods.filter(value => value === 'good').length} iyi · ${moods.length} kayıt` : '—'}</strong><small>Değerlendirme veya tanı değildir</small></div><div><span>Açlık hissi ortalaması</span><strong>${hunger.length ? mean(hunger) + ' / 5' : '—'}</strong><small>${hunger.length} kayıtlı gün</small></div>`;
   }
 
+  const reportDate = date => date.toLocaleDateString('sv-SE');
+  function reportRange(notify = true) {
+    const from = $('#reportFrom').value, to = $('#reportTo').value, today = new Date().toLocaleDateString('sv-SE');
+    if (!from || !to || from > to || to > today) { if (notify) app.toast('Tarih aralığını kontrol et. Gelecek gün seçilemez.'); return null; }
+    const days = Math.round((new Date(to + 'T12:00:00') - new Date(from + 'T12:00:00')) / 86400000) + 1;
+    if (days > 3660) { if (notify) app.toast('Tek rapor en fazla 10 yılı kapsayabilir.'); return null; }
+    return { from, to, days };
+  }
+  function reportRows(range) {
+    const data = state(), rows = [];
+    for (let offset = 0; offset < range.days; offset++) {
+      const date = new Date(range.from + 'T12:00:00'); date.setDate(date.getDate() + offset); const key = reportDate(date);
+      const meals = data.days?.[key] || [], target = data.dayTargets?.[key] || {}, habit = data.habits?.[key] || {};
+      const calories = meals.reduce((sum, meal) => sum + (Number.isFinite(meal.kcal) ? meal.kcal : 0), 0), protein = meals.reduce((sum, meal) => sum + (Number.isFinite(meal.protein) ? meal.protein : 0), 0);
+      if (meals.length) rows.push({ date:key, type:'Öğün toplamı', name:`${meals.length} kayıtlı öğün`, kcal:Math.round(calories), protein:Math.round(protein * 10) / 10, weight:'', details:meals.some(meal => meal.unknown || meal.requiresConfirm) ? 'Bazı öğünlerde doğrulama veya eksik bilgi var; değerler tahmini' : 'Yalnızca kaydedilen öğünler', targetKcal:target.kcal ?? '', targetProtein:target.protein ?? '' });
+      for (const meal of meals) rows.push({ date:key, type:'Öğün', name:meal.name, kcal:meal.kcal, protein:meal.protein, weight:'', details:[meal.assumption, meal.source].filter(Boolean).join(' · ') || (meal.approx ? 'Tahmini değer' : ''), targetKcal:'', targetProtein:'' });
+      if (Object.prototype.hasOwnProperty.call(data.weights || {}, key)) rows.push({ date:key, type:'Kilo', name:'Kilo kaydı', kcal:'', protein:'', weight:data.weights[key], details:'kg', targetKcal:'', targetProtein:'' });
+      if (Object.keys(habit).length) rows.push({ date:key, type:'Yaşam notu', name:'Günlük not', kcal:'', protein:'', weight:'', details:[habit.sleep != null ? `Uyku ${habit.sleep} saat` : '', habit.activity != null ? `Hareket ${habit.activity} dk` : '', habit.hunger != null ? `Açlık ${habit.hunger}/5` : '', habit.mood ? `Ruh hâli ${({good:'iyi',neutral:'nötr',low:'zor'})[habit.mood] || 'kaydedildi'}` : ''].filter(Boolean).join(' · '), targetKcal:'', targetProtein:'' });
+    }
+    return rows;
+  }
+  function renderReport() {
+    const range = reportRange(false); if (!range) { $('#reportSummary').textContent = 'Tarih aralığını kontrol et. Bitiş, başlangıçtan önce veya bugünden sonra olamaz.'; return; }
+    const rows = reportRows(range), dayRows = rows.filter(row => row.type === 'Öğün toplamı'), sum = key => dayRows.reduce((value, row) => value + Number(row[key] || 0), 0), complete = dayRows.filter(row => !row.details.includes('eksik bilgi')).length;
+    const avgKcal = dayRows.length ? Math.round(sum('kcal') / dayRows.length) : null, avgProtein = dayRows.length ? Math.round(sum('protein') / dayRows.length * 10) / 10 : null;
+    $('#reportSummary').innerHTML = rows.length ? `<div><b>${rows.length.toLocaleString('tr-TR')}</b><span>kayıt</span></div><div><b>${dayRows.length}</b><span>öğünlü gün</span></div><div><b>${avgKcal == null ? '—' : `${avgKcal} kcal`}</b><span>öğün kaydedilen günlerin ortalaması</span></div><div><b>${avgProtein == null ? '—' : `${avgProtein} g`}</b><span>öğün kaydedilen günlerin ortalaması</span></div><small>${complete} öğün toplamı eksiksiz işaretli gün · kayıt olmayan günler ortalamaya katılmadı.</small>` : '<div class="empty">Bu tarih aralığında kayıt bulunamadı. Aralığı değiştirip tekrar deneyebilirsin.</div>';
+  }
+  function exportReport() {
+    const range = reportRange(); if (!range) return;
+    const rows = reportRows(range); if (!rows.length) { app.toast('Dışa aktarılacak kayıt bulunamadı.'); return; }
+    const columns = [['Tarih','date'],['Kayıt türü','type'],['Açıklama','name'],['Kalori (kcal)','kcal'],['Protein (g)','protein'],['Kilo (kg)','weight'],['Not ve varsayımlar','details'],['O günkü kalori hedefi (kcal)','targetKcal'],['O günkü protein hedefi (g)','targetProtein']];
+    const cell = value => { let text = String(value ?? ''); if (/^[\s]*[=+@-]/.test(text)) text = `'${text}`; return `"${text.replaceAll('"','""')}"`; };
+    const csv = '\uFEFF' + [columns.map(([label]) => cell(label)).join(','), ...rows.map(row => columns.map(([, key]) => cell(row[key])).join(','))].join('\r\n');
+    const url = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' })), link = document.createElement('a'); link.href = url; link.download = `iyibeslen-rapor-${range.from}-${range.to}.csv`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); app.toast('CSV raporu bu cihaza indirildi.');
+  }
+  const reportTo = $('#reportTo'), reportFrom = $('#reportFrom'), reportToday = new Date(), reportStart = new Date(reportToday); reportStart.setDate(reportStart.getDate() - 29);
+  reportFrom.value = reportDate(reportStart); reportTo.value = reportDate(reportToday); reportTo.max = reportDate(reportToday); reportFrom.max = reportDate(reportToday);
+  $('#reportRefresh').addEventListener('click', renderReport); $('#reportExport').addEventListener('click', exportReport);
+  for (const input of [reportFrom, reportTo]) input.addEventListener('change', renderReport);
+  renderReport();
+
   function renderProfileSummary() {
     const box = $('#profileSummary'), profile = state().profile;
     if (!profile) { box.innerHTML = '<p class="subtle">Henüz profil oluşturmadın. İstersen temel bilgilerini girerek yaklaşık günlük hedef alabilirsin.</p>'; return; }
@@ -377,9 +419,9 @@
     if (app.save()) { renderHabits(); app.toast('Günlük yaşam notları kaydedildi'); }
   });
   $('#profileEditButton').addEventListener('click', app.openProfile);
-  window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); });
-  window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); });
-  window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderPlanFreshness(); });
+  window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); renderReport(); });
+  window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderReport(); });
+  window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderPlanFreshness(); renderReport(); });
   $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); }, 0));
 
   app.registerBackupExtension((value, backup) => {
