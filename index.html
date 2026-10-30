@@ -23,7 +23,7 @@
     @media(max-width:600px){.app{display:block;padding-bottom:66px}aside{display:none}main{padding:22px 15px 30px}.topbar{margin-bottom:22px}.topbar h1{font-size:24px}.date-pill{font-size:11px;padding:9px}.welcome{align-items:flex-start}.welcome h2{font-size:17px}.grid{gap:13px}.leftcol,.rightcol{gap:13px}.rightcol{grid-template-columns:1fr}.plan-card{grid-row:auto}.card{padding:17px}.summary{gap:8px}.target{padding:14px}.target-val{font-size:21px}.meal{padding:10px 8px;gap:8px}.meal-actions{flex-direction:column}.addrow{flex-wrap:wrap}.addrow input{flex-basis:100%}.primary.add{width:100%}.mobile-nav{display:flex;position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);justify-content:space-around;padding:8px 4px calc(8px + env(safe-area-inset-bottom));z-index:3}.mobile-nav button{border:0;background:none;color:#79837a;display:grid;place-items:center;gap:3px;font-size:9px}.mobile-nav button.active{color:var(--green-dark)}.mobile-nav svg{width:19px;height:19px}.form-grid{grid-template-columns:1fr}.form-group.full{grid-column:auto}.modal{padding:20px}}
     .data-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.danger{color:#9e5148;border-color:#efddda}.check-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.check-item{display:flex!important;align-items:center;gap:7px;font-weight:500!important;margin:0!important}.check-item input{width:auto!important}.topbar-actions{display:flex;align-items:center;gap:8px}.install-btn[hidden]{display:none}
   </style>
-  <link rel="stylesheet" href="./app.css?v=20261030.2" />
+  <link rel="stylesheet" href="./app.css?v=20261030.3" />
 </head>
 <body>
 <div class="update-banner" id="updateBanner" role="status" aria-live="polite" hidden>
@@ -508,7 +508,7 @@
 })();
 </script>
 <script src="./app-enhancements.js?v=20261023.5"></script>
-<script src="./app-features.js?v=20261030.3"></script>
+<script src="./app-features.js?v=20261030.4"></script>
 <script>
   let deferredInstallPrompt=null;const installButton=document.querySelector('#installApp');
   window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;installButton.hidden=false});
