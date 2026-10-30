@@ -183,6 +183,9 @@
     const data = state(); data.shoppingList = data.shoppingList || [];
     const list = $('#shoppingList'); list.replaceChildren();
     $('#shoppingCount').textContent = `${data.shoppingList.filter(item => !item.checked).length} ürün kaldı`;
+    $('#clearCheckedShopping').disabled = !data.shoppingList.some(item => item.checked);
+    $('#clearShopping').disabled = data.shoppingList.length === 0;
+    $('#shoppingForm button[type="submit"]').disabled = data.shoppingList.length >= 500;
     if (!data.shoppingList.length) { const empty = document.createElement('div'); empty.className = 'empty'; empty.textContent = 'Listen boş. Tariflerden malzeme ekleyebilir veya ürün yazabilirsin.'; list.append(empty); }
     data.shoppingList.forEach((item, index) => {
       const row = document.createElement('div'); row.className = 'shopping-row' + (item.checked ? ' is-checked' : '');
@@ -266,7 +269,7 @@
     const columns = [['Tarih','date'],['Kayıt türü','type'],['Açıklama','name'],['Kalori (kcal)','kcal'],['Protein (g)','protein'],['Kilo (kg)','weight'],['Not ve varsayımlar','details'],['O günkü kalori hedefi (kcal)','targetKcal'],['O günkü protein hedefi (g)','targetProtein']];
     const cell = value => { let text = String(value ?? ''); if (/^[\s]*[=+@-]/.test(text)) text = `'${text}`; return `"${text.replaceAll('"','""')}"`; };
     const csv = '\uFEFF' + [columns.map(([label]) => cell(label)).join(','), ...rows.map(row => columns.map(([, key]) => cell(row[key])).join(','))].join('\r\n');
-    const url = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' })), link = document.createElement('a'); link.href = url; link.download = `iyibeslen-rapor-${range.from}-${range.to}.csv`; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); app.toast('CSV raporu bu cihaza indirildi.');
+    const url = URL.createObjectURL(new Blob([csv], { type:'text/csv;charset=utf-8' })), link = document.createElement('a'); link.href = url; link.download = `iyibeslen-rapor-${range.from}-${range.to}.csv`; document.body.append(link); link.click(); link.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000); app.toast('CSV raporu bu cihaza indirildi.');
   }
   const reportTo = $('#reportTo'), reportFrom = $('#reportFrom'), reportToday = new Date(), reportStart = new Date(reportToday); reportStart.setDate(reportStart.getDate() - 29);
   reportFrom.value = reportDate(reportStart); reportTo.value = reportDate(reportToday); reportTo.max = reportDate(reportToday); reportFrom.max = reportDate(reportToday);
@@ -354,7 +357,7 @@
   $('#welcomeSetup').addEventListener('click', app.openProfile);
   $('#settingsTheme').addEventListener('click', () => $('#themeToggle').click());
   $('#settingsProfile').addEventListener('click', app.openProfile);
-  $('#settingsBackup').addEventListener('click', () => app.setScreen('profile'));
+  $('#settingsBackup').addEventListener('click', () => { app.setScreen('profile'); setTimeout(() => $('#backup')?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80); });
 
   const REMINDER_KEY = 'iyibeslen-reminder-v1';
   const loadReminder = () => { try { const value = JSON.parse(localStorage.getItem(REMINDER_KEY) || '{}'); return value && typeof value === 'object' ? value : {}; } catch { return {}; } };
@@ -402,9 +405,11 @@
   });
   $('#shoppingForm').addEventListener('submit', event => {
     event.preventDefault(); const data = state(); data.shoppingList = data.shoppingList || [];
-    if (data.shoppingList.length >= 500) return;
+    if (data.shoppingList.length >= 500) { app.toast('Alışveriş listesi en fazla 500 ürün içerebilir.'); return; }
+    const name = $('#shoppingName').value.trim();
+    if (!name) { $('#shoppingName').focus(); app.toast('Listeye eklemek için ürün adını yaz.'); return; }
     const previous = JSON.parse(JSON.stringify(data.shoppingList));
-    data.shoppingList.push({ id: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, name: $('#shoppingName').value.trim(), amount: $('#shoppingAmount').value.trim(), checked: false });
+    data.shoppingList.push({ id: `manual-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`, name, amount: $('#shoppingAmount').value.trim(), checked: false });
     if (app.save()) { $('#shoppingName').value = ''; $('#shoppingAmount').value = ''; renderShoppingList(); app.toast('Ürün eklendi', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Ürün eklemesi geri alındı'); } } }); }
   });
   $('#clearCheckedShopping').addEventListener('click', () => { const data = state(), previous = JSON.parse(JSON.stringify(data.shoppingList || [])); data.shoppingList = (data.shoppingList || []).filter(item => !item.checked); if (app.save()) { renderShoppingList(); app.toast('Tamamlanan ürünler kaldırıldı', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) renderShoppingList(); } }); } });
@@ -412,7 +417,7 @@
   $('#habitForm').addEventListener('submit', event => {
     event.preventDefault();
     const sleep = $('#habitSleep').value === '' ? null : Number($('#habitSleep').value), activity = $('#habitActivity').value === '' ? null : Number($('#habitActivity').value), hunger = $('#habitHunger').value === '' ? null : Number($('#habitHunger').value), mood = $('#habitMood').value;
-    if ((sleep !== null && (!Number.isFinite(sleep) || sleep < 0 || sleep > 24)) || (activity !== null && (!Number.isInteger(activity) || activity < 0 || activity > 600)) || (hunger !== null && (!Number.isInteger(hunger) || hunger < 1 || hunger > 5))) return;
+    if ((sleep !== null && (!Number.isFinite(sleep) || sleep < 0 || sleep > 24)) || (activity !== null && (!Number.isInteger(activity) || activity < 0 || activity > 600)) || (hunger !== null && (!Number.isInteger(hunger) || hunger < 1 || hunger > 5))) { app.toast('Uyku, hareket veya açlık değerini belirtilen aralıkta kontrol et.'); return; }
     const record = {}; if (sleep !== null) record.sleep = sleep; if (activity !== null) record.activity = activity; if (hunger !== null) record.hunger = hunger; if (mood) record.mood = mood;
     const data = state(), key = app.getSelectedDate(); data.habits = data.habits || {};
     if (Object.keys(record).length) data.habits[key] = record; else delete data.habits[key];
@@ -422,7 +427,7 @@
   window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); renderReport(); });
   window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderReport(); });
   window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderPlanFreshness(); renderReport(); });
-  $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); }, 0));
+  $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderReport(); }, 0));
 
   app.registerBackupExtension((value, backup) => {
     const isRecord = item => item && typeof item === 'object' && !Array.isArray(item);
