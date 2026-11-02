@@ -6,6 +6,12 @@ Uygulama GitHub Pages üzerinden ücretsiz yayınlanıyor:
 
 Kaynak kodu, kendi GitHub hesabındaki [`First-diet-app` deposunda](https://github.com/Yukselcobannn/First-diet-app) herkese açıktır. Yayın `main` dalının kök klasöründen yapılır; bu dala gönderilen yeni sürümler Pages tarafından yayımlanır. Özel alan adı veya ücretli sunucu gerekmez.
 
+## Sıfır maliyet kuralı
+
+Uygulama; ücretli API, abonelik, ödeme altyapısı, reklam/analiz kodu, bulut veritabanı, ücretli yapay zekâ, özel alan adı veya ücretli uygulama mağazası üyeliği kullanmaz. Profil, öğün, hedef, plan ve rapor kayıtları cihazdaki tarayıcı depolamasında kalır; hesap açma ve cihazlar arası bulut eşitleme yoktur. Ücret doğurabilecek bir bağımlılık, deneme hesabı veya kredi kartı gerektiren bir hizmet açık kullanıcı onayı olmadan eklenmez.
+
+Kullanılan tek yayın hizmeti GitHub Pages'tir. GitHub Free'de public depolar için ücretsizdir; bu nedenle kaynak kodu public kalır. GitHub Pages'in güncel sınırları ve bu projede bilinçli olarak kullanılmayan hizmetler için [Sıfır maliyet taahhüdünü](./SIFIR_MALIYET.md) oku. GitHub şartları değişirse ücretli çözüme geçilmez; uygulama indirildiği cihazda çevrimdışı çalışmaya devam eder ve yalnızca ücretsiz yayın seçeneği değerlendirilir.
+
 ## Telefonda uygulama gibi kullanma
 
 - **Android:** Bağlantıyı Chrome'da aç. Uygulama yükleme düğmesi görünürse ona dokun; görünmezse `⋮ → Ana ekrana ekle` veya `Uygulamayı yükle` seç.
