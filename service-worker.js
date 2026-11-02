@@ -1,13 +1,13 @@
-const CACHE_NAME = 'iyi-beslen-shell-v40';
+const CACHE_NAME = 'iyi-beslen-shell-v45';
 const APP_FILES = [
   './',
   './index.html',
   './nutrition-data.js?v=20261021.8',
   './gizlilik.html',
   './manifest.webmanifest',
-  './app.css?v=20261030.3',
+  './app.css?v=20261103.1',
   './app-enhancements.js?v=20261023.5',
-  './app-features.js?v=20261030.4',
+  './app-features.js?v=20261103.1',
   './assets/recipes/yogurt-oats.svg',
   './assets/recipes/egg-toast.svg',
   './assets/recipes/chickpea-bulgur.svg',
