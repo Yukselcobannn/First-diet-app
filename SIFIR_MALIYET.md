@@ -10,7 +10,7 @@ Bu proje, geliştiren kişi ve kullanıcılar için temel kullanımda ücret ist
 | Profil, hedefler, öğünler ve raporlar | Tarayıcının `localStorage` alanında, kullanıcının cihazında | Sunucu, hesap veya bulut veritabanı yoktur. Tarayıcı verisi silinirse kayıtlar kaybolabilir. |
 | Çevrimdışı kullanım | Service Worker ile uygulama dosyaları ve yerel besin listesi önbelleğe alınır | İlk yükleme ve yeni sürümü alma için internet gerekir. Temel takip sonrasında bağlantısız çalışır. |
 | Kalori, protein, plan ve rapor | Uygulama içindeki JavaScript hesapları ve yerel besin tablosu | API çağrısı veya kullanım başına ücret yoktur. |
-| Yerel beslenme asistanı | Uygulamadaki kayıtları ve tarif listesini cihazda işleyen kural tabanlı yardımcı | Harici model, yapay zekâ API'si veya sohbet sunucusu yoktur. Sohbet geçmişi saklanmaz. |
+| Yerel beslenme asistanı | Kullanıcı açıkça etkinleştirirse uygulamadaki kayıtları ve tarif listesini cihazda işleyen kural tabanlı yardımcı | Varsayılan olarak kapalıdır. Harici model, yapay zekâ API'si veya sohbet sunucusu yoktur. Sohbet geçmişi saklanmaz; izin kapatılabilir. |
 | Besin verisi | Uygulama içinde yer alan, USDA FoodData Central SR Legacy genel kayıtlarından seçilmiş küçük tablo | USDA'ya canlı arama yapılmaz; değerler yaklaşık ve sınırlı listedir. |
 | Yedekleme | Dosya doğrudan kullanıcının cihazına indirilir; şifreli seçenek Web Crypto ile cihazda çalışır | Bulut eşitleme yoktur. Kullanıcı dosyasını kendisi güvenli saklar. |
 | Hatırlatmalar | Tarayıcının yerel bildirim izni ve uygulama içi hatırlatmalar | Bildirim sunucusu veya ücretli gönderim hizmeti yoktur. Tarayıcı/işletim sistemi kısıtları olabilir. |
@@ -23,7 +23,7 @@ Bu proje, geliştiren kişi ve kullanıcılar için temel kullanımda ücret ist
 - Reklam ağı, davranış analitiği, takip pikseli ve üçüncü taraf oturum izleme
 - Özel alan adı, ücretli sunucu, ücretli uygulama mağazası üyeliği veya zorunlu lisans
 
-Bu yüzden barkodla arama, fotoğraftan tanıma, bulut eşitleme ve sunucudan anlık bildirim gibi hizmetler temel uygulamada yoktur. Yerel asistan; günlük özet, protein durumu, tarif fikri, su kaydı ve plan oluşturma önerisi sunar; dil modeli gibi davranmaz ve bilgi uydurmaz. Temel akışı güçlendirmek için yeni özellik gerektiğinde önce yerel, açık kaynaklı ve çevrimdışı bir yol araştırılır.
+Bu yüzden barkodla arama, fotoğraftan tanıma, bulut eşitleme ve sunucudan anlık bildirim gibi hizmetler temel uygulamada yoktur. Yerel asistan; kullanıcı açıkça etkinleştirdikten sonra günlük özet, protein durumu, evdeki malzemelerle eşleşen tarif fikri, su kaydı ve günlük/haftalık plan oluşturma önerisi sunar. Kural tabanlıdır; dil modeli gibi davranmaz ve bilgi uydurmaz. Temel akışı güçlendirmek için yeni özellik gerektiğinde önce yerel, açık kaynaklı ve çevrimdışı bir yol araştırılır.
 
 ## Yayın şekli ve sınırlar
 
