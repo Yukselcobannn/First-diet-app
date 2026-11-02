@@ -57,7 +57,7 @@
     <section class="home-flow" data-app-view="today" aria-labelledby="homeFlowTitle">
       <div class="home-flow-head"><div><span class="eyebrow">Günün akışı</span><h2 id="homeFlowTitle">Sade adımlar, düzenli takip</h2></div><span class="home-spark" aria-hidden="true">✳</span></div>
       <div class="home-flow-grid"><article class="home-next-card"><span class="mini-label">Sıradaki öğün</span><strong id="homeNextMeal">Öğün zamanını seçelim</strong><p id="homeNextMealNote">İlerlemene göre günün kalanını planla.</p><button class="secondary" data-focus-meal type="button">Öğün kaydı aç</button></article><article class="home-plan-card"><span class="mini-label">Bugünkü planın</span><strong id="homePlanTitle">Henüz günlük planın yok</strong><p id="homePlanNote">Tercih ve hedeflerine göre ücretsiz örnek oluştur.</p><button class="secondary" data-go-screen="plan" type="button">Planı görüntüle</button></article></div>
-      <div class="home-week-strip"><span id="homeWeekCount">Bu hafta: henüz kayıt yok</span><div class="home-week-days" id="homeWeekDays" role="group" aria-label="Son yedi günün öğün kayıtları"></div><button class="text-action" data-go-screen="progress" type="button">Haftalık özeti gör →</button><button class="text-action" data-go-screen="recipes" type="button">Tariflere göz at →</button></div>
+      <div class="home-week-strip"><span id="homeWeekCount">Bu hafta: henüz kayıt yok</span><div class="home-week-days" id="homeWeekDays" role="group" aria-label="Son yedi günün öğün kayıtları"></div><p class="home-week-average" id="homeWeekAverage" aria-live="polite">Haftalık ortalama, kayıtlar oluşunca gösterilir.</p><button class="text-action" data-go-screen="progress" type="button">Haftalık özeti gör →</button><button class="text-action" data-go-screen="recipes" type="button">Tariflere göz at →</button></div>
     </section>
     <section class="card habit-card" data-app-view="today">
       <div class="card-head"><div><h3>Günlük yaşam notları</h3><span class="subtle">İsteğe bağlı · kendi gözlemlerin</span></div><span class="tag">Bu cihazda</span></div>
@@ -444,7 +444,7 @@
       const key = day.toLocaleDateString('sv-SE'), meals = data.days?.[key] || [];
       loggedDays.push({ key, label: day.toLocaleDateString('tr-TR', { weekday: 'short' }).replace('.', ''), dayNumber: day.getDate(), meals, known: meals.filter(item => !item.unknown && !item.requiresConfirm).length });
     }
-    const recorded = loggedDays.filter(day => day.meals.length), complete = recorded.filter(day => day.known === day.meals.length).length;
+    const recorded = loggedDays.filter(day => day.meals.length), completeDays = recorded.filter(day => day.known === day.meals.length), complete = completeDays.length;
     $('#homeWeekDays').innerHTML = loggedDays.map(day => {
       const status = !day.meals.length ? 'empty' : day.known === day.meals.length ? 'recorded' : 'partial';
       const title = !day.meals.length ? 'Kayıt yok' : `${day.meals.length} öğün kaydı${day.known < day.meals.length ? ` · ${day.meals.length - day.known} kayıtta değer eksik` : ''}`;
@@ -454,6 +454,14 @@
     $('#homeWeekCount').textContent = recorded.length
       ? `Son 7 günde ${recorded.length} kayıtlı gün · ${complete} günün tüm kayıtlarında besin değeri var`
       : 'Son 7 günde henüz öğün kaydı yok';
+    const tracking = data.trackingPreferences || {};
+    const average = key => complete ? Math.round(completeDays.reduce((sum, day) => sum + day.meals.reduce((daySum, meal) => daySum + Number(meal[key] || 0), 0), 0) / complete) : null;
+    const kcalAverage = tracking.calories === false ? 'Kalori özeti kapalı' : average('kcal') == null ? null : `~${average('kcal').toLocaleString('tr-TR')} kcal`;
+    const proteinAverage = tracking.protein === false ? 'Protein özeti kapalı' : average('protein') == null ? null : `~${average('protein').toLocaleString('tr-TR')} g protein`;
+    $('#homeWeekAverage').textContent = !recorded.length
+      ? 'Ortalama için henüz kayıtlı gün yok.'
+      : !complete ? 'Ortalama için en az bir günde tüm öğünlerin besin değerleri kayıtlı olmalı.'
+        : `${complete} tam kayıtlı günün günlük ortalaması: ${[kcalAverage, proteinAverage].filter(Boolean).join(' · ') || 'takip özetleri kapalı'}. Eksik günler ortalamaya katılmadı.`;
   }
 
   function showMealDetail(index) {
