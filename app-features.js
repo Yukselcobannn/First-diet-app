@@ -17,6 +17,11 @@
   const portions = {};
   const foodFor = id => foodDB.find(food => food.id === id);
   const normalize = value => String(value || '').toLocaleLowerCase('tr').replaceAll('ç', 'c').replaceAll('ğ', 'g').replaceAll('ı', 'i').replaceAll('ö', 'o').replaceAll('ş', 's').replaceAll('ü', 'u');
+  const foodTermMatches = (value, term) => {
+    const words = input => normalize(input).replace(/[^a-z0-9]+/g, ' ').trim();
+    const text = words(value), needle = words(term);
+    return !!needle && (text === needle || text.startsWith(needle + ' ') || text.endsWith(' ' + needle) || text.includes(' ' + needle + ' '));
+  };
   const recipeTotal = recipe => recipe.ingredients.reduce((total, [id, grams]) => {
     const food = foodFor(id);
     if (food) { total.kcal += food.kcal100 * grams / 100; total.protein += food.protein100 * grams / 100; }
@@ -30,8 +35,9 @@
     if (profile.diet === 'vegetarian' && !['vegan', 'vegetarian'].includes(recipe.diet)) return true;
     if (profile.diet === 'pescatarian' && !['vegan', 'vegetarian', 'pescatarian'].includes(recipe.diet)) return true;
     const aliases = [
-      [/sut|yogurt|peynir/, 'dairy'], [/fistik|fistig|findik|badem|kuruyemis/, 'nuts'], [/gluten|bugday|ekmek/, 'gluten'],
-      [/yumurta/, 'egg'], [/balik|ton baligi|somon/, 'fish'], [/soya|tofu/, 'soy']
+      [/sut|laktoz|kazein|peynir|yogurt/, 'dairy'], [/fistik|fistig|findik|badem|kuruyemis|ceviz|kaju|antep/, 'nuts'],
+      [/gluten|bugday|arpa|cavdar|ekmek|colyak/, 'gluten'], [/yumurta|egg/, 'egg'],
+      [/balik|ton baligi|somon|sardalya/, 'fish'], [/soya|soy|tofu/, 'soy']
     ];
     const avoid = String(profile.avoid || '').split(/[,;|]/).map(normalize).filter(Boolean);
     return avoid.some(term => {
@@ -40,11 +46,11 @@
       if (recipe.allergens.some(allergen => normalize(allergen) === term)) return true;
       return recipe.ingredients.some(([id]) => {
         const food = foodFor(id);
-        return food && [food.name, food.planName, ...food.terms].some(name => normalize(name).includes(term));
+        return food && [food.name, food.planName, ...food.terms].some(name => foodTermMatches(name, term));
       });
     });
   }
-  const pantryHas = (id, pantry) => { const food = foodFor(id); return !!food && pantry.some(term => [food.name, food.planName, ...food.terms].some(name => normalize(name).includes(term) || term.includes(normalize(name)))); };
+  const pantryHas = (id, pantry) => { const food = foodFor(id); return !!food && pantry.some(term => [food.name, food.planName, ...food.terms].some(name => foodTermMatches(name, term) || foodTermMatches(term, name))); };
   const pantryMatches = (recipe, pantry) => recipe.ingredients.filter(([id]) => pantryHas(id, pantry)).length;
 
   $('.leftcol').insertAdjacentHTML('beforeend', `
