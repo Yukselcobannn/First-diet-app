@@ -497,6 +497,7 @@
     catch { $('#reminderStatus').textContent = 'Ayar kaydedilemedi. Tarayıcı depolama alanını kontrol et.'; }
   });
   renderReminder();
+  window.addEventListener('iyibeslen:reset-theme', () => { try { localStorage.removeItem(REMINDER_KEY); } catch {} renderReminder(); });
   window.setInterval(() => {
     const reminder = loadReminder(), now = new Date(), today = now.toLocaleDateString('sv-SE');
     if (!reminder.enabled || reminder.lastDate === today || !('Notification' in window) || Notification.permission !== 'granted') return;
