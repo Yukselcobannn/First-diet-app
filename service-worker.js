@@ -1,4 +1,4 @@
-const CACHE_NAME = 'iyi-beslen-shell-v45';
+const CACHE_NAME = 'iyi-beslen-shell-v46';
 const APP_FILES = [
   './',
   './index.html',
@@ -7,7 +7,7 @@ const APP_FILES = [
   './manifest.webmanifest',
   './app.css?v=20261103.1',
   './app-enhancements.js?v=20261023.5',
-  './app-features.js?v=20261103.1',
+  './app-features.js?v=20261103.2',
   './assets/recipes/yogurt-oats.svg',
   './assets/recipes/egg-toast.svg',
   './assets/recipes/chickpea-bulgur.svg',
