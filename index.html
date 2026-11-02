@@ -336,12 +336,19 @@
     if(!sourceDate){showToast('Kopyalanacak önceki bir öğün kaydı yok. Önce başka bir günde öğün kaydet.');return}
     const sourceMeals=state.days[sourceDate];
     const sourceLabel=new Date(`${sourceDate}T12:00:00`).toLocaleDateString('tr-TR',{day:'numeric',month:'long'});
-    if(!confirm(`${sourceLabel} günündeki ${sourceMeals.length} öğün seçili güne eklensin mi? Mevcut kayıtların korunur.`))return;
+    const unknownCount=sourceMeals.filter(meal=>meal.unknown||meal.requiresConfirm).length;
+    if(!confirm(`${sourceLabel} günündeki ${sourceMeals.length} öğün seçili güne eklensin mi? Mevcut kayıtların korunur. ${unknownCount?`${unknownCount} öğünün besin değeri bilinmiyor; bu bilgi de kopyalanacak.`:'Besin değerleri ve kaynak notları da kopyalanacak.'}`))return;
+    const previousEntries=Array.isArray(state.days[currentDate])?[...state.days[currentDate]]:null;
     const copied=sourceMeals.map(meal=>({...meal,assumption:`${meal.assumption||'Kaydedilmiş öğün'} · ${sourceLabel} gününden kopyalandı`,source:meal.source||'Kaynak belirtilmedi; kopyalanmış kayıt.'}));
     if(!Array.isArray(state.days[currentDate]))state.days[currentDate]=[];
     state.days[currentDate].push(...copied);
     if(!save()){render();return}
-    render();window.dispatchEvent(new CustomEvent('iyibeslen:data-changed'));showToast(`${sourceMeals.length} öğün ${sourceLabel} gününden kopyalandı`);
+    const copiedSnapshot=JSON.stringify(state.days[currentDate]);
+    render();window.dispatchEvent(new CustomEvent('iyibeslen:data-changed'));showToast(`${sourceMeals.length} öğün ${sourceLabel} gününden kopyalandı`,{label:'Geri al',run:()=>{
+      if(JSON.stringify(state.days[currentDate]||[])!==copiedSnapshot){showToast('Bu güne yeni değişiklikler yapıldığı için kopyalama geri alınmadı.');return}
+      if(previousEntries)state.days[currentDate]=previousEntries;else delete state.days[currentDate];
+      if(save()){render();window.dispatchEvent(new CustomEvent('iyibeslen:data-changed'));showToast('Öğün kopyalama geri alındı')}
+    }});
   };
   function downloadBackup(){const file=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(file),a=document.createElement('a');a.href=url;a.download=`iyibeslen-veriler-${today()}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);try{localStorage.setItem(BACKUP_KEY,new Date().toISOString());localStorage.setItem(BACKUP_KEY+'-kind','json')}catch{}updateBackupStatus();showToast('Yedek indirildi · JSON şifrelenmez, güvenli sakla')}
   const ENCRYPTED_BACKUP_FORMAT='iyibeslen-encrypted-backup', BACKUP_ITERATIONS=310000;
