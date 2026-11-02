@@ -1,3 +1,6 @@
+Warning: truncated output (original token count: 18309)
+Total output lines: 1240
+
 :root {
   --bg: #f3f6f1;
   --paper: #ffffff;
@@ -761,23 +764,7 @@ body[data-app-screen="plan"] [data-app-view~="plan"],
 body[data-app-screen="recipes"] [data-app-view~="recipes"],
 body[data-app-screen="progress"] [data-app-view~="progress"],
 body[data-app-screen="profile"] [data-app-view~="profile"] { display: block !important; }
-body[data-app-screen="today"] .welcome { display: flex !important; }
-body[data-app-screen="today"] .grid { grid-template-columns: minmax(0, 1.2fr) minmax(280px, .8fr); }
-body[data-app-screen="today"] .welcome { margin-bottom: 18px; }
-body[data-app-screen]:not([data-app-screen="today"]) .welcome { display: none !important; }
-body[data-app-screen]:not([data-app-screen="today"]):not([data-app-screen="progress"]) .date-navigation { display: none; }
-body[data-app-screen="plan"] .grid,
-body[data-app-screen="recipes"] .grid,
-body[data-app-screen="progress"] .grid,
-body[data-app-screen="profile"] .grid { max-width: 920px; margin-inline: auto; }
-body[data-app-screen="recipes"] .recipe-card { grid-column: 1 / -1; }
-body[data-app-screen="recipes"] .recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.recipe-controls { display: grid; grid-template-columns: minmax(0, 1fr) minmax(145px, .35fr); gap: 9px; margin-bottom: 13px; }
-.recipe-grid { display: grid; grid-template-columns: 1fr; gap: 11px; }
-.recipe-tile { min-width: 0; padding: 14px; border: 1px solid #e8eee6; border-radius: 14px; background: #fbfcfa; }
-.recipe-title { display: flex; align-items: center; gap: 9px; }
-.recipe-title > div { min-width: 0; flex: 1; }
-.recipe-title strong, .recipe-title small { display: block; }
+body[data-app-screen="today"…309 tokens truncated…ecipe-title small { display: block; }
 .recipe-title strong { font-size: 13px; line-height: 1.4; }
 .recipe-title small { margin-top: 3px; color: var(--muted); font-size: 10px; }
 .recipe-emoji { width: 35px; height: 35px; display: grid; place-items: center; border-radius: 10px; background: #eef3eb; font-size: 18px; }
@@ -1178,6 +1165,58 @@ body.tracking-calories-off .meal-detail-macros,
 body.tracking-protein-off .meal-detail-macros { grid-template-columns:1fr; }
 body.tracking-calories-off.tracking-protein-off .meal-detail-macros { display:none; }
 @media(max-width:600px){.meal-copy-row{align-items:flex-start;flex-direction:column}.meal-copy-row .subtle{text-align:left}}
+
+/* Daily target rings and a compact, floating mobile navigation dock. */
+.target { --ring-color:#4f8058; --ring-track:#dce8da; --ring-center:#f5f8f3; }
+.target.protein { --ring-color:#bd794a; --ring-track:#efdfd1; --ring-center:#faf5ef; }
+.target-top .dot {
+  position:relative;
+  z-index:0;
+  isolation:isolate;
+  flex:0 0 40px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  color:var(--ring-color);
+  background:transparent!important;
+  font-size:12px;
+  font-weight:800;
+}
+.target-top .dot::before,.target-top .dot::after {
+  position:absolute;
+  z-index:-1;
+  content:"";
+  border-radius:50%;
+}
+.target-top .dot::before {
+  inset:0;
+  background:conic-gradient(var(--ring-color) var(--target-progress,0%),var(--ring-track) 0);
+  transition:background .35s ease;
+}
+.target-top .dot::after { inset:4px; background:var(--ring-center); }
+body[data-theme="dark"] .target { --ring-track:#3c4d40; --ring-center:#202d23; }
+body[data-theme="dark"] .target.protein { --ring-track:#4a3c30; --ring-center:#2b2822; }
+@media(max-width:600px) {
+  .app { padding-bottom:96px; }
+  .mobile-nav {
+    left:12px;
+    right:12px;
+    bottom:calc(9px + env(safe-area-inset-bottom));
+    min-height:62px;
+    padding:6px 7px;
+    border:1px solid rgba(225,232,223,.9);
+    border-radius:20px;
+    box-shadow:0 10px 34px rgba(27,47,31,.17);
+  }
+  .mobile-nav button { flex:1; min-width:0; min-height:48px; border-radius:14px; }
+  .mobile-nav button.active { background:#e8f1e7; }
+  .mobile-nav svg { width:20px; height:20px; }
+  body[data-theme="dark"] .mobile-nav { border-color:#38483b; background:rgba(27,38,30,.96); }
+  body[data-theme="dark"] .mobile-nav button.active { background:#2a3b2e; }
+}
+@media(prefers-reduced-motion:reduce) {
+  .target-top .dot::before { transition:none; }
+}
 body[data-theme="dark"] .tracking-setting fieldset { border-color:#344238; }
 body[data-theme="dark"] .tracking-setting legend,
 body[data-theme="dark"] .goal-explainer-copy h4 { color:#dce9dd; }
