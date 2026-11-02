@@ -6,6 +6,7 @@
   const state = () => app.getState();
   const esc = app.escape;
   const foodDB = app.foodDB;
+  let pendingRecipeAddition = null;
   const recipes = [
     { id: 'yogurt-oats', name: 'Yoğurtlu yulaf ve muz', emoji: '🥣', image: 'assets/recipes/yogurt-oats.svg', type: 'kahvalti', minutes: 5, diet: 'vegetarian', allergens: ['dairy', 'nuts'], ingredients: [['oats', 40], ['plainYogurt', 150], ['banana', 60], ['almonds', 6]], steps: ['Yulafı yoğurda karıştır.', 'Muzu dilimleyip üzerine ekle; bademle tamamla.'] },
     { id: 'egg-toast', name: 'Domatesli yumurta ve tam buğday ekmeği', emoji: '🍳', image: 'assets/recipes/egg-toast.svg', type: 'kahvalti', minutes: 12, diet: 'vegetarian', allergens: ['egg', 'gluten'], ingredients: [['egg', 100], ['wholeWheatBread', 60], ['tomato', 80], ['oliveOil', 5]], steps: ['Domatesi az yağla tavada yumuşat.', 'Yumurtayı ekleyip pişir; ekmekle servis et.'] },
@@ -152,13 +153,7 @@
       data.savedRecipes = data.savedRecipes.includes(id) ? data.savedRecipes.filter(item => item !== id) : [...data.savedRecipes, id];
       if (app.save()) renderRecipes();
     }));
-    grid.querySelectorAll('.recipe-add-meal').forEach(button => button.addEventListener('click', () => {
-      const recipe = recipes.find(item => item.id === button.dataset.recipe), factor = portions[recipe.id] || 1, total = recipeTotal(recipe);
-      const ingredients = recipe.ingredients.map(([id, grams]) => `${foodFor(id)?.planName || id} ${Math.round(grams * factor)} g`).join(', ');
-      if (app.saveMeal({ name: `${recipe.name} · ${ingredients}`, kcal: Math.round(total.kcal * factor), protein: +(total.protein * factor).toFixed(1), category: recipe.type === 'kahvalti' ? 'breakfast' : 'lunch', emoji: recipe.emoji, approx: true, requiresConfirm: false, assumption: `Tarif porsiyonu yaklaşık ${factor.toLocaleString('tr-TR')}; malzemeler: ${ingredients}. Pişirme yağı, marka ve tarif farkı dahil değil.`, source: 'USDA FoodData Central SR Legacy · bileşen toplamı ve yaklaşık gramlar.' })) {
-        app.setScreen('today'); app.toast('Tarif bugünün öğünlerine eklendi · tahmini');
-      }
-    }));
+    grid.querySelectorAll('.recipe-add-meal').forEach(button => button.addEventListener('click', () => openRecipeMealConfirmation(button.dataset.recipe)));
     grid.querySelectorAll('.recipe-add-shopping').forEach(button => button.addEventListener('click', () => {
       const recipe = recipes.find(item => item.id === button.dataset.recipe), factor = portions[recipe.id] || 1, data = state(); data.shoppingList = data.shoppingList || []; const previous = JSON.parse(JSON.stringify(data.shoppingList));
       for (const [id, grams] of recipe.ingredients) {
@@ -182,11 +177,52 @@
     dialog.showModal();
   }
 
-  document.body.insertAdjacentHTML('beforeend', `<dialog class="detail-dialog" id="recipeDetailDialog" aria-labelledby="recipeDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Tarif ayrıntısı</span><button class="icon-btn dialog-close" type="button" aria-label="Tarif ayrıntısını kapat">×</button></div><div id="recipeDetailContent"></div><div class="detail-dialog-actions"><button class="secondary" id="recipeDetailShop" type="button">Alışveriş listesine ekle</button><button class="primary" id="recipeDetailAdd" type="button">Bugüne öğün ekle</button></div></dialog><dialog class="detail-dialog meal-detail-dialog" id="mealDetailDialog" aria-labelledby="mealDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğün ayrıntısı</span><button class="icon-btn meal-dialog-close" type="button" aria-label="Öğün ayrıntısını kapat">×</button></div><div id="mealDetailContent"></div></dialog>`);
+  function openRecipeMealConfirmation(id) {
+    const recipe = recipes.find(item => item.id === id);
+    if (!recipe || excluded(recipe)) { app.toast('Bu tarif güncel beslenme tercihlerine uygun görünmüyor.'); return; }
+    const date = app.getSelectedDate(), factor = portions[recipe.id] || 1, total = recipeTotal(recipe), data = state();
+    const entries = Array.isArray(data.days?.[date]) ? data.days[date] : [];
+    const known = entries.filter(item => !item.unknown && !item.requiresConfirm && Number.isFinite(Number(item.kcal)) && Number.isFinite(Number(item.protein)));
+    const missing = entries.length - known.length, meal = {
+      name: `${recipe.name} · ${factor.toLocaleString('tr-TR')} porsiyon`,
+      kcal: Math.round(total.kcal * factor), protein: +(total.protein * factor).toFixed(1),
+      category: recipe.type === 'kahvalti' ? 'breakfast' : 'lunch', emoji: recipe.emoji, approx: true, requiresConfirm: false,
+      assumption: `Tarif porsiyonu yaklaşık ${factor.toLocaleString('tr-TR')}; malzemeler: ${recipe.ingredients.map(([foodId, grams]) => `${foodFor(foodId)?.planName || foodId} ${Math.round(grams * factor)} g`).join(', ')}. Pişirme yağı, marka ve tarif farkı dahil değil.`,
+      source: 'USDA FoodData Central SR Legacy · bileşen toplamı ve yaklaşık gramlar.'
+    };
+    const tracking = data.trackingPreferences || {};
+    const knownKcal = Math.round(known.reduce((sum, item) => sum + Number(item.kcal), 0));
+    const knownProtein = Math.round(known.reduce((sum, item) => sum + Number(item.protein), 0));
+    const dateLabel = new Date(`${date}T12:00:00`).toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' });
+    const value = (visible, current, add, unit) => visible === false ? 'Ayarlarında kapalı' : `~${current.toLocaleString('tr-TR')} → ~${(current + add).toLocaleString('tr-TR')} ${unit}`;
+    $('#recipeAddSummary').innerHTML = `<span class="eyebrow">${esc(dateLabel)} · seçili gün</span><h2 id="recipeAddConfirmTitle">${esc(recipe.name)}</h2><p>${factor.toLocaleString('tr-TR')} porsiyon · değerler yaklaşık</p><div class="recipe-add-nutrition"><div><span>Tarif</span><b>~${meal.kcal.toLocaleString('tr-TR')} kcal</b><small>~${meal.protein.toLocaleString('tr-TR')} g protein</small></div><div><span>Bu günün toplamı</span><b>${esc(value(tracking.calories, knownKcal, meal.kcal, 'kcal'))}</b><small>${esc(value(tracking.protein, knownProtein, meal.protein, 'g protein'))}</small></div></div><p class="estimate">${entries.length} mevcut öğün kaydı${missing ? ` · ${missing} kayıtta besin değeri bilinmiyor ve toplama dahil değil` : ''}</p><h3>Porsiyon içeriği</h3><ul class="recipe-add-ingredients">${recipe.ingredients.map(([foodId, grams]) => `<li>${esc(foodFor(foodId)?.planName || foodFor(foodId)?.name || foodId)} <b>${Math.round(grams * factor)} g</b></li>`).join('')}</ul><p class="notice">Tarif, seçili güne öğün olarak kaydedilecek. Ürün markası ve hazırlama biçimi gerçek değerleri değiştirebilir.</p>`;
+    pendingRecipeAddition = { date, recipeId: recipe.id, meal };
+    $('#recipeAddConfirmDialog').showModal();
+  }
+
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="detail-dialog" id="recipeDetailDialog" aria-labelledby="recipeDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Tarif ayrıntısı</span><button class="icon-btn dialog-close" type="button" aria-label="Tarif ayrıntısını kapat">×</button></div><div id="recipeDetailContent"></div><div class="detail-dialog-actions"><button class="secondary" id="recipeDetailShop" type="button">Alışveriş listesine ekle</button><button class="primary" id="recipeDetailAdd" type="button">Öğüne ekle</button></div></dialog><dialog class="detail-dialog recipe-add-confirm-dialog" id="recipeAddConfirmDialog" aria-labelledby="recipeAddConfirmTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğünü gözden geçir</span><button class="icon-btn recipe-add-cancel" type="button" aria-label="Öğün eklemeyi iptal et">×</button></div><div id="recipeAddSummary" aria-live="polite"></div><div class="detail-dialog-actions"><button class="secondary recipe-add-cancel" type="button">Vazgeç</button><button class="primary" id="confirmRecipeAdd" type="button">Bu öğünü kaydet</button></div></dialog><dialog class="detail-dialog meal-detail-dialog" id="mealDetailDialog" aria-labelledby="mealDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğün ayrıntısı</span><button class="icon-btn meal-dialog-close" type="button" aria-label="Öğün ayrıntısını kapat">×</button></div><div id="mealDetailContent"></div></dialog>`);
   $('#recipeDetailDialog').addEventListener('click', event => { if (event.target === $('#recipeDetailDialog')) $('#recipeDetailDialog').close(); });
   $('.dialog-close').addEventListener('click', () => $('#recipeDetailDialog').close());
-  $('#recipeDetailAdd').addEventListener('click', () => { const button = $('#recipeDetailAdd'); $('#recipeDetailDialog').close(); document.querySelector(`.recipe-add-meal[data-recipe="${button.dataset.recipe}"]`)?.click(); });
+  $('#recipeDetailAdd').addEventListener('click', () => { const button = $('#recipeDetailAdd'); $('#recipeDetailDialog').close(); openRecipeMealConfirmation(button.dataset.recipe); });
   $('#recipeDetailShop').addEventListener('click', () => { const button = $('#recipeDetailShop'); $('#recipeDetailDialog').close(); document.querySelector(`.recipe-add-shopping[data-recipe="${button.dataset.recipe}"]`)?.click(); });
+  document.querySelectorAll('.recipe-add-cancel').forEach(button => button.addEventListener('click', () => { pendingRecipeAddition = null; $('#recipeAddConfirmDialog').close(); }));
+  $('#recipeAddConfirmDialog').addEventListener('click', event => { if (event.target === $('#recipeAddConfirmDialog')) { pendingRecipeAddition = null; $('#recipeAddConfirmDialog').close(); } });
+  $('#confirmRecipeAdd').addEventListener('click', () => {
+    const pending = pendingRecipeAddition; pendingRecipeAddition = null; $('#recipeAddConfirmDialog').close();
+    if (!pending) return;
+    const recipe = recipes.find(item => item.id === pending.recipeId);
+    if (app.getSelectedDate() !== pending.date) { app.toast('Seçili gün değişti; tarif eklenmedi. Doğru gün için yeniden başlat.'); return; }
+    if (!recipe || excluded(recipe)) { app.toast('Beslenme tercihin değişti; bu tarif eklenmedi.'); return; }
+    const data = state(), previous = Array.isArray(data.days?.[pending.date]) ? [...data.days[pending.date]] : null;
+    if (!app.saveMeal(pending.meal)) return;
+    const savedState = JSON.stringify(state().days?.[pending.date] || []);
+    app.setScreen('today'); window.dispatchEvent(new CustomEvent('iyibeslen:data-changed'));
+    app.toast('Tarif seçili güne eklendi · yaklaşık değer', { label: 'Geri al', run: () => {
+      if (JSON.stringify(state().days?.[pending.date] || []) !== savedState) { app.toast('Bu güne yeni değişiklikler yapıldığı için tarif kaydı silinmedi.'); return; }
+      if (previous) state().days[pending.date] = previous; else delete state().days[pending.date];
+      if (app.save()) { app.render(); window.dispatchEvent(new CustomEvent('iyibeslen:data-changed')); app.toast('Tarif kaydı geri alındı'); }
+    }});
+  });
   $('.meal-dialog-close').addEventListener('click', () => $('#mealDetailDialog').close());
   $('#mealDetailDialog').addEventListener('click', event => { if (event.target === $('#mealDetailDialog')) $('#mealDetailDialog').close(); });
 
