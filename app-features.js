@@ -7,6 +7,7 @@
   const esc = app.escape;
   const foodDB = app.foodDB;
   let pendingRecipeAddition = null;
+  let pendingRecipeShopping = null;
   const recipes = [
     { id: 'yogurt-oats', name: 'Yoğurtlu yulaf ve muz', emoji: '🥣', image: 'assets/recipes/yogurt-oats.svg', type: 'kahvalti', minutes: 5, diet: 'vegetarian', allergens: ['dairy', 'nuts'], ingredients: [['oats', 40], ['plainYogurt', 150], ['banana', 60], ['almonds', 6]], steps: ['Yulafı yoğurda karıştır.', 'Muzu dilimleyip üzerine ekle; bademle tamamla.'] },
     { id: 'egg-toast', name: 'Domatesli yumurta ve tam buğday ekmeği', emoji: '🍳', image: 'assets/recipes/egg-toast.svg', type: 'kahvalti', minutes: 12, diet: 'vegetarian', allergens: ['egg', 'gluten'], ingredients: [['egg', 100], ['wholeWheatBread', 60], ['tomato', 80], ['oliveOil', 5]], steps: ['Domatesi az yağla tavada yumuşat.', 'Yumurtayı ekleyip pişir; ekmekle servis et.'] },
@@ -154,16 +155,7 @@
       if (app.save()) renderRecipes();
     }));
     grid.querySelectorAll('.recipe-add-meal').forEach(button => button.addEventListener('click', () => openRecipeMealConfirmation(button.dataset.recipe)));
-    grid.querySelectorAll('.recipe-add-shopping').forEach(button => button.addEventListener('click', () => {
-      const recipe = recipes.find(item => item.id === button.dataset.recipe), factor = portions[recipe.id] || 1, data = state(); data.shoppingList = data.shoppingList || []; const previous = JSON.parse(JSON.stringify(data.shoppingList));
-      for (const [id, grams] of recipe.ingredients) {
-        const food = foodFor(id); if (!food) continue;
-        const key = `food-${id}`, existing = data.shoppingList.find(item => item.id === key), amount = Math.round(grams * factor);
-        if (existing) { const current = parseFloat(existing.amount); existing.amount = Number.isFinite(current) ? `${Math.round(current + amount)} g` : `${amount} g`; }
-        else data.shoppingList.push({ id: key, name: food.planName || food.name, amount: `${amount} g`, checked: false });
-      }
-      if (app.save()) { renderShoppingList(); app.setScreen('shopping'); app.toast('Malzemeler alışveriş listene eklendi', { label: 'Geri al', run: () => { state().shoppingList = previous; if (app.save()) { renderShoppingList(); app.toast('Tarif malzemeleri geri alındı'); } } }); }
-    }));
+    grid.querySelectorAll('.recipe-add-shopping').forEach(button => button.addEventListener('click', () => openRecipeShoppingConfirmation(button.dataset.recipe)));
     grid.querySelectorAll('.recipe-detail').forEach(button => button.addEventListener('click', () => showRecipeDetail(button.dataset.recipe)));
   }
 
@@ -200,11 +192,59 @@
     $('#recipeAddConfirmDialog').showModal();
   }
 
-  document.body.insertAdjacentHTML('beforeend', `<dialog class="detail-dialog" id="recipeDetailDialog" aria-labelledby="recipeDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Tarif ayrıntısı</span><button class="icon-btn dialog-close" type="button" aria-label="Tarif ayrıntısını kapat">×</button></div><div id="recipeDetailContent"></div><div class="detail-dialog-actions"><button class="secondary" id="recipeDetailShop" type="button">Alışveriş listesine ekle</button><button class="primary" id="recipeDetailAdd" type="button">Öğüne ekle</button></div></dialog><dialog class="detail-dialog recipe-add-confirm-dialog" id="recipeAddConfirmDialog" aria-labelledby="recipeAddConfirmTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğünü gözden geçir</span><button class="icon-btn recipe-add-cancel" type="button" aria-label="Öğün eklemeyi iptal et">×</button></div><div id="recipeAddSummary" aria-live="polite"></div><div class="detail-dialog-actions"><button class="secondary recipe-add-cancel" type="button">Vazgeç</button><button class="primary" id="confirmRecipeAdd" type="button">Bu öğünü kaydet</button></div></dialog><dialog class="detail-dialog meal-detail-dialog" id="mealDetailDialog" aria-labelledby="mealDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğün ayrıntısı</span><button class="icon-btn meal-dialog-close" type="button" aria-label="Öğün ayrıntısını kapat">×</button></div><div id="mealDetailContent"></div></dialog>`);
+  function shoppingGrams(value) {
+    const match = String(value || '').trim().match(/^(\d+(?:[.,]\d+)?)\s*(?:g|gr|gram)?$/i);
+    return match ? Number(match[1].replace(',', '.')) : null;
+  }
+
+  function openRecipeShoppingConfirmation(id) {
+    const recipe = recipes.find(item => item.id === id);
+    if (!recipe || excluded(recipe)) { app.toast('Bu tarif güncel beslenme tercihlerine uygun görünmüyor.'); return; }
+    const factor = portions[recipe.id] || 1, list = state().shoppingList || [], lines = recipe.ingredients.map(([foodId, grams]) => {
+      const key = `food-${foodId}`, item = list.find(row => row.id === key), amount = Math.round(grams * factor), current = item ? shoppingGrams(item.amount) : null;
+      return { food: foodFor(foodId), key, amount, item, current, total: current == null ? null : Math.round(current + amount) };
+    });
+    $('#recipeShoppingSummary').innerHTML = `<span class="eyebrow">${factor.toLocaleString('tr-TR')} porsiyon · alışveriş listesi</span><h2 id="recipeShoppingTitle">${esc(recipe.name)}</h2><p>Malzemeler listene eklenmeden önce miktarları gözden geçir.</p><ul class="recipe-add-ingredients">${lines.map(line => `<li><span>${esc(line.food?.planName || line.food?.name || line.key)}</span><b>${line.item ? line.current == null ? `${esc(line.item.amount || 'Miktar belirsiz')} korunur · + ${line.amount} g ayrı satır` : `${Math.round(line.current)} g + ${line.amount} g = ${line.total} g` : `${line.amount} g · yeni satır`}</b></li>`).join('')}</ul><p class="notice">Listede aynı malzeme gram cinsindeyse miktar birleştirilir. Birimi farklıysa mevcut satır korunur ve gram miktarı ayrı eklenir.</p>`;
+    pendingRecipeShopping = { recipeId: recipe.id, factor, snapshot: JSON.stringify(list) };
+    $('#recipeShoppingConfirmDialog').showModal();
+  }
+
+  function buildRecipeShoppingList(recipe, factor, currentList) {
+    const next = JSON.parse(JSON.stringify(currentList)), stamp = Date.now();
+    recipe.ingredients.forEach(([foodId, grams], index) => {
+      const food = foodFor(foodId); if (!food) return;
+      const key = `food-${foodId}`, amount = Math.round(grams * factor), existing = next.find(item => item.id === key), current = existing ? shoppingGrams(existing.amount) : null;
+      if (existing && current != null) { existing.amount = `${Math.round(current + amount)} g`; existing.checked = false; }
+      else next.push({ id: existing ? `${key}-separate-${stamp}-${index}` : key, name: food.planName || food.name, amount: `${amount} g`, checked: false });
+    });
+    return next;
+  }
+
+  document.body.insertAdjacentHTML('beforeend', `<dialog class="detail-dialog" id="recipeDetailDialog" aria-labelledby="recipeDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Tarif ayrıntısı</span><button class="icon-btn dialog-close" type="button" aria-label="Tarif ayrıntısını kapat">×</button></div><div id="recipeDetailContent"></div><div class="detail-dialog-actions"><button class="secondary" id="recipeDetailShop" type="button">Alışveriş listesine ekle</button><button class="primary" id="recipeDetailAdd" type="button">Öğüne ekle</button></div></dialog><dialog class="detail-dialog recipe-add-confirm-dialog" id="recipeAddConfirmDialog" aria-labelledby="recipeAddConfirmTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğünü gözden geçir</span><button class="icon-btn recipe-add-cancel" type="button" aria-label="Öğün eklemeyi iptal et">×</button></div><div id="recipeAddSummary" aria-live="polite"></div><div class="detail-dialog-actions"><button class="secondary recipe-add-cancel" type="button">Vazgeç</button><button class="primary" id="confirmRecipeAdd" type="button">Bu öğünü kaydet</button></div></dialog><dialog class="detail-dialog recipe-add-confirm-dialog" id="recipeShoppingConfirmDialog" aria-labelledby="recipeShoppingTitle"><div class="detail-dialog-head"><span class="eyebrow">Alışveriş listesini gözden geçir</span><button class="icon-btn recipe-shopping-cancel" type="button" aria-label="Listeye eklemeyi iptal et">×</button></div><div id="recipeShoppingSummary" aria-live="polite"></div><div class="detail-dialog-actions"><button class="secondary recipe-shopping-cancel" type="button">Vazgeç</button><button class="primary" id="confirmRecipeShopping" type="button">Malzemeleri listeye ekle</button></div></dialog><dialog class="detail-dialog meal-detail-dialog" id="mealDetailDialog" aria-labelledby="mealDetailTitle"><div class="detail-dialog-head"><span class="eyebrow">Öğün ayrıntısı</span><button class="icon-btn meal-dialog-close" type="button" aria-label="Öğün ayrıntısını kapat">×</button></div><div id="mealDetailContent"></div></dialog>`);
   $('#recipeDetailDialog').addEventListener('click', event => { if (event.target === $('#recipeDetailDialog')) $('#recipeDetailDialog').close(); });
   $('.dialog-close').addEventListener('click', () => $('#recipeDetailDialog').close());
   $('#recipeDetailAdd').addEventListener('click', () => { const button = $('#recipeDetailAdd'); $('#recipeDetailDialog').close(); openRecipeMealConfirmation(button.dataset.recipe); });
-  $('#recipeDetailShop').addEventListener('click', () => { const button = $('#recipeDetailShop'); $('#recipeDetailDialog').close(); document.querySelector(`.recipe-add-shopping[data-recipe="${button.dataset.recipe}"]`)?.click(); });
+  $('#recipeDetailShop').addEventListener('click', () => { const button = $('#recipeDetailShop'); $('#recipeDetailDialog').close(); openRecipeShoppingConfirmation(button.dataset.recipe); });
+  document.querySelectorAll('.recipe-shopping-cancel').forEach(button => button.addEventListener('click', () => { pendingRecipeShopping = null; $('#recipeShoppingConfirmDialog').close(); }));
+  $('#recipeShoppingConfirmDialog').addEventListener('click', event => { if (event.target === $('#recipeShoppingConfirmDialog')) { pendingRecipeShopping = null; $('#recipeShoppingConfirmDialog').close(); } });
+  $('#confirmRecipeShopping').addEventListener('click', () => {
+    const pending = pendingRecipeShopping; pendingRecipeShopping = null; $('#recipeShoppingConfirmDialog').close();
+    if (!pending) return;
+    const recipe = recipes.find(item => item.id === pending.recipeId), currentList = state().shoppingList || [];
+    if (!recipe || excluded(recipe)) { app.toast('Beslenme tercihin değişti; malzemeler eklenmedi.'); return; }
+    if (JSON.stringify(currentList) !== pending.snapshot) { app.toast('Alışveriş listen değişti. Tarifi yeniden açıp güncel miktarları gözden geçir.'); return; }
+    const previous = JSON.parse(JSON.stringify(currentList)), next = buildRecipeShoppingList(recipe, pending.factor, currentList);
+    if (next.length > 500) { app.toast('Alışveriş listesi 500 ürün sınırına ulaştı; değişiklik yapılmadı.'); return; }
+    state().shoppingList = next;
+    if (!app.save()) return;
+    const savedSnapshot = JSON.stringify(state().shoppingList);
+    window.dispatchEvent(new CustomEvent('iyibeslen:data-changed')); app.setScreen('shopping');
+    app.toast('Tarif malzemeleri alışveriş listene eklendi', { label: 'Geri al', run: () => {
+      if (JSON.stringify(state().shoppingList || []) !== savedSnapshot) { app.toast('Alışveriş listesinde yeni değişiklikler var; geri alma mevcut listeyi korudu.'); return; }
+      state().shoppingList = previous;
+      if (app.save()) { window.dispatchEvent(new CustomEvent('iyibeslen:data-changed')); app.setScreen('shopping'); app.toast('Tarif malzemeleri geri alındı'); }
+    }});
+  });
   document.querySelectorAll('.recipe-add-cancel').forEach(button => button.addEventListener('click', () => { pendingRecipeAddition = null; $('#recipeAddConfirmDialog').close(); }));
   $('#recipeAddConfirmDialog').addEventListener('click', event => { if (event.target === $('#recipeAddConfirmDialog')) { pendingRecipeAddition = null; $('#recipeAddConfirmDialog').close(); } });
   $('#confirmRecipeAdd').addEventListener('click', () => {
