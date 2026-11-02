@@ -258,7 +258,7 @@
       const incomplete = meals.some(meal => meal.unknown || meal.requiresConfirm), knownMeals = meals.filter(meal => !meal.unknown && !meal.requiresConfirm);
       const calories = knownMeals.reduce((sum, meal) => sum + (Number.isFinite(meal.kcal) ? meal.kcal : 0), 0), protein = knownMeals.reduce((sum, meal) => sum + (Number.isFinite(meal.protein) ? meal.protein : 0), 0);
       if (meals.length) rows.push({ date:key, type:'Öğün toplamı', name:`${meals.length} kayıtlı öğün`, kcal:Math.round(calories), protein:Math.round(protein * 10) / 10, weight:'', details:incomplete ? 'Eksik öğün var; toplam yalnızca değeri bilinen kayıtları içerir' : 'Yalnızca kaydedilen öğünler; tahmini değerler', targetKcal:target.kcal ?? '', targetProtein:target.protein ?? '' });
-      for (const meal of meals) rows.push({ date:key, type:'Öğün', name:meal.name, kcal:meal.unknown || meal.requiresConfirm ? '' : meal.kcal, protein:meal.unknown || meal.requiresConfirm ? '' : meal.protein, weight:'', details:[meal.unknown ? 'Besin değeri bilinmiyor' : '', meal.assumption, meal.source].filter(Boolean).join(' · ') || (meal.approx ? 'Tahmini değer' : ''), targetKcal:'', targetProtein:'' });
+      for (const meal of meals) rows.push({ date:key, type:'Öğün', name:meal.name, kcal:meal.unknown || meal.requiresConfirm ? '' : meal.kcal, protein:meal.unknown || meal.requiresConfirm ? '' : meal.protein, weight:'', details:[meal.unknown ? 'Besin değeri bilinmiyor' : '', meal.requiresConfirm ? 'Kullanıcı onayı bekliyor' : '', meal.assumption, meal.source].filter(Boolean).join(' · ') || (meal.approx ? 'Tahmini değer' : ''), targetKcal:'', targetProtein:'' });
       if (Object.prototype.hasOwnProperty.call(data.weights || {}, key)) rows.push({ date:key, type:'Kilo', name:'Kilo kaydı', kcal:'', protein:'', weight:data.weights[key], details:'kg', targetKcal:'', targetProtein:'' });
       if (Object.keys(habit).length) rows.push({ date:key, type:'Yaşam notu', name:'Günlük not', kcal:'', protein:'', weight:'', details:[habit.sleep != null ? `Uyku ${habit.sleep} saat` : '', habit.activity != null ? `Hareket ${habit.activity} dk` : '', habit.hunger != null ? `Açlık ${habit.hunger}/5` : '', habit.mood ? `Ruh hâli ${({good:'iyi',neutral:'nötr',low:'zor'})[habit.mood] || 'kaydedildi'}` : ''].filter(Boolean).join(' · '), targetKcal:'', targetProtein:'' });
       if (data.waterEntries?.[key]?.length) rows.push({ date:key, type:'Su', name:`${data.waterEntries[key].length} kayıt`, kcal:'', protein:'', weight:'', details:`Toplam ${data.waterEntries[key].reduce((sum, amount) => sum + amount, 0)} ml`, targetKcal:'', targetProtein:'' });
@@ -342,7 +342,7 @@
     const data = state(), profile = data.profile, goal = app.goalForDay();
     const preferences = data.trackingPreferences || {};
     const entries = data.days?.[app.getSelectedDate()] || [];
-    const known = entries.filter(item => !item.unknown);
+    const known = entries.filter(item => !item.unknown && !item.requiresConfirm);
     const total = known.reduce((sum, item) => ({ kcal: sum.kcal + Number(item.kcal || 0), protein: sum.protein + Number(item.protein || 0) }), { kcal: 0, protein: 0 });
     const unknownCount = entries.length - known.length;
     const allSlots = [
@@ -436,7 +436,7 @@
     for (let daysAgo = 6; daysAgo >= 0; daysAgo--) {
       const day = new Date(`${date}T12:00:00`); day.setDate(day.getDate() - daysAgo);
       const key = day.toLocaleDateString('sv-SE'), meals = data.days?.[key] || [];
-      if (meals.length) loggedDays.push({ complete: meals.every(item => !item.unknown) });
+      if (meals.length) loggedDays.push({ complete: meals.every(item => !item.unknown && !item.requiresConfirm) });
     }
     const complete = loggedDays.filter(day => day.complete).length;
     $('#homeWeekCount').textContent = loggedDays.length
@@ -448,7 +448,7 @@
     const meal = state().days?.[app.getSelectedDate()]?.[index];
     if (!meal) return;
     const detail = $('#mealDetailContent');
-    detail.innerHTML = `<span class="eyebrow">${esc(({ breakfast: 'Kahvaltı', lunch: 'Öğle yemeği', dinner: 'Akşam yemeği', snack: 'Ara öğün', other: 'Atıştırmalık / içecek' }[meal.category] || 'Öğün'))} · ${esc(app.getSelectedDate())}</span><h2 id="mealDetailTitle">${esc(meal.name)}</h2><div class="meal-detail-macros"><div class="meal-detail-calories"><span>Enerji</span><b>${meal.unknown ? 'Bilinmiyor' : `~${Math.round(meal.kcal)} kcal`}</b></div><div class="meal-detail-protein"><span>Protein</span><b>${meal.unknown ? 'Bilinmiyor' : `~${Number(meal.protein).toLocaleString('tr-TR')} g`}</b></div></div><div class="privacy-points"><article><b>Porsiyon ve hesap varsayımı</b><p>${esc(meal.assumption || 'Bu kayıt için ayrıca varsayım belirtilmemiş.')}</p></article><article><b>Besin kaynağı</b><p>${esc(meal.source || 'Özel veri kaynağı belirtilmedi; değer tahminidir.')}</p></article></div><p class="notice">Bu kayıt yaklaşık değer içerir. Porsiyon, ürün markası ve pişirme şekli sonucu değiştirebilir.</p>`;
+    detail.innerHTML = `<span class="eyebrow">${esc(({ breakfast: 'Kahvaltı', lunch: 'Öğle yemeği', dinner: 'Akşam yemeği', snack: 'Ara öğün', other: 'Atıştırmalık / içecek' }[meal.category] || 'Öğün'))} · ${esc(app.getSelectedDate())}</span><h2 id="mealDetailTitle">${esc(meal.name)}</h2><div class="meal-detail-macros"><div class="meal-detail-calories"><span>Enerji</span><b>${meal.unknown || meal.requiresConfirm ? 'Bilinmiyor' : `~${Math.round(meal.kcal)} kcal`}</b></div><div class="meal-detail-protein"><span>Protein</span><b>${meal.unknown || meal.requiresConfirm ? 'Bilinmiyor' : `~${Number(meal.protein).toLocaleString('tr-TR')} g`}</b></div></div><div class="privacy-points"><article><b>Porsiyon ve hesap varsayımı</b><p>${esc(meal.assumption || 'Bu kayıt için ayrıca varsayım belirtilmemiş.')}</p></article><article><b>Besin kaynağı</b><p>${esc(meal.source || 'Özel veri kaynağı belirtilmedi; değer tahminidir.')}</p></article></div><p class="notice">Bu kayıt yaklaşık değer içerir. Porsiyon, ürün markası ve pişirme şekli sonucu değiştirebilir.</p>`;
     $('#mealDetailDialog').showModal();
   }
 
@@ -623,7 +623,7 @@
     }));
   }
   function assistantTotals() {
-    const entries = state().days?.[app.getSelectedDate()] || [], known = entries.filter(item => !item.unknown);
+    const entries = state().days?.[app.getSelectedDate()] || [], known = entries.filter(item => !item.unknown && !item.requiresConfirm);
     return { entries, known, kcal: known.reduce((sum, item) => sum + Number(item.kcal || 0), 0), protein: known.reduce((sum, item) => sum + Number(item.protein || 0), 0) };
   }
   function assistantRecipe() {
