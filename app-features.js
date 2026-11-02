@@ -16,7 +16,7 @@
   ];
   const portions = {};
   const foodFor = id => foodDB.find(food => food.id === id);
-  const normalize = value => String(value || '').toLocaleLowerCase('tr').replaceAll('ı', 'i');
+  const normalize = value => String(value || '').toLocaleLowerCase('tr').replaceAll('ç', 'c').replaceAll('ğ', 'g').replaceAll('ı', 'i').replaceAll('ö', 'o').replaceAll('ş', 's').replaceAll('ü', 'u');
   const recipeTotal = recipe => recipe.ingredients.reduce((total, [id, grams]) => {
     const food = foodFor(id);
     if (food) { total.kcal += food.kcal100 * grams / 100; total.protein += food.protein100 * grams / 100; }
@@ -88,7 +88,7 @@
 
   $('.leftcol').insertAdjacentHTML('beforeend', `
     <section class="card profile-hub" data-app-view="profile"><div class="card-head"><div><h3>Uygulama alanları</h3><span class="subtle">İhtiyacın olan bölüme geç</span></div><span aria-hidden="true">✦</span></div><div class="hub-grid">
-      <button type="button" data-go-screen="welcome"><span>👋</span><b>Başlangıç</b><small>Profilini kur ve kişiselleştir</small></button><button type="button" data-go-screen="shopping"><span>🛒</span><b>Alışveriş listesi</b><small>Malzemelerini düzenle</small></button><button type="button" data-go-screen="notifications"><span>🔔</span><b>Hatırlatıcılar</b><small>Bu cihazda yerel bildirim</small></button><button type="button" data-go-screen="settings"><span>⚙️</span><b>Ayarlar</b><small>Görünüm ve veri seçenekleri</small></button><button type="button" data-go-screen="privacy"><span>🛡️</span><b>Gizlilik</b><small>Verilerin nerede saklanır?</small></button><button type="button" data-go-screen="help"><span>❔</span><b>Yardım</b><small>Sık sorulan sorular</small></button>
+      <button type="button" data-go-screen="welcome"><span>👋</span><b>Başlangıç</b><small>Profilini kur ve kişiselleştir</small></button><button type="button" data-go-screen="assistant"><span>✦</span><b>Yerel asistan</b><small>Kayıtlarından öneri al</small></button><button type="button" data-go-screen="shopping"><span>🛒</span><b>Alışveriş listesi</b><small>Malzemelerini düzenle</small></button><button type="button" data-go-screen="notifications"><span>🔔</span><b>Hatırlatıcılar</b><small>Bu cihazda yerel bildirim</small></button><button type="button" data-go-screen="settings"><span>⚙️</span><b>Ayarlar</b><small>Görünüm ve veri seçenekleri</small></button><button type="button" data-go-screen="privacy"><span>🛡️</span><b>Gizlilik</b><small>Verilerin nerede saklanır?</small></button><button type="button" data-go-screen="help"><span>❔</span><b>Yardım</b><small>Sık sorulan sorular</small></button>
     </div></section>
     <section class="card utility-page" data-app-view="welcome"><div class="onboarding-art" aria-hidden="true"><span>🌿</span><span>🥗</span><span>✦</span></div><span class="eyebrow">Hoş geldin</span><h2>Beslenme düzenin, kendi ritminde.</h2><p>Hedeflerini tahmini olarak hesapla, yediklerini kaydet ve uygulanabilir bir örnek plan hazırla. Üyelik ve ücretli servis gerekmez.</p><div class="welcome-privacy-note"><b>Hesap açmadan kullan</b><span>Profilin ve kayıtların yalnızca bu cihazdaki tarayıcıda saklanır. Bu, çevrimdışı ve ücretsiz kullanım sağlar.</span></div><div class="utility-actions"><button class="primary" id="welcomeSetup" type="button">Profilimi kişiselleştir</button><button class="secondary" data-go-screen="privacy" type="button">Gizlilik bilgisi</button></div><p class="estimate">18 yaş ve üzeri yetişkinler içindir. Kalori ve besin değerleri tahmindir; sağlık durumlarında uzman görüşü al.</p></section>
     <section class="card utility-page" data-app-view="notifications"><div class="card-head"><div><h3>Yerel hatırlatıcı</h3><span class="subtle">İsteğe bağlı · bu cihazda</span></div><span aria-hidden="true">🔔</span></div><p>Seçtiğin saatte, uygulama bu cihazda açıksa öğün kaydı için bildirim gösterebilir. İşletim sistemi uygulamayı uykuya alırsa hatırlatma gecikebilir. Zamanlanmış bildirim hizmeti veya sunucu kullanılmaz.</p><form id="reminderForm" class="reminder-form"><label class="check-item"><input id="reminderEnabled" type="checkbox"> Günlük hatırlatıcıyı etkinleştir</label><label for="reminderTime">Saat</label><div class="reminder-row"><input id="reminderTime" class="field" type="time" value="19:00"><button class="primary" type="submit">Hatırlatıcıyı kaydet</button></div></form><div class="inline-status" id="reminderStatus" role="status" aria-live="polite">Hatırlatıcı kapalı.</div><p class="estimate">Bildirim izni yalnızca “Hatırlatıcıyı kaydet” düğmesine bastığında istenir. İzni daha sonra cihaz ayarlarından değiştirebilirsin.</p></section>
@@ -96,6 +96,8 @@
     <section class="card utility-page" data-app-view="privacy"><div class="card-head"><div><h3>Gizlilik ve veri kullanımı</h3><span class="subtle">Açık ve anlaşılır bilgi</span></div><span aria-hidden="true">🛡️</span></div><div class="privacy-points"><article><b>Verilerin cihazında</b><p>Profil, öğün, kilo, su ve günlük notlar bu tarayıcının yerel depolamasında tutulur; uygulama kodu bunları uygulama sunucusuna göndermez.</p></article><article><b>Yedekleme senin kontrolünde</b><p>Şifreli yedek dosyası parolanla cihazında oluşturulur. Parola veya dosya uygulamaya gönderilmez. Tarayıcı verisini silmek yedeklenmemiş kayıtları silebilir.</p></article><article><b>İsteğe bağlı kaynak bağlantısı</b><p>USDA besin kaynağı bağlantısını açarsan yalnızca aranan genel gıda adı o dış siteye gider. Reklam veya analiz kodu yoktur.</p></article><article><b>Barındırma bilgisi</b><p>GitHub Pages, ziyaret isteklerinde IP adresini güvenlik amacıyla kaydedebilir. Uygulama günlüklerini kişisel profilinle eşleştirmez.</p></article></div><div class="utility-actions"><a class="secondary" href="./gizlilik.html">Ayrıntılı gizlilik metnini aç</a><button class="secondary" data-go-screen="settings" type="button">Ayarlar</button></div></section>
     <section class="card utility-page" data-app-view="help"><div class="card-head"><div><h3>Yardım ve kullanım</h3><span class="subtle">Kısa yanıtlar</span></div><span aria-hidden="true">❔</span></div><details class="help-item"><summary>Uygulamaya nasıl başlarım?</summary><p>Başlangıç bölümünden yaş, boy, kilo ve hareket düzeyini gir. E-posta veya hesap gerekmez; bilgiler bu tarayıcıda kalır.</p></details><details class="help-item"><summary>Kalori ve protein değerleri kesin mi?</summary><p>Hayır. Hedefler bir denklem ve hareket varsayımına dayanır; öğün değerleri genel gıda verisi ve porsiyon tahminidir. Ürün etiketi ve tartılmış miktar daha doğru sonuç verir.</p></details><details class="help-item"><summary>Telefon değiştirirsem kayıtlarım ne olur?</summary><p>Kayıtları eski cihazda şifreli yedekle, yeni cihazda aynı parolayla geri yükle. Parolayı unutursan şifreli yedeği açmak mümkün değildir.</p></details><details class="help-item"><summary>Hatırlatıcı uygulama kapalıyken çalışır mı?</summary><p>Garanti edilmez. Uygulama sunucu kullanmaz; işletim sistemi tarayıcıyı uykuya alabilir. Bildirimler ancak bu cihazın izinleri uygunsa ve uygulama etkin durumdaysa gösterilebilir.</p></details><details class="help-item"><summary>Alerjiler tariflerde nasıl ele alınır?</summary><p>Yazdığın kaçınılan gıda adları eşleştirilerek tarif filtrelenir. Bu, ürün etiketini veya çapraz bulaşmayı doğrulamaz; alerji varsa malzeme ve etiketleri ayrıca kontrol et.</p></details><div class="utility-actions"><button class="secondary" data-go-screen="privacy" type="button">Gizlilik bilgisi</button><button class="secondary" data-go-screen="welcome" type="button">Başlangıca dön</button></div></section>
   `);
+
+  $('.profile-hub').insertAdjacentHTML('afterend', `<section class="card utility-page assistant-page" data-app-view="assistant"><div class="card-head"><div><h3>Yerel beslenme asistanı</h3><span class="subtle">Türkçe · çevrimdışı · bu cihazda</span></div><span aria-hidden="true">✦</span></div><p>Bu yardımcı, yalnızca uygulamadaki profilin, kayıtların ve tarif listesinden kurallı özet ve öneri üretir. Mesajların veya sağlık verilerin internete gönderilmez; sohbet geçmişi kaydedilmez.</p><div class="assistant-notice"><b>Tahmini ve sınırlı bir yardımcıdır.</b><span>Tıbbi tanı, tedavi, ilaç önerisi veya güvenli olmayan kalori hedefi vermez. Özel sağlık durumunda sağlık uzmanına danış.</span></div><div class="assistant-prompts"><button type="button" data-assistant-prompt="Bugün protein hedefime ne kadar kaldı?">Protein durumum</button><button type="button" data-assistant-prompt="Bugünümün özeti nedir?">Günlük özet</button><button type="button" data-assistant-prompt="Evdeki malzemelerle tarif öner">Evdekilerle tarif</button><button type="button" data-assistant-prompt="250 ml su eklemek istiyorum">250 ml su öner</button><button type="button" data-assistant-prompt="Bana günlük plan oluştur">Plan öner</button></div><form id="assistantForm" class="assistant-form"><label for="assistantInput">Ne yapmak istiyorsun?</label><div><input class="field" id="assistantInput" maxlength="280" placeholder="Örn. Bugün protein hedefime ne kadar kaldı?" autocomplete="off"><button class="primary" type="submit">Sor</button></div></form><div id="assistantReply" class="assistant-reply" role="status" aria-live="polite">Bir konu seç veya sorunu yaz. Asistan yalnızca bu cihazdaki kayıtları kullanır.</div><div id="assistantActions" class="assistant-actions"></div><div class="utility-actions"><button class="secondary tiny" id="assistantClear" type="button">Bu ekranı temizle</button><button class="secondary tiny" id="assistantToggle" type="button">Asistanı kapat</button></div><p class="estimate">Asistan kapalıyken hiçbir kayıt değerlendirilmez. Kayıt veya plan oluşturan düğmeler açıkça “onayla” yazar; dokunmadan uygulamaya değişiklik yapılmaz.</p></section>`);
 
   const helpPanel = document.querySelector('[data-app-view="help"]');
   if (helpPanel) {
@@ -609,6 +611,60 @@
     updateTrackingStatus();
     app.toast('Takip görünümü güncellendi. Kayıtların cihazında duruyor.');
   });
+  const ASSISTANT_ENABLED_KEY = 'iyibeslen-local-assistant-enabled-v1';
+  const assistantEnabled = () => { try { return localStorage.getItem(ASSISTANT_ENABLED_KEY) !== 'false'; } catch { return true; } };
+  function setAssistantReply(message, actions = []) {
+    const reply = $('#assistantReply'), actionBox = $('#assistantActions');
+    reply.textContent = message;
+    actionBox.replaceChildren(...actions.map(({ label, run }) => {
+      const button = document.createElement('button'); button.type = 'button'; button.className = 'secondary'; button.textContent = label;
+      button.addEventListener('click', run); return button;
+    }));
+  }
+  function assistantTotals() {
+    const entries = state().days?.[app.getSelectedDate()] || [], known = entries.filter(item => !item.unknown);
+    return { entries, known, kcal: known.reduce((sum, item) => sum + Number(item.kcal || 0), 0), protein: known.reduce((sum, item) => sum + Number(item.protein || 0), 0) };
+  }
+  function assistantRecipe() {
+    const pantry = (state().pantryItems || []).map(normalize), available = recipes.filter(recipe => !excluded(recipe));
+    return available.sort((a, b) => pantryMatches(b, pantry) - pantryMatches(a, pantry) || a.minutes - b.minutes)[0] || null;
+  }
+  function askAssistant(question) {
+    if (!assistantEnabled()) { setAssistantReply('Yerel asistan kapalı. İstersen aşağıdaki düğmeyle yeniden etkinleştir.'); return; }
+    const text = normalize(question), data = state(), profile = data.profile, goal = app.goalForDay(), totals = assistantTotals();
+    const medical = /ilac|tedavi|tani|hastalik|hamile|emzir|bobrek|karaciger|yeme bozuk/.test(text);
+    if (medical) { setAssistantReply('Bu konuda kişisel tıbbi yönlendirme veremem. Sağlık durumun veya ilaç kullanımı için doktor ya da diyetisyenle görüş. Uygulamadaki hedefler yalnızca tahmindir.'); return; }
+    if (/su/.test(text)) {
+      const amount = Math.min(5000, Math.max(50, Number((question.match(/\d+/) || [250])[0])));
+      setAssistantReply(`${amount} ml su kaydı eklemeyi önerebilirim. Bu işlem yalnızca seçili güne kaydedilir.`, [{ label: `${amount} ml su eklemeyi onayla`, run: () => {
+        const current = state(), date = app.getSelectedDate(); current.waterEntries = current.waterEntries || {}; current.waterEntries[date] = Array.isArray(current.waterEntries[date]) ? current.waterEntries[date] : []; current.waterEntries[date].push(amount);
+        if (app.save()) { window.dispatchEvent(new CustomEvent('iyibeslen:data-changed')); setAssistantReply(`${amount} ml su kaydedildi.`, []); app.toast('Su kaydı eklendi'); }
+      }}]); return;
+    }
+    if (/plan/.test(text)) { setAssistantReply('Profilin uygunsa günlük örnek plan oluşturabilirim. Plan tahmindir; alerji ve ürün etiketlerini ayrıca kontrol et.', [{ label: 'Günlük plan oluşturmayı onayla', run: () => { app.setScreen('plan'); setTimeout(() => { $('#planPeriod').value = 'day'; $('#makePlan').click(); }, 100); }}]); return; }
+    if (/evde|tarif|yemek fikri|ne yap/.test(text)) {
+      const recipe = assistantRecipe();
+      if (!recipe) { setAssistantReply('Mevcut tercihlerinle eşleşen yerel tarif bulamadım. Evdeki malzemeleri Tarifler bölümüne virgülle yazabilir veya profilindeki tercihleri gözden geçirebilirsin.'); return; }
+      const total = recipeTotal(recipe), pantryCount = pantryMatches(recipe, (data.pantryItems || []).map(normalize));
+      setAssistantReply(`${recipe.name} önerisi: yaklaşık ${Math.round(total.kcal)} kcal ve ${Math.round(total.protein)} g protein, hazırlama süresi ${recipe.minutes} dakika. ${pantryCount ? `Evdeki listende ${pantryCount} malzeme eşleşiyor.` : 'Evdeki malzeme listesiyle eşleşme yok; malzemelerini Tarifler bölümünde ekleyebilirsin.'} Değerler yaklaşık.` , [{ label: 'Tarifi görüntüle', run: () => { app.setScreen('recipes'); setTimeout(() => { $('#recipeSearch').value = recipe.name; $('#recipeSearch').dispatchEvent(new Event('input')); }, 80); }}]); return;
+    }
+    if (/protein/.test(text)) {
+      if (!profile || !goal?.protein) { setAssistantReply('Protein hedefini karşılaştırmak için profilini tamamlaman gerekir. İstersen Profil bölümünden hesaplayabilirsin.'); return; }
+      const low = Number(goal.proteinMin ?? goal.protein), high = Number(goal.proteinMax ?? goal.protein), left = Math.max(0, Math.round(low - totals.protein));
+      setAssistantReply(`Bugün bilinen kayıtlarda yaklaşık ${Math.round(totals.protein)} g protein var. Tahmini hedef aralığının alt sınırına ${left} g kaldı${totals.entries.length !== totals.known.length ? '; besin değeri eksik kayıtlar olduğu için gerçek toplam daha yüksek olabilir' : ''}. Bu tıbbi hedef değildir.`); return;
+    }
+    if (/ozet|bugun|kalori/.test(text)) {
+      const kcalText = goal?.kcal ? `yaklaşık ${Math.max(0, Math.round(goal.kcal - totals.kcal))} kcal kaldı` : 'kalori hedefi profil tamamlanınca gösterilir';
+      const proteinText = goal?.protein ? `protein alt sınırına yaklaşık ${Math.max(0, Math.round((goal.proteinMin ?? goal.protein) - totals.protein))} g kaldı` : 'protein hedefi henüz karşılaştırılamıyor';
+      setAssistantReply(`Bugün ${totals.entries.length} öğün kaydı var; ${totals.known.length} kaydın enerji ve protein değeri biliniyor. Toplam yaklaşık ${Math.round(totals.kcal)} kcal ve ${Math.round(totals.protein)} g protein: ${kcalText}, ${proteinText}. Eksik kayıtlar varsa bu özet tahmindir.`); return;
+    }
+    setAssistantReply('Şunları sorabilirsin: “Bugün protein hedefime ne kadar kaldı?”, “Bugünümün özeti nedir?”, “Evdeki malzemelerle tarif öner”, “250 ml su eklemek istiyorum” veya “Bana günlük plan oluştur”. Sağlık, ilaç ve tedavi konularında uzman desteği gerekir.');
+  }
+  function renderAssistantToggle() { const enabled = assistantEnabled(); $('#assistantInput').disabled = !enabled; $('#assistantForm button').disabled = !enabled; document.querySelectorAll('[data-assistant-prompt]').forEach(button => button.disabled = !enabled); $('#assistantToggle').textContent = enabled ? 'Asistanı kapat' : 'Asistanı etkinleştir'; if (!enabled) setAssistantReply('Yerel asistan kapalı. Yeniden etkinleştirene kadar kayıtların değerlendirilmez.'); }
+  $('#assistantForm').addEventListener('submit', event => { event.preventDefault(); const question = $('#assistantInput').value.trim(); if (!question) { setAssistantReply('Önce kısa bir soru yaz veya üstteki önerilerden birini seç.'); return; } askAssistant(question); });
+  document.querySelectorAll('[data-assistant-prompt]').forEach(button => button.addEventListener('click', () => { $('#assistantInput').value = button.dataset.assistantPrompt; askAssistant(button.dataset.assistantPrompt); }));
+  $('#assistantClear').addEventListener('click', () => { $('#assistantInput').value = ''; setAssistantReply('Bu ekran temizlendi. Sohbet geçmişi zaten cihazda saklanmaz.'); });
+  $('#assistantToggle').addEventListener('click', () => { try { localStorage.setItem(ASSISTANT_ENABLED_KEY, assistantEnabled() ? 'false' : 'true'); } catch {} renderAssistantToggle(); });
   updateTrackingStatus();
-  renderRecipes(); renderShoppingList(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderHomeFlow(); renderPlanFreshness();
+  renderAssistantToggle(); renderRecipes(); renderShoppingList(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderHomeFlow(); renderPlanFreshness();
 })();
