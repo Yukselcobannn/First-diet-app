@@ -57,7 +57,7 @@
     <section class="home-flow" data-app-view="today" aria-labelledby="homeFlowTitle">
       <div class="home-flow-head"><div><span class="eyebrow">Günün akışı</span><h2 id="homeFlowTitle">Sade adımlar, düzenli takip</h2></div><span class="home-spark" aria-hidden="true">✳</span></div>
       <div class="home-flow-grid"><article class="home-next-card"><span class="mini-label">Sıradaki öğün</span><strong id="homeNextMeal">Öğün zamanını seçelim</strong><p id="homeNextMealNote">İlerlemene göre günün kalanını planla.</p><button class="secondary" data-focus-meal type="button">Öğün kaydı aç</button></article><article class="home-plan-card"><span class="mini-label">Bugünkü planın</span><strong id="homePlanTitle">Henüz günlük planın yok</strong><p id="homePlanNote">Tercih ve hedeflerine göre ücretsiz örnek oluştur.</p><button class="secondary" data-go-screen="plan" type="button">Planı görüntüle</button></article></div>
-      <div class="home-week-strip"><span id="homeWeekCount">Bu hafta: henüz kayıt yok</span><button class="text-action" data-go-screen="progress" type="button">Haftalık özeti gör →</button><button class="text-action" data-go-screen="recipes" type="button">Tariflere göz at →</button></div>
+      <div class="home-week-strip"><span id="homeWeekCount">Bu hafta: henüz kayıt yok</span><div class="home-week-days" id="homeWeekDays" role="group" aria-label="Son yedi günün öğün kayıtları"></div><button class="text-action" data-go-screen="progress" type="button">Haftalık özeti gör →</button><button class="text-action" data-go-screen="recipes" type="button">Tariflere göz at →</button></div>
     </section>
     <section class="card habit-card" data-app-view="today">
       <div class="card-head"><div><h3>Günlük yaşam notları</h3><span class="subtle">İsteğe bağlı · kendi gözlemlerin</span></div><span class="tag">Bu cihazda</span></div>
@@ -442,11 +442,17 @@
     for (let daysAgo = 6; daysAgo >= 0; daysAgo--) {
       const day = new Date(`${date}T12:00:00`); day.setDate(day.getDate() - daysAgo);
       const key = day.toLocaleDateString('sv-SE'), meals = data.days?.[key] || [];
-      if (meals.length) loggedDays.push({ complete: meals.every(item => !item.unknown && !item.requiresConfirm) });
+      loggedDays.push({ key, label: day.toLocaleDateString('tr-TR', { weekday: 'short' }).replace('.', ''), dayNumber: day.getDate(), meals, known: meals.filter(item => !item.unknown && !item.requiresConfirm).length });
     }
-    const complete = loggedDays.filter(day => day.complete).length;
-    $('#homeWeekCount').textContent = loggedDays.length
-      ? `Son 7 günde ${loggedDays.length} kayıtlı gün · ${complete} günün besin değerleri biliniyor`
+    const recorded = loggedDays.filter(day => day.meals.length), complete = recorded.filter(day => day.known === day.meals.length).length;
+    $('#homeWeekDays').innerHTML = loggedDays.map(day => {
+      const status = !day.meals.length ? 'empty' : day.known === day.meals.length ? 'recorded' : 'partial';
+      const title = !day.meals.length ? 'Kayıt yok' : `${day.meals.length} öğün kaydı${day.known < day.meals.length ? ` · ${day.meals.length - day.known} kayıtta değer eksik` : ''}`;
+      return `<button class="home-week-day is-${status}${day.key === date ? ' is-selected' : ''}" type="button" data-week-date="${day.key}" aria-pressed="${day.key === date}" aria-label="${esc(new Date(`${day.key}T12:00:00`).toLocaleDateString('tr-TR', { weekday: 'long', day: 'numeric', month: 'long' }))}: ${esc(title)}"><span>${esc(day.label)}</span><i aria-hidden="true">${day.meals.length ? day.known === day.meals.length ? '✓' : '·' : '–'}</i><small>${day.dayNumber}</small></button>`;
+    }).join('');
+    $('#homeWeekDays').querySelectorAll('[data-week-date]').forEach(button => button.addEventListener('click', () => window.dispatchEvent(new CustomEvent('iyibeslen:select-day', { detail: button.dataset.weekDate }))));
+    $('#homeWeekCount').textContent = recorded.length
+      ? `Son 7 günde ${recorded.length} kayıtlı gün · ${complete} günün tüm kayıtlarında besin değeri var`
       : 'Son 7 günde henüz öğün kaydı yok';
   }
 
