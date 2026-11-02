@@ -210,6 +210,7 @@
   function renderPlanFreshness() {
     const result = $('#planResult'), button = $('#addPlanShopping'), data = state(), plan = data.lastPlan;
     result.querySelector('.plan-stale-notice')?.remove();
+    if (!plan) { result.replaceChildren(); button.hidden = true; return; }
     const currentSignature = app.profileFingerprint(data.profile), stale = !!plan && (!data.planSignature || data.planSignature !== currentSignature);
     button.hidden = !plan || stale || !Array.isArray(data.planShoppingItems) || !data.planShoppingItems.length;
     if (stale) {
@@ -542,7 +543,7 @@
   window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderReport(); });
   window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderReport(); });
   window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderPlanFreshness(); renderReport(); });
-  $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderReport(); }, 0));
+  $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderPlanFreshness(); renderReport(); }, 0));
 
   app.registerBackupExtension((value, backup) => {
     const isRecord = item => item && typeof item === 'object' && !Array.isArray(item);
