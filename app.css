@@ -389,6 +389,8 @@ body[data-theme="dark"] .estimate { color: #a6b2a7; }
   aside { z-index: 2; }
 }
 @media (max-width: 600px) {
+  .profile-setup-actions { justify-content: stretch; }
+  .profile-setup-actions button { width: 100%; }
   .food-picker-row { grid-template-columns: 1fr; }
   .food-picker-body > button { width: 100%; min-height: 42px; }
 }
@@ -1026,6 +1028,8 @@ body[data-app-screen="shopping"] .shopping-form { grid-template-columns:minmax(0
 .detail-dialog-actions { position:sticky; bottom:-18px; display:flex; justify-content:flex-end; gap:9px; margin:18px -18px -18px; padding:13px 18px calc(13px + env(safe-area-inset-bottom)); border-top:1px solid #e9e9e1; background:#fffefaed; backdrop-filter:blur(10px); }
 .meal-detail-dialog { width:min(540px,calc(100vw - 26px)); }
 .meal-detail-macros { display:grid; grid-template-columns:1fr 1fr; gap:9px; margin-top:18px; }
+.meal-copy-row { display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:10px; padding:9px 2px; }
+.meal-copy-row .subtle { text-align:right; }
 .meal-detail-macros > div { display:grid; gap:5px; padding:13px; border:1px solid #e7ebe2; border-radius:12px; background:#f7f9f4; }
 .meal-detail-macros span { color:#667468; font-size:11px; }
 .meal-detail-macros b { color:#31583c; font-size:16px; }
@@ -1172,6 +1176,7 @@ body.tracking-protein-off.tracking-weight-off .weekly-review-grid { grid-templat
 body.tracking-calories-off .meal-detail-macros,
 body.tracking-protein-off .meal-detail-macros { grid-template-columns:1fr; }
 body.tracking-calories-off.tracking-protein-off .meal-detail-macros { display:none; }
+@media(max-width:600px){.meal-copy-row{align-items:flex-start;flex-direction:column}.meal-copy-row .subtle{text-align:left}}
 body[data-theme="dark"] .tracking-setting fieldset { border-color:#344238; }
 body[data-theme="dark"] .tracking-setting legend,
 body[data-theme="dark"] .goal-explainer-copy h4 { color:#dce9dd; }
