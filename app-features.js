@@ -304,9 +304,11 @@
     const box = $('#goalJourney');
     if (!box) return;
     const data = state(), profile = data.profile;
-    const target = Number(profile?.targetWeight);
-    const start = Number(profile?.weight);
-    const canShow = profile && ['lose', 'gain'].includes(profile.goal) && Number.isFinite(target) && Number.isFinite(start) && target !== start;
+    // Number(null) is 0. Treat an unset optional target as missing instead of
+    // rendering a misleading 0 kg goal for older or imported profiles.
+    const target = profile?.targetWeight == null ? NaN : Number(profile.targetWeight);
+    const start = profile?.weight == null ? NaN : Number(profile.weight);
+    const canShow = profile && ['lose', 'gain'].includes(profile.goal) && Number.isFinite(target) && target > 0 && Number.isFinite(start) && start > 0 && target !== start;
     if (!canShow) {
       $('#goalJourneySubtitle').textContent = 'İstersen profilden bir kilo hedefi ekle';
       box.innerHTML = `<div class="goal-journey-empty"><span aria-hidden="true">◎</span><div><strong>Henüz bir kilo hedefin yok</strong><p>Kilo takibi isteğe bağlıdır. Hedef eklersen başlangıç, son kayıt ve hedef arasındaki farkı burada görebilirsin.</p></div><button class="secondary tiny" type="button" id="goalJourneySetup">Hedef ekle</button></div>`;
