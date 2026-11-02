@@ -80,7 +80,10 @@
       <p class="estimate">Tarifte “Alışveriş listesine ekle” seçeneği malzemeleri buraya ekler. Miktarları ve ürün adlarını düzenleyebilirsin.</p>
     </section>
   `);
+  $('#waterTracker').insertAdjacentHTML('afterend', `<section class="card meal-balance-card" data-app-view="today" aria-labelledby="mealBalanceTitle"><div class="card-head"><div><h3 id="mealBalanceTitle">Kalan günün planı</h3><span class="subtle" id="mealBalanceSubtitle">Kayıtlarına göre tahmini dağılım</span></div><span class="meal-balance-icon" aria-hidden="true">✦</span></div><div id="mealBalance" class="meal-balance-content"></div></section>`);
+  $('.food-picker').insertAdjacentHTML('afterend', `<div class="quick-foods" aria-label="Hızlı öğün ekleme"><div><strong>Hızlı ekle</strong><span class="subtle">Seçili öğün türüne eklenir</span></div><div class="quick-food-list"><button type="button" data-quick-food="egg" data-quick-grams="50">🥚 1 yumurta</button><button type="button" data-quick-food="banana" data-quick-grams="118">🍌 1 muz</button><button type="button" data-quick-food="plainYogurt" data-quick-grams="150">🥣 150 g yoğurt</button><button type="button" data-quick-food="oats" data-quick-grams="40">🌾 40 g yulaf</button><button type="button" data-quick-food="chickenBreast" data-quick-grams="100">🍗 100 g tavuk</button></div></div>`);
   $('.leftcol').insertAdjacentHTML('afterbegin', `<section class="card profile-summary-card" data-app-view="profile"><div class="card-head"><div><h3>Profilin ve hedeflerin</h3><span class="subtle">Kişisel ayarların</span></div><button class="secondary tiny" id="profileEditButton" type="button">Düzenle</button></div><div id="profileSummary"></div><p class="estimate">Öğün, tarif favorisi, alışveriş listesi ve günlük yaşam notların bu tarayıcıda saklanır. Hesap, parola kurtarma ve cihazlar arasında eşitleme yok. Tarayıcı depolaması silinirse veriler kaybolabilir; düzenli yedek al.</p></section>`);
+  $('.profile-summary-card').insertAdjacentHTML('afterend', `<section class="card goal-journey-card" data-app-view="progress profile" aria-labelledby="goalJourneyTitle"><div class="card-head"><div><h3 id="goalJourneyTitle">Hedef yolculuğun</h3><span class="subtle" id="goalJourneySubtitle">Kayıtlarınla birlikte güncellenir</span></div><span class="goal-journey-icon" aria-hidden="true">↗</span></div><div id="goalJourney" class="goal-journey-content"></div></section>`);
   $('.profile-summary-card').after($('.home-flow'));
 
   $('.leftcol').insertAdjacentHTML('beforeend', `
@@ -249,19 +252,22 @@
     for (let offset = 0; offset < range.days; offset++) {
       const date = new Date(range.from + 'T12:00:00'); date.setDate(date.getDate() + offset); const key = reportDate(date);
       const meals = data.days?.[key] || [], target = data.dayTargets?.[key] || {}, habit = data.habits?.[key] || {};
-      const calories = meals.reduce((sum, meal) => sum + (Number.isFinite(meal.kcal) ? meal.kcal : 0), 0), protein = meals.reduce((sum, meal) => sum + (Number.isFinite(meal.protein) ? meal.protein : 0), 0);
-      if (meals.length) rows.push({ date:key, type:'Öğün toplamı', name:`${meals.length} kayıtlı öğün`, kcal:Math.round(calories), protein:Math.round(protein * 10) / 10, weight:'', details:meals.some(meal => meal.unknown || meal.requiresConfirm) ? 'Bazı öğünlerde doğrulama veya eksik bilgi var; değerler tahmini' : 'Yalnızca kaydedilen öğünler', targetKcal:target.kcal ?? '', targetProtein:target.protein ?? '' });
-      for (const meal of meals) rows.push({ date:key, type:'Öğün', name:meal.name, kcal:meal.kcal, protein:meal.protein, weight:'', details:[meal.assumption, meal.source].filter(Boolean).join(' · ') || (meal.approx ? 'Tahmini değer' : ''), targetKcal:'', targetProtein:'' });
+      const incomplete = meals.some(meal => meal.unknown || meal.requiresConfirm), knownMeals = meals.filter(meal => !meal.unknown && !meal.requiresConfirm);
+      const calories = knownMeals.reduce((sum, meal) => sum + (Number.isFinite(meal.kcal) ? meal.kcal : 0), 0), protein = knownMeals.reduce((sum, meal) => sum + (Number.isFinite(meal.protein) ? meal.protein : 0), 0);
+      if (meals.length) rows.push({ date:key, type:'Öğün toplamı', name:`${meals.length} kayıtlı öğün`, kcal:Math.round(calories), protein:Math.round(protein * 10) / 10, weight:'', details:incomplete ? 'Eksik öğün var; toplam yalnızca değeri bilinen kayıtları içerir' : 'Yalnızca kaydedilen öğünler; tahmini değerler', targetKcal:target.kcal ?? '', targetProtein:target.protein ?? '' });
+      for (const meal of meals) rows.push({ date:key, type:'Öğün', name:meal.name, kcal:meal.unknown || meal.requiresConfirm ? '' : meal.kcal, protein:meal.unknown || meal.requiresConfirm ? '' : meal.protein, weight:'', details:[meal.unknown ? 'Besin değeri bilinmiyor' : '', meal.assumption, meal.source].filter(Boolean).join(' · ') || (meal.approx ? 'Tahmini değer' : ''), targetKcal:'', targetProtein:'' });
       if (Object.prototype.hasOwnProperty.call(data.weights || {}, key)) rows.push({ date:key, type:'Kilo', name:'Kilo kaydı', kcal:'', protein:'', weight:data.weights[key], details:'kg', targetKcal:'', targetProtein:'' });
       if (Object.keys(habit).length) rows.push({ date:key, type:'Yaşam notu', name:'Günlük not', kcal:'', protein:'', weight:'', details:[habit.sleep != null ? `Uyku ${habit.sleep} saat` : '', habit.activity != null ? `Hareket ${habit.activity} dk` : '', habit.hunger != null ? `Açlık ${habit.hunger}/5` : '', habit.mood ? `Ruh hâli ${({good:'iyi',neutral:'nötr',low:'zor'})[habit.mood] || 'kaydedildi'}` : ''].filter(Boolean).join(' · '), targetKcal:'', targetProtein:'' });
+      if (data.waterEntries?.[key]?.length) rows.push({ date:key, type:'Su', name:`${data.waterEntries[key].length} kayıt`, kcal:'', protein:'', weight:'', details:`Toplam ${data.waterEntries[key].reduce((sum, amount) => sum + amount, 0)} ml`, targetKcal:'', targetProtein:'' });
+      if (data.notes?.[key]) rows.push({ date:key, type:'Kişisel not', name:'Günlük not', kcal:'', protein:'', weight:'', details:data.notes[key], targetKcal:'', targetProtein:'' });
     }
     return rows;
   }
   function renderReport() {
     const range = reportRange(false); if (!range) { $('#reportSummary').textContent = 'Tarih aralığını kontrol et. Bitiş, başlangıçtan önce veya bugünden sonra olamaz.'; return; }
-    const rows = reportRows(range), dayRows = rows.filter(row => row.type === 'Öğün toplamı'), sum = key => dayRows.reduce((value, row) => value + Number(row[key] || 0), 0), complete = dayRows.filter(row => !row.details.includes('eksik bilgi')).length;
-    const avgKcal = dayRows.length ? Math.round(sum('kcal') / dayRows.length) : null, avgProtein = dayRows.length ? Math.round(sum('protein') / dayRows.length * 10) / 10 : null;
-    $('#reportSummary').innerHTML = rows.length ? `<div><b>${rows.length.toLocaleString('tr-TR')}</b><span>kayıt</span></div><div><b>${dayRows.length}</b><span>öğünlü gün</span></div><div><b>${avgKcal == null ? '—' : `${avgKcal} kcal`}</b><span>öğün kaydedilen günlerin ortalaması</span></div><div><b>${avgProtein == null ? '—' : `${avgProtein} g`}</b><span>öğün kaydedilen günlerin ortalaması</span></div><small>${complete} öğün toplamı eksiksiz işaretli gün · kayıt olmayan günler ortalamaya katılmadı.</small>` : '<div class="empty">Bu tarih aralığında kayıt bulunamadı. Aralığı değiştirip tekrar deneyebilirsin.</div>';
+    const rows = reportRows(range), dayRows = rows.filter(row => row.type === 'Öğün toplamı'), completeRows = dayRows.filter(row => !row.details.includes('Eksik öğün var')), sum = (key, source) => source.reduce((value, row) => value + Number(row[key] || 0), 0);
+    const avgKcal = completeRows.length ? Math.round(sum('kcal', completeRows) / completeRows.length) : null, avgProtein = completeRows.length ? Math.round(sum('protein', completeRows) / completeRows.length * 10) / 10 : null;
+    $('#reportSummary').innerHTML = rows.length ? `<div><b>${rows.length.toLocaleString('tr-TR')}</b><span>kayıt</span></div><div><b>${dayRows.length}</b><span>öğünlü gün</span></div><div><b>${avgKcal == null ? '—' : `${avgKcal} kcal`}</b><span>eksiksiz öğün kayıtlı gün ortalaması</span></div><div><b>${avgProtein == null ? '—' : `${avgProtein} g`}</b><span>eksiksiz öğün kayıtlı gün ortalaması</span></div><small>${completeRows.length} günün tüm öğün değerleri biliniyor · eksik öğünlü ve kayıtsız günler ortalamaya katılmadı.</small>` : '<div class="empty">Bu tarih aralığında kayıt bulunamadı. Aralığı değiştirip tekrar deneyebilirsin.</div>';
   }
   function exportReport() {
     const range = reportRange(); if (!range) return;
@@ -294,7 +300,111 @@
     box.innerHTML = `<div class="profile-facts"><span>${esc(profile.age)} yaş</span><span>${esc(profile.height)} cm</span><span class="profile-weight-fact">${esc(profile.weight)} kg</span><span>${esc(goal)}</span></div><p class="subtle">Beslenme: ${esc(diet)}${profile.avoid ? ` · Kaçındıkların: ${esc(profile.avoid)}` : ''}</p>${weightGoal ? `<p class="subtle">${esc(weightGoal)} · tahmini kontrol; kalori formülünü değiştirmez.</p>` : ''}<p class="subtle">Günlük hedef: ${targetSummary}</p>`;
   }
 
-  window.addEventListener('iyibeslen:tracking-change', () => { renderProfileSummary(); renderHomeFlow(); });
+  function renderGoalJourney() {
+    const box = $('#goalJourney');
+    if (!box) return;
+    const data = state(), profile = data.profile;
+    const target = Number(profile?.targetWeight);
+    const start = Number(profile?.weight);
+    const canShow = profile && ['lose', 'gain'].includes(profile.goal) && Number.isFinite(target) && Number.isFinite(start) && target !== start;
+    if (!canShow) {
+      $('#goalJourneySubtitle').textContent = 'İstersen profilden bir kilo hedefi ekle';
+      box.innerHTML = `<div class="goal-journey-empty"><span aria-hidden="true">◎</span><div><strong>Henüz bir kilo hedefin yok</strong><p>Kilo takibi isteğe bağlıdır. Hedef eklersen başlangıç, son kayıt ve hedef arasındaki farkı burada görebilirsin.</p></div><button class="secondary tiny" type="button" id="goalJourneySetup">Hedef ekle</button></div>`;
+      $('#goalJourneySetup').addEventListener('click', app.openProfile);
+      return;
+    }
+    const dateKeys = Object.keys(data.weights || {}).filter(key => key <= app.getSelectedDate() && Number.isFinite(Number(data.weights[key]))).sort();
+    const latestKey = dateKeys.at(-1);
+    const current = latestKey ? Number(data.weights[latestKey]) : start;
+    const direction = target < start ? -1 : 1;
+    const total = Math.abs(target - start);
+    const changed = Math.max(0, Math.min(total, direction * (current - start)));
+    const remaining = Math.abs(target - current);
+    const percent = Math.max(0, Math.min(100, changed / total * 100));
+    const changeText = current === start ? 'Başlangıç kaydın' : `${current > start ? '+' : ''}${(current - start).toLocaleString('tr-TR', { maximumFractionDigits: 1 })} kg`;
+    const goalLabel = direction < 0 ? 'Kilo verme hedefi' : 'Kilo alma hedefi';
+    const reviewed = profile.goalReviewedAt ? new Date(`${profile.goalReviewedAt}T12:00:00`) : null;
+    const due = reviewed && Number(profile.goalWeeks) > 0 ? new Date(reviewed.getTime() + Number(profile.goalWeeks) * 7 * 86400000) : null;
+    const dueText = due ? due.toLocaleDateString('tr-TR', { day: 'numeric', month: 'long', year: 'numeric' }) : 'Süre seçilmedi';
+    const currentLabel = latestKey ? `${current.toLocaleString('tr-TR', { maximumFractionDigits: 1 })} kg` : `${start.toLocaleString('tr-TR', { maximumFractionDigits: 1 })} kg · başlangıç`;
+    $('#goalJourneySubtitle').textContent = latestKey ? `Son tartım: ${new Date(`${latestKey}T12:00:00`).toLocaleDateString('tr-TR', { day: 'numeric', month: 'short' })}` : 'Henüz tartım kaydı yok';
+    box.innerHTML = `<div class="goal-journey-top"><div><span class="mini-label">${goalLabel}</span><strong>${currentLabel}</strong><small>${changeText} · başlangıç ${start.toLocaleString('tr-TR', { maximumFractionDigits: 1 })} kg</small></div><div class="goal-journey-target"><span>Hedef</span><b>${target.toLocaleString('tr-TR', { maximumFractionDigits: 1 })} kg</b></div></div><div class="goal-journey-progress" role="progressbar" aria-label="Kilo hedefi ilerlemesi" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${Math.round(percent)}"><span style="width:${percent}%"></span></div><div class="goal-journey-stats"><div><span>Tamamlanan</span><strong>%${Math.round(percent)}</strong></div><div><span>Hedefe kalan</span><strong>${remaining.toLocaleString('tr-TR', { maximumFractionDigits: 1 })} kg</strong></div><div><span>Tercih edilen tarih</span><strong>${dueText}</strong></div></div><p class="estimate">Bu görünüm yalnızca kaydedilen tartımları karşılaştırır. Günlük dalgalanmalar normaldir; tek bir ölçüme göre hedefini sert biçimde değiştirme.</p>`;
+  }
+
+  function renderMealBalance() {
+    const box = $('#mealBalance');
+    if (!box) return;
+    const data = state(), profile = data.profile, goal = app.goalForDay();
+    const preferences = data.trackingPreferences || {};
+    const entries = data.days?.[app.getSelectedDate()] || [];
+    const known = entries.filter(item => !item.unknown);
+    const total = known.reduce((sum, item) => ({ kcal: sum.kcal + Number(item.kcal || 0), protein: sum.protein + Number(item.protein || 0) }), { kcal: 0, protein: 0 });
+    const unknownCount = entries.length - known.length;
+    const allSlots = [
+      { id: 'breakfast', label: 'Kahvaltı' }, { id: 'lunch', label: 'Öğle' },
+      { id: 'dinner', label: 'Akşam' }, { id: 'snack', label: 'Ara öğün' }
+    ];
+    const loggedCategories = new Set(entries.map(item => item.category));
+    const remainingSlots = allSlots.filter(slot => !loggedCategories.has(slot.id));
+    if (!profile || !goal || (preferences.calories === false && preferences.protein === false)) {
+      $('#mealBalanceSubtitle').textContent = 'İsteğe bağlı günlük rehber';
+      box.innerHTML = `<div class="meal-balance-empty"><span aria-hidden="true">◌</span><p>${!profile ? 'Profilini tamamladığında, günün kalan öğünleri için hedeflerine dayalı yaklaşık bir dağılım görebilirsin.' : 'Kalori ve protein takibi kapalı. Ayarlardan istediğin takibi yeniden açabilirsin.'}</p><button class="secondary tiny" type="button" id="mealBalanceSettings">${!profile ? 'Profilimi düzenle' : 'Ayarları aç'}</button></div>`;
+      $('#mealBalanceSettings').addEventListener('click', () => !profile ? app.openProfile() : app.setScreen('settings'));
+      return;
+    }
+    if (!remainingSlots.length) {
+      $('#mealBalanceSubtitle').textContent = 'Bugün için kayıtlı ana öğünlerin tamamlandı';
+      box.innerHTML = `<div class="meal-balance-empty"><span aria-hidden="true">✓</span><p>İstersen ara öğün veya içecek kaydı ekleyebilirsin. Kayıtların günlük toplamını otomatik günceller.</p><button class="secondary tiny" type="button" data-balance-add="other">Kayıt ekle</button></div>`;
+      box.querySelector('[data-balance-add]').addEventListener('click', event => focusMealCategory(event.currentTarget.dataset.balanceAdd));
+      return;
+    }
+    const targetKcal = Number(goal.kcal || goal.kcalMin || 0);
+    const targetProtein = Number(goal.protein || 0);
+    const remainingKcal = Math.max(0, Math.round(targetKcal - total.kcal));
+    const remainingProtein = Math.max(0, Math.round(targetProtein - total.protein));
+    const divider = remainingSlots.length;
+    const showKcal = preferences.calories !== false;
+    const showProtein = preferences.protein !== false && targetProtein > 0;
+    $('#mealBalanceSubtitle').textContent = unknownCount ? `${unknownCount} kayıtta besin değeri eksik` : `${remainingSlots.length} öğün için tahmini paylaşım`;
+    const slotRows = remainingSlots.map((slot, index) => {
+      const kcal = showKcal ? Math.round(remainingKcal / divider + (index === 0 ? remainingKcal % divider : 0)) : null;
+      const protein = showProtein ? Math.round(remainingProtein / divider + (index === 0 ? remainingProtein % divider : 0)) : null;
+      const meta = [kcal !== null ? `~${kcal} kcal` : '', protein !== null ? `~${protein} g protein` : ''].filter(Boolean).join(' · ') || 'Takip kapalı';
+      return `<button class="meal-balance-slot" type="button" data-balance-add="${slot.id}"><span>${slot.label}</span><b>${meta}</b><small>Öğün kaydını aç →</small></button>`;
+    }).join('');
+    const remainingSummary = [showKcal ? `~${remainingKcal} kcal` : '', showProtein ? `~${remainingProtein} g protein` : ''].filter(Boolean).join(' · ');
+    box.innerHTML = `<div class="meal-balance-summary"><span>Günün kalan hedefi</span><strong>${remainingSummary}</strong></div><div class="meal-balance-slots">${slotRows}</div><p class="estimate">Bu dağılım kalan hedefi eksik öğünlere eşit böler; zorunlu bir plan değildir. ${unknownCount ? 'Besin değeri eksik kayıtlar nedeniyle toplam düşük görünebilir.' : ''}</p>`;
+    box.querySelectorAll('[data-balance-add]').forEach(button => button.addEventListener('click', event => focusMealCategory(event.currentTarget.dataset.balanceAdd)));
+  }
+
+  function focusMealCategory(category) {
+    app.setScreen('today');
+    window.setTimeout(() => {
+      const picker = $('#mealCategory');
+      if (picker) picker.value = category || 'other';
+      $('#mealInput')?.focus();
+    }, 120);
+  }
+
+  document.querySelectorAll('[data-quick-food]').forEach(button => button.addEventListener('click', () => {
+    const food = foodDB.find(item => item.id === button.dataset.quickFood);
+    const grams = Number(button.dataset.quickGrams);
+    if (!food || !Number.isFinite(grams) || grams <= 0) return;
+    const meal = {
+      name: `${food.planName || food.name} · ${grams} g`,
+      kcal: Math.round(food.kcal100 * grams / 100),
+      protein: Math.round(food.protein100 * grams / 10) / 10,
+      emoji: food.emoji || '🍽️',
+      category: $('#mealCategory')?.value || 'other',
+      assumption: `Hızlı ekleme: ${grams} g. ${food.assumption}`,
+      approx: true,
+      requiresConfirm: false,
+      source: `USDA FoodData Central SR Legacy · ${food.fdc} · 100 g değerleri gram miktarına göre hesaplandı.`
+    };
+    if (app.saveMeal(meal)) app.toast(`${food.planName || food.name} eklendi · yaklaşık değer`);
+  }));
+
+  window.addEventListener('iyibeslen:tracking-change', () => { renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderHomeFlow(); });
 
   function renderHomeFlow() {
     const data = state(), date = app.getSelectedDate(), entries = data.days?.[date] || [], categories = new Set(entries.map(item => item.category));
@@ -346,6 +456,7 @@
     actions.append(button);
   });
   new MutationObserver(addMealDetailActions).observe(mealList, { childList: true });
+  new MutationObserver(renderMealBalance).observe(mealList, { childList: true });
   addMealDetailActions();
 
   document.addEventListener('click', event => {
@@ -424,10 +535,10 @@
     if (app.save()) { renderHabits(); app.toast('Günlük yaşam notları kaydedildi'); }
   });
   $('#profileEditButton').addEventListener('click', app.openProfile);
-  window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); renderReport(); });
-  window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderReport(); });
-  window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderPlanFreshness(); renderReport(); });
-  $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderReport(); }, 0));
+  window.addEventListener('iyibeslen:select-day', () => { renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderReport(); });
+  window.addEventListener('iyibeslen:reset-theme', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderReport(); });
+  window.addEventListener('iyibeslen:data-changed', () => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderPlanFreshness(); renderReport(); });
+  $('#deleteData').addEventListener('click', () => setTimeout(() => { renderShoppingList(); renderRecipes(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderReport(); }, 0));
 
   app.registerBackupExtension((value, backup) => {
     const isRecord = item => item && typeof item === 'object' && !Array.isArray(item);
@@ -497,5 +608,5 @@
     app.toast('Takip görünümü güncellendi. Kayıtların cihazında duruyor.');
   });
   updateTrackingStatus();
-  renderRecipes(); renderShoppingList(); renderHabits(); renderProfileSummary(); renderHomeFlow(); renderPlanFreshness();
+  renderRecipes(); renderShoppingList(); renderHabits(); renderProfileSummary(); renderGoalJourney(); renderMealBalance(); renderHomeFlow(); renderPlanFreshness();
 })();
