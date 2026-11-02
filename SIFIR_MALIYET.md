@@ -23,7 +23,7 @@ Bu proje, geliştiren kişi ve kullanıcılar için temel kullanımda ücret ist
 - Reklam ağı, davranış analitiği, takip pikseli ve üçüncü taraf oturum izleme
 - Özel alan adı, ücretli sunucu, ücretli uygulama mağazası üyeliği veya zorunlu lisans
 
-Bu yüzden barkodla arama, fotoğraftan tanıma, bulut eşitleme ve sunucudan anlık bildirim gibi hizmetler temel uygulamada yoktur. Yerel asistan; kullanıcı açıkça etkinleştirdikten sonra günlük özet, protein durumu, evdeki malzemelerle eşleşen tarif fikri, su kaydı ve günlük/haftalık plan oluşturma önerisi sunar. Kural tabanlıdır; dil modeli gibi davranmaz ve bilgi uydurmaz. Temel akışı güçlendirmek için yeni özellik gerektiğinde önce yerel, açık kaynaklı ve çevrimdışı bir yol araştırılır.
+Bu yüzden barkodla arama, fotoğraftan tanıma, bulut eşitleme ve sunucudan anlık bildirim gibi hizmetler temel uygulamada yoktur. Yerel asistan; kullanıcı açıkça etkinleştirdikten sonra günlük özet, protein durumu, evdeki malzemelerle eşleşen tarif fikri, su kaydı ve günlük/haftalık plan oluşturma önerisi sunar. Tek bir eşleşen besin ile gram miktarından öğün taslağı çıkarabilir; yalnızca kullanıcının onayıyla kaydeder. Kural tabanlıdır; dil modeli gibi davranmaz ve bilgi uydurmaz. Temel akışı güçlendirmek için yeni özellik gerektiğinde önce yerel, açık kaynaklı ve çevrimdışı bir yol araştırılır.
 
 ## Yayın şekli ve sınırlar
 
