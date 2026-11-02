@@ -635,6 +635,19 @@
     const text = normalize(question), data = state(), profile = data.profile, goal = app.goalForDay(), totals = assistantTotals();
     const medical = /ilac|tedavi|tani|hastalik|hamile|emzir|bobrek|karaciger|yeme bozuk/.test(text);
     if (medical) { setAssistantReply('Bu konuda kişisel tıbbi yönlendirme veremem. Sağlık durumun veya ilaç kullanımı için doktor ya da diyetisyenle görüş. Uygulamadaki hedefler yalnızca tahmindir.'); return; }
+    if (/ogun kaydet|kaydet/.test(text)) {
+      const food = foodDB.filter(item => (item.terms || []).some(term => text.includes(normalize(term)))).sort((a, b) => Math.max(...b.terms.map(term => normalize(term).length)) - Math.max(...a.terms.map(term => normalize(term).length)))[0];
+      const gramsMatch = text.match(/(\d+(?:[.,]\d+)?)\s*(?:g|gr|gram)\b/);
+      if (!food) { setAssistantReply('Yerel besin listesinde güvenilir eşleşme bulamadım; yanlış değer üretmemek için kayıt oluşturmadım. Ana ekrandaki öğün ekleme alanını kullanabilirsin.'); return; }
+      if (!gramsMatch) { setAssistantReply(`${food.planName || food.name} için gram miktarını da yaz. Örnek: “150 g yoğurt öğün kaydet”. Kayıt ancak sonraki onayından sonra eklenir.`); return; }
+      const grams = Number(gramsMatch[1].replace(',', '.'));
+      if (!Number.isInteger(grams) || grams < 1 || grams > 5000) { setAssistantReply('Miktarı 1–5.000 tam gram arasında belirt; bu aralık dışındaki miktar için kayıt oluşturmadım.'); return; }
+      const kcal = Math.round(food.kcal100 * grams / 100), protein = Math.round(food.protein100 * grams / 10) / 10;
+      setAssistantReply(`${food.planName || food.name} · ${grams} g için yaklaşık ${kcal} kcal ve ${protein} g protein hesapladım. Kaynak: USDA FoodData Central SR Legacy genel kaydı. Bu yaklaşık öğün kaydını eklemek ister misin?`, [{ label: 'Öğün kaydını eklemeyi onayla', run: () => {
+        const meal = { name: `${food.planName || food.name} · ${grams} g`, kcal, protein, category: 'other', emoji: food.emoji || '🍽️', approx: true, requiresConfirm: false, assumption: `Yerel besin tablosundaki ${food.fdc} 100 g değeri ${grams} g ile ölçeklendi. ${food.assumption}`, source: `USDA FoodData Central SR Legacy · ${food.fdc} · değer yaklaşık.` };
+        if (app.saveMeal(meal)) { window.dispatchEvent(new CustomEvent('iyibeslen:data-changed')); setAssistantReply(`${meal.name} seçili güne eklendi. Değerler yaklaşık.`, []); app.toast('Öğün kaydı eklendi'); }
+      }}]); return;
+    }
     if (/su/.test(text)) {
       const amount = Math.min(5000, Math.max(50, Number((question.match(/\d+/) || [250])[0])));
       setAssistantReply(`${amount} ml su kaydı eklemeyi önerebilirim. Bu işlem yalnızca seçili güne kaydedilir.`, [{ label: `${amount} ml su eklemeyi onayla`, run: () => {
@@ -661,7 +674,7 @@
       const proteinText = goal?.protein ? `protein alt sınırına yaklaşık ${Math.max(0, Math.round((goal.proteinMin ?? goal.protein) - totals.protein))} g kaldı` : 'protein hedefi henüz karşılaştırılamıyor';
       setAssistantReply(`Bugün ${totals.entries.length} öğün kaydı var; ${totals.known.length} kaydın enerji ve protein değeri biliniyor. Toplam yaklaşık ${Math.round(totals.kcal)} kcal ve ${Math.round(totals.protein)} g protein: ${kcalText}, ${proteinText}. Eksik kayıtlar varsa bu özet tahmindir.`); return;
     }
-    setAssistantReply('Şunları sorabilirsin: “Bugün protein hedefime ne kadar kaldı?”, “Bugünümün özeti nedir?”, “Evdeki malzemelerle tarif öner”, “250 ml su eklemek istiyorum” veya “Bana günlük plan oluştur”. Sağlık, ilaç ve tedavi konularında uzman desteği gerekir.');
+    setAssistantReply('Şunları sorabilirsin: “Bugün protein hedefime ne kadar kaldı?”, “Bugünümün özeti nedir?”, “150 g yoğurt öğün kaydet”, “Evdeki malzemelerle tarif öner”, “250 ml su eklemek istiyorum” veya “Bana haftalık plan oluştur”. Kayıt eklemeden önce onayını isterim. Sağlık, ilaç ve tedavi konularında uzman desteği gerekir.');
   }
   function renderAssistantToggle() { const enabled = assistantEnabled(); $('#assistantInput').disabled = !enabled; $('#assistantForm button').disabled = !enabled; document.querySelectorAll('[data-assistant-prompt]').forEach(button => button.disabled = !enabled); $('#assistantToggle').textContent = enabled ? 'Asistan iznini kapat' : 'Asistanı etkinleştir'; if (!enabled) setAssistantReply('Yerel asistan kapalı. Etkinleştirene kadar kayıtların değerlendirilmez.'); }
   $('#assistantForm').addEventListener('submit', event => { event.preventDefault(); const question = $('#assistantInput').value.trim(); if (!question) { setAssistantReply('Önce kısa bir soru yaz veya üstteki önerilerden birini seç.'); return; } askAssistant(question); });
