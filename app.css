@@ -95,6 +95,8 @@ main { padding-top: 34px; }
 }
 .plan-card .primary { background: linear-gradient(110deg, #244a34, #386346); }
 .modal { border: 1px solid rgba(255,255,255,.65); border-radius: 22px; }
+.profile-setup-actions { display: flex; justify-content: flex-end; margin: -7px 0 14px; }
+.profile-setup-actions button { min-height: 44px; }
 .modal-backdrop { backdrop-filter: blur(5px); }
 .date-navigation { display: flex; align-items: center; gap: 7px; }
 .date-navigation .date-step {
@@ -458,7 +460,7 @@ body[data-theme="dark"] .estimate { color: #a6b2a7; }
 body[data-theme="dark"] .update-banner { background: #26332a; border-color: #3d5141; color: #edf4ed; }
 body[data-theme="dark"] .update-apply { background: #9abc9d; color: #16251a; }
 @media (max-width: 600px) {
-  .update-banner { bottom: calc(74px + env(safe-area-inset-bottom)); flex-wrap: wrap; gap: 6px; }
+  .update-banner { position: relative; left: auto; bottom: auto; width: calc(100% - 26px); margin: 10px auto 0; transform: none; flex-wrap: wrap; gap: 6px; }
   .update-banner span { flex: 0 0 100%; }
   .update-apply, .update-dismiss { flex: 1; }
 }
