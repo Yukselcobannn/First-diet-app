@@ -538,10 +538,16 @@
 <script src="./app-enhancements.js?v=20261023.5"></script>
 <script src="./app-features.js?v=20261103.11"></script>
 <script>
-  let deferredInstallPrompt=null;const installButton=document.querySelector('#installApp');
-  window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;installButton.hidden=false});
-  installButton.addEventListener('click',async()=>{if(!deferredInstallPrompt)return;deferredInstallPrompt.prompt();await deferredInstallPrompt.userChoice;deferredInstallPrompt=null;installButton.hidden=true});
-  window.addEventListener('appinstalled',()=>{installButton.hidden=true});
+  let deferredInstallPrompt=null;const installButton=document.querySelector('#installApp'),isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(/macintosh/i.test(navigator.userAgent)&&navigator.maxTouchPoints>1),isMobile=isIOS||navigator.userAgentData?.mobile||matchMedia('(max-width: 720px)').matches,alreadyInstalled=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  function updateInstallButton(){installButton.hidden=alreadyInstalled||(!deferredInstallPrompt&&!isMobile);installButton.textContent=deferredInstallPrompt?'Uygulamayı yükle':'Ana ekrana ekle'}
+  window.addEventListener('beforeinstallprompt',event=>{event.preventDefault();deferredInstallPrompt=event;updateInstallButton()});
+  installButton.addEventListener('click',async()=>{
+    if(location.protocol!=='https:'&&location.hostname!=='localhost'){showToast('Kurulum için uygulamayı yayın adresindeki güvenli HTTPS bağlantısıyla aç.');return}
+    if(deferredInstallPrompt){const prompt=deferredInstallPrompt;deferredInstallPrompt=null;try{await prompt.prompt();const choice=await prompt.userChoice;if(choice.outcome==='accepted'){alreadyInstalled=true;showToast('Kurulum başlatıldı. Uygulamayı ana ekranında bulabilirsin.')}else showToast('Kurulumu istediğinde tarayıcı menüsünden yeniden başlatabilirsin.')}catch{showToast('Tarayıcı kurulum penceresini açamadı. Menüden ana ekrana ekleme seçeneğini kullan.')}updateInstallButton();return}
+    showToast(isIOS?'Safari’de Paylaş düğmesine dokun, ardından “Ana Ekrana Ekle”yi seç.':'Tarayıcı menüsünü aç (⋮ veya paylaş) ve “Uygulamayı yükle” ya da “Ana ekrana ekle”yi seç.');
+  });
+  window.addEventListener('appinstalled',()=>{alreadyInstalled=true;updateInstallButton()});
+  updateInstallButton();
 </script>
 </body>
 </html>
