@@ -1072,6 +1072,13 @@ body[data-app-screen="shopping"] .shopping-form { grid-template-columns:minmax(0
 .meal-detail { min-width:34px; min-height:34px; color:#47624b; }
 .toast { z-index:20; max-width:min(520px,calc(100vw - 24px)); line-height:1.5; }
 .empty { border:1px dashed #d9dfd3; border-radius:13px; background:#fafbf8; }
+.meal-empty { display:grid; justify-items:center; gap:5px; padding:24px 14px; text-align:center; }
+.meal-empty > span { font-size:25px; }
+.meal-empty > b { color:#3c5140; font-size:13px; }
+.meal-empty > small { max-width:290px; color:#6b786d; font-size:11px; line-height:1.5; }
+.meal-empty-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:7px; }
+body[data-theme="dark"] .meal-empty > b { color:#d8e6d9; }
+body[data-theme="dark"] .meal-empty > small { color:#b7c4b8; }
 
 body[data-theme="dark"] { --bg:#151c17; --paper:#1b241d; --ink:#e8eee8; --muted:#b0bbb1; --line:#344238; --green:#91b397; --green-dark:#294b34; --mint:#26342a; --shadow:0 10px 28px #0003; background:var(--bg); color:var(--ink); }
 body[data-theme="dark"] aside,body[data-theme="dark"] .mobile-nav { background:#18211b; border-color:#344238; }
