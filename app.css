@@ -1170,7 +1170,8 @@ body.tracking-weight-off #weightEntry,
 body.tracking-weight-off .profile-weight-fact { display:none!important; }
 body.tracking-weight-off .weekly-review-grid > div:nth-child(3) { display:none; }
 body.tracking-all-off #chartSummary,
-body.tracking-all-off .chart-wrap { display:none!important; }
+body.tracking-all-off .chart-wrap,
+body.tracking-all-off .chart-point-readout { display:none!important; }
 .tracking-setting { display:block!important; }
 .tracking-setting fieldset { display:grid; gap:10px; margin:0; padding:14px; border:1px solid #e6e9e1; border-radius:14px; }
 .tracking-setting legend { padding:0 5px; color:#34483a; font-size:13px; font-weight:750; }
