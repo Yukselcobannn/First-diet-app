@@ -624,6 +624,11 @@ aside {
   border-radius: 15px;
   background: linear-gradient(180deg, #fbfcfa, #f7f9f5);
 }
+.chart-point-hit { fill:transparent; stroke:transparent; pointer-events:all; cursor:pointer; }
+.chart-point-hit:focus-visible { fill:#52765b20; stroke:#52765b; stroke-width:2; outline:none; }
+.chart-point-readout { min-height:18px; margin:2px 0 9px; color:#526154; font-size:11px; font-weight:650; line-height:1.45; font-variant-numeric:tabular-nums; }
+body[data-theme="dark"] .chart-point-readout { color:#c5d4c7; }
+body[data-theme="dark"] .chart-point-hit:focus-visible { fill:#91b3972b; stroke:#a8cfac; }
 .date-navigation .date-step,
 .date-input,
 .date-navigation .secondary { border-radius: 11px; }
