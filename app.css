@@ -1108,6 +1108,16 @@ body[data-theme="dark"] .meal-lunch .meal-emoji { background:#303628; }
 body[data-theme="dark"] .meal-dinner .meal-emoji { background:#3a2e24; }
 body[data-theme="dark"] .meal-snack .meal-emoji { background:#302c3e; }
 body[data-theme="dark"] .meal-other .meal-emoji { background:#293438; }
+@media (max-width:600px) {
+  .meal-list > .meal { display:grid; grid-template-columns:38px minmax(0,1fr) 38px; align-items:start; gap:8px; padding:11px 9px; }
+  .meal-list > .meal .meal-emoji { grid-column:1; grid-row:1; width:38px; height:38px; }
+  .meal-list > .meal .meal-info { grid-column:2; grid-row:1; min-width:0; padding-top:1px; }
+  .meal-list > .meal .meal-info strong { white-space:normal; line-height:1.35; }
+  .meal-list > .meal .meal-kcal { grid-column:2; grid-row:2; display:flex; align-items:center; gap:8px; min-width:0; padding:0; text-align:left; }
+  .meal-list > .meal .meal-kcal small { margin:0; }
+  .meal-list > .meal .meal-actions { grid-column:3; grid-row:1 / span 2; flex-direction:column; gap:4px; margin:0; }
+  .meal-list > .meal .meal-actions .icon-btn { width:38px; height:38px; padding:8px; }
+}
 body[data-theme="dark"] .meal-empty > b { color:#d8e6d9; }
 body[data-theme="dark"] .meal-empty > small { color:#b7c4b8; }
 
