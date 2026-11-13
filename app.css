@@ -1077,6 +1077,22 @@ body[data-app-screen="shopping"] .shopping-form { grid-template-columns:minmax(0
 .meal-empty > b { color:#3c5140; font-size:13px; }
 .meal-empty > small { max-width:290px; color:#6b786d; font-size:11px; line-height:1.5; }
 .meal-empty-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:8px; margin-top:7px; }
+.meal { align-items:flex-start; border-color:#e9eee7; background:linear-gradient(110deg,#fffefa,#fbfcf8); box-shadow:0 3px 10px #26362708; }
+.meal-emoji { flex:0 0 40px; }
+.meal-info { padding-top:2px; }
+.meal-type { display:inline-flex; align-items:center; margin-right:6px; padding:3px 7px; border-radius:99px; color:#456248; background:#eaf2e8; font-size:9px; font-weight:750; line-height:1.2; }
+.meal-type-lunch { color:#526248; background:#edf1dc; }
+.meal-type-dinner { color:#795a3d; background:#f6ecdf; }
+.meal-type-snack { color:#655c82; background:#efedf7; }
+.meal-type-other { color:#5a6a71; background:#edf1f2; }
+.meal-kcal { min-width:76px; padding-top:3px; }
+.meal-actions .icon-btn { min-width:34px; min-height:34px; }
+body[data-theme="dark"] .meal { background:linear-gradient(110deg,#1b241d,#1e2921); }
+body[data-theme="dark"] .meal-type { color:#cde0ce; background:#2b3a2e; }
+body[data-theme="dark"] .meal-type-lunch { color:#dce3bc; background:#353d2a; }
+body[data-theme="dark"] .meal-type-dinner { color:#edd1b0; background:#3d3024; }
+body[data-theme="dark"] .meal-type-snack { color:#d7cdee; background:#332f43; }
+body[data-theme="dark"] .meal-type-other { color:#cbd9dd; background:#2a373b; }
 body[data-theme="dark"] .meal-empty > b { color:#d8e6d9; }
 body[data-theme="dark"] .meal-empty > small { color:#b7c4b8; }
 
