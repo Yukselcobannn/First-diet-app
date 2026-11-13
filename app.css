@@ -1085,6 +1085,16 @@ body[data-app-screen="shopping"] .shopping-form { grid-template-columns:minmax(0
 .meal-type-dinner { color:#795a3d; background:#f6ecdf; }
 .meal-type-snack { color:#655c82; background:#efedf7; }
 .meal-type-other { color:#5a6a71; background:#edf1f2; }
+.meal-breakfast { border-left:3px solid #86a87b; }
+.meal-lunch { border-left:3px solid #9ba96a; }
+.meal-dinner { border-left:3px solid #d2a06d; }
+.meal-snack { border-left:3px solid #9889bd; }
+.meal-other { border-left:3px solid #8ca2aa; }
+.meal-breakfast .meal-emoji { background:#eef4e9; }
+.meal-lunch .meal-emoji { background:#f0f2e5; }
+.meal-dinner .meal-emoji { background:#f7efe5; }
+.meal-snack .meal-emoji { background:#f0eef7; }
+.meal-other .meal-emoji { background:#eef2f3; }
 .meal-kcal { min-width:76px; padding-top:3px; }
 .meal-actions .icon-btn { min-width:34px; min-height:34px; }
 body[data-theme="dark"] .meal { background:linear-gradient(110deg,#1b241d,#1e2921); }
@@ -1093,6 +1103,11 @@ body[data-theme="dark"] .meal-type-lunch { color:#dce3bc; background:#353d2a; }
 body[data-theme="dark"] .meal-type-dinner { color:#edd1b0; background:#3d3024; }
 body[data-theme="dark"] .meal-type-snack { color:#d7cdee; background:#332f43; }
 body[data-theme="dark"] .meal-type-other { color:#cbd9dd; background:#2a373b; }
+body[data-theme="dark"] .meal-breakfast .meal-emoji { background:#29372a; }
+body[data-theme="dark"] .meal-lunch .meal-emoji { background:#303628; }
+body[data-theme="dark"] .meal-dinner .meal-emoji { background:#3a2e24; }
+body[data-theme="dark"] .meal-snack .meal-emoji { background:#302c3e; }
+body[data-theme="dark"] .meal-other .meal-emoji { background:#293438; }
 body[data-theme="dark"] .meal-empty > b { color:#d8e6d9; }
 body[data-theme="dark"] .meal-empty > small { color:#b7c4b8; }
 
