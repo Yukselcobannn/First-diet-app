@@ -1,4 +1,4 @@
-const CACHE_NAME = 'iyi-beslen-shell-v83';
+const CACHE_NAME = 'iyi-beslen-shell-v84';
 const APP_FILES = [
   './',
   './index.html',
