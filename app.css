@@ -835,6 +835,7 @@ body[data-app-screen="recipes"] .recipe-grid { grid-template-columns: repeat(2, 
 body[data-theme="dark"] .recipe-tile,
 body[data-theme="dark"] .habit-week-summary > div { border-color: #344438; background: #1b261f; }
 body[data-theme="dark"] .recipe-nutrition,
+body[data-theme="dark"] .recipe-macros,
 body[data-theme="dark"] .habit-week-summary strong { color: #b9d9bc; }
 body[data-theme="dark"] .recipe-ingredients,
 body[data-theme="dark"] .recipe-steps,
@@ -982,6 +983,7 @@ body[data-app-screen="recipes"] .recipe-grid { grid-template-columns:repeat(2,mi
 .recipe-title small { color:#657267; font-size:10px; }
 .recipe-emoji { width:34px; height:34px; background:#f2f3e9; }
 .recipe-nutrition { color:#365d3d; font-size:12px; }
+.recipe-macros { display:block; margin:-2px 0 9px; color:#60735e; font-size:11px; line-height:1.45; }
 .recipe-actions { margin-top:12px; }
 .recipe-actions button { flex:1 1 auto; }
 .portion-control { justify-content:space-between; color:#5e6d61; font-size:11px; }
