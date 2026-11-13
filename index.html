@@ -547,7 +547,7 @@
 })();
 </script>
 <script src="./app-enhancements.js?v=20261023.5"></script>
-<script src="./app-features.js?v=20261113.1"></script>
+<script src="./app-features.js?v=20261113.2"></script>
 <script>
   let deferredInstallPrompt=null;const installButton=document.querySelector('#installApp'),isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(/macintosh/i.test(navigator.userAgent)&&navigator.maxTouchPoints>1),isMobile=isIOS||navigator.userAgentData?.mobile||matchMedia('(max-width: 720px)').matches,alreadyInstalled=matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
   function updateInstallButton(){installButton.hidden=alreadyInstalled||(!deferredInstallPrompt&&!isMobile);installButton.textContent=deferredInstallPrompt?'Uygulamayı yükle':'Ana ekrana ekle'}
