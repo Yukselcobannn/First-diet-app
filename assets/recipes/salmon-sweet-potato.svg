@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Somon, tatlı patates ve brokoli tabağı</title>
+  <desc id="desc">Pembe somon, turuncu tatlı patates ve yeşil brokolinin bulunduğu tabak illüstrasyonu.</desc>
+  <defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#f6f2e8"/><stop offset="1" stop-color="#e8eadc"/></linearGradient><linearGradient id="fish" x2="1" y2="1"><stop stop-color="#f6a176"/><stop offset="1" stop-color="#d86f55"/></linearGradient></defs>
+  <rect width="800" height="500" rx="38" fill="url(#bg)"/><circle cx="106" cy="112" r="59" fill="#eab66e" opacity=".25"/><circle cx="704" cy="90" r="40" fill="#6f9369" opacity=".18"/><ellipse cx="410" cy="370" rx="270" ry="53" fill="#a78e6f" opacity=".18"/><ellipse cx="408" cy="274" rx="276" ry="130" fill="#fffdf7"/><ellipse cx="408" cy="274" rx="244" ry="105" fill="#f3eee1"/>
+  <path d="M244 252c31-44 105-61 164-41 43 14 61 50 36 82-30 38-112 49-166 22-38-18-55-39-34-63Z" fill="url(#fish)"/><path d="M264 259c57-24 110-23 160 1M271 281c48-17 94-17 141 0M293 301c37-10 72-9 105 2" fill="none" stroke="#ffd3b2" stroke-width="8" stroke-linecap="round" opacity=".85"/><circle cx="332" cy="235" r="5" fill="#fff0d5"/><path d="m355 224 8-17 9 17" fill="#66865f"/>
+  <g fill="#edab54"><path d="m455 217 43-18 25 34-21 38-45-5Z"/><path d="m507 275 43-18 26 34-21 38-45-5Z"/><path d="m450 305 37-15 22 31-19 33-39-5Z"/><path d="m535 221 32-14 20 26-16 30-34-4Z"/></g>
+  <g fill="#4f8458"><circle cx="591" cy="251" r="24"/><circle cx="622" cy="238" r="21"/><circle cx="642" cy="262" r="20"/><circle cx="604" cy="279" r="21"/><path d="m610 270 8 56 12 3-8-61Z"/></g><path d="M177 271c12-15 25-20 39-19M653 320c21 11 35 10 51 1" fill="none" stroke="#a8b582" stroke-width="7" stroke-linecap="round"/>
+</svg>
