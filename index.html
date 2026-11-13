@@ -167,7 +167,8 @@
   const renderCore=render;
   render=function(){
     renderCore();
-    const p=state.profile,g=targetForDay(p),consumed=totals(dayData());
+    const p=state.profile,g=targetForDay(p),entries=dayData(),consumed=totals(entries);
+    $('#mealCount').textContent=entries.length?(consumed.unknownCount?`${entries.length} kayıt · ${consumed.unknownCount} besin değeri bilinmiyor`:`${entries.length} kayıt · yaklaşık değerler`):'Henüz kayıt yok';
     for(const[id,value,target,unit]of[['kcalBar',consumed.kcal,g?.kcalMax??g?.kcal,'kcal'],['proteinBar',consumed.protein,g?.protein,'g protein']]){
       const bar=$('#'+id);
       if(target){
