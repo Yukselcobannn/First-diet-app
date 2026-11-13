@@ -1,9 +1,18 @@
 /*
- * Small offline subset of USDA FoodData Central SR Legacy values.
+ * Curated offline subset of USDA FoodData Central SR Legacy (final release: April 2018).
  * USDA states FDC data are public domain (CC0 1.0); see gizlilik.html for attribution.
  * Nutrient density is per 100 g edible food. Serving weights are practical estimates,
  * not a guarantee: package labels and weighing the edible portion are preferred.
+ * This file is a maintained selection, not a live USDA feed or complete food catalogue.
  */
+window.NUTRITION_DATASET = {
+  publisher: 'USDA FoodData Central',
+  dataType: 'SR Legacy',
+  release: 'April 2018 (final release)',
+  reviewedOn: '2026-11-13',
+  license: 'CC0 1.0',
+  units: 'kcal and protein grams per 100 g edible portion'
+};
 window.NUTRITION_DATA = [
   {terms:['yumurta'],id:'egg',planName:'haşlanmış yumurta',name:'Yumurta, haşlanmış (yağ eklenmemiş)',unit:'adet',countPerServing:1,servingGrams:50,kcal100:155,protein100:12.58,emoji:'🥚',fdc:'Egg, whole, cooked, hard-boiled',query:'egg cooked hard-boiled',assumption:'Haşlanmış, yenebilir kısmı 50 g/adet varsayıldı; kızartma yağı dahil değil.'},
   {terms:['tam buğday ekmeği'],id:'wholeWheatBread',planName:'tam buğday ekmeği',name:'Tam buğday ekmeği (genel referans)',unit:'dilim',countPerServing:1,servingGrams:30,kcal100:252,protein100:12.45,emoji:'🍞',fdc:'Bread, whole-wheat, commercially prepared',query:'whole wheat bread',assumption:'Genel tam buğday ekmeği kaydı; 1 dilim 30 g varsayıldı. Marka etiketi daha doğrudur.'},
@@ -27,5 +36,10 @@ window.NUTRITION_DATA = [
   {id:'feta',planName:'feta peyniri',name:'Feta peyniri (genel referans)',terms:['feta'],unit:'30 g',servingGrams:30,kcal100:265,protein100:14.21,emoji:'🧀',fdc:'Cheese, feta',query:'feta cheese',assumption:'Feta peyniri genel kaydı; Türk beyaz peyniriyle aynı ürün olmayabilir, ambalaj etiketi daha doğrudur.'},
   {id:'tofu',planName:'sert tofu',name:'Tofu, sert',terms:['tofu'],unit:'100 g',servingGrams:100,kcal100:144,protein100:17.27,emoji:'🧊',fdc:'Tofu, raw, firm, prepared with calcium sulfate',query:'tofu firm',assumption:'Kalsiyum sülfatla hazırlanmış sert tofu için genel değer; markaya göre değişebilir.'},
   {id:'potato',planName:'haşlanmış patates',name:'Patates, sade haşlanmış',terms:['patates'],unit:'100 g',servingGrams:100,kcal100:87,protein100:1.87,requiresCooked:true,emoji:'🥔',fdc:'Potatoes, boiled, cooked without skin, flesh, without salt',query:'potatoes boiled without skin',assumption:'Kabuksuz, sade haşlanmış patates; yağ veya sos dahil değil.'},
-  {id:'onion',planName:'soğan',name:'Soğan, çiğ',terms:['soğan','sogan'],unit:'100 g',servingGrams:100,kcal100:40,protein100:1.1,emoji:'🧅',fdc:'Onions, raw',query:'onions raw',assumption:'Çiğ soğan için genel değer.'}
+  {id:'onion',planName:'soğan',name:'Soğan, çiğ',terms:['soğan','sogan'],unit:'100 g',servingGrams:100,kcal100:40,protein100:1.1,emoji:'🧅',fdc:'Onions, raw',query:'onions raw',assumption:'Çiğ soğan için genel değer.'},
+  {id:'avocado',planName:'avokado',name:'Avokado, çiğ (genel çeşit ortalaması)',terms:['avokado','avocado'],unit:'100 g',servingGrams:100,kcal100:160,protein100:2,emoji:'🥑',fdc:'Avocados, raw, all commercial varieties',fdcId:171705,query:'avocados raw all commercial varieties',assumption:'USDA’nın çeşit ortalaması; yalnızca yenebilir iç kısmın gramı. Boyut ve çeşit farklılık yaratır.'},
+  {id:'orange',planName:'portakal',name:'Portakal, çiğ (genel çeşit ortalaması)',terms:['portakal'],unit:'100 g',servingGrams:100,kcal100:47,protein100:0.94,emoji:'🍊',fdc:'Oranges, raw, all commercial varieties',fdcId:169097,query:'oranges raw all commercial varieties',assumption:'USDA’nın çeşit ortalaması; kabuğu değil yenebilir kısmı tart.'},
+  {id:'strawberries',planName:'çilek',name:'Çilek, çiğ',terms:['çilek','cilek'],unit:'100 g',servingGrams:100,kcal100:32,protein100:0.67,emoji:'🍓',fdc:'Strawberries, raw',fdcId:167762,query:'strawberries raw',assumption:'Çiğ çilek için genel referans; eklenen şeker veya krema dahil değil.'},
+  {id:'carrot',planName:'havuç',name:'Havuç, çiğ',terms:['havuç','havuc'],unit:'100 g',servingGrams:100,kcal100:41,protein100:0.93,emoji:'🥕',fdc:'Carrots, raw',fdcId:170393,query:'carrots raw',assumption:'Çiğ havuç için genel referans; yenebilir kısmın gramı.'},
+  {id:'spinach',planName:'ıspanak',name:'Ispanak, çiğ',terms:['ıspanak','ispanak'],unit:'100 g',servingGrams:100,kcal100:23,protein100:2.86,emoji:'🥬',fdc:'Spinach, raw',fdcId:168462,query:'spinach raw',assumption:'Çiğ ıspanak için genel referans. Pişince su kaybı gram başına değeri değiştirir.'}
 ];
