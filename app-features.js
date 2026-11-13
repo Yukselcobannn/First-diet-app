@@ -58,7 +58,7 @@
   $('.leftcol').insertAdjacentHTML('beforeend', `
     <section class="home-flow" data-app-view="today" aria-labelledby="homeFlowTitle">
       <div class="home-flow-head"><div><span class="eyebrow">Günün akışı</span><h2 id="homeFlowTitle">Sade adımlar, düzenli takip</h2></div><span class="home-spark" aria-hidden="true">✳</span></div>
-      <div class="home-flow-grid"><article class="home-next-card"><span class="mini-label">Sıradaki öğün</span><strong id="homeNextMeal">Öğün zamanını seçelim</strong><p id="homeNextMealNote">İlerlemene göre günün kalanını planla.</p><button class="secondary" data-focus-meal type="button">Öğün kaydı aç</button></article><article class="home-plan-card"><span class="mini-label">Bugünkü planın</span><strong id="homePlanTitle">Henüz günlük planın yok</strong><p id="homePlanNote">Tercih ve hedeflerine göre ücretsiz örnek oluştur.</p><button class="secondary" data-go-screen="plan" type="button">Planı görüntüle</button></article></div>
+      <div class="home-flow-grid"><article class="home-next-card"><span class="mini-label">Sıradaki öğün</span><strong id="homeNextMeal">Öğün zamanını seçelim</strong><p id="homeNextMealNote">İlerlemene göre günün kalanını planla.</p><button class="secondary" data-focus-meal data-meal-category="other" id="homeNextMealAction" type="button">Öğün kaydı aç</button></article><article class="home-plan-card"><span class="mini-label">Bugünkü planın</span><strong id="homePlanTitle">Henüz günlük planın yok</strong><p id="homePlanNote">Tercih ve hedeflerine göre ücretsiz örnek oluştur.</p><button class="secondary" data-go-screen="plan" type="button">Planı görüntüle</button></article></div>
       <div class="home-week-strip"><span id="homeWeekCount">Bu hafta: henüz kayıt yok</span><div class="home-week-days" id="homeWeekDays" role="group" aria-label="Son yedi günün öğün kayıtları"></div><p class="home-week-average" id="homeWeekAverage" aria-live="polite">Haftalık ortalama, kayıtlar oluşunca gösterilir.</p><button class="text-action" data-go-screen="progress" type="button">Haftalık özeti gör →</button><button class="text-action" data-go-screen="recipes" type="button">Tariflere göz at →</button></div>
     </section>
     <section class="card habit-card" data-app-view="today">
@@ -503,6 +503,8 @@
     const next = remaining.find(slot => hour < slot.before) || remaining[0];
     $('#homeNextMeal').textContent = next ? next.label : 'Bugünkü öğünlerin kaydedildi';
     $('#homeNextMealNote').textContent = next ? 'Yemek saati sana bağlı; istersen kaydını hazırla.' : 'İstersen bir içecek veya ara öğün de ekleyebilirsin.';
+    $('#homeNextMealAction').dataset.mealCategory = next?.key || 'other';
+    $('#homeNextMealAction').textContent = next ? `${next.label} kaydı aç` : 'İçecek veya ara öğün ekle';
     const plan = data.lastPlan;
     if (plan?.period === 'day') {
       $('#homePlanTitle').textContent = 'Günlük örnek planın hazır';
@@ -563,7 +565,8 @@
   document.addEventListener('click', event => {
     const route = event.target.closest('[data-go-screen]');
     if (route) app.setScreen(route.dataset.goScreen);
-    if (event.target.closest('[data-focus-meal]')) { app.setScreen('today'); setTimeout(() => $('#mealInput').focus(), 120); }
+    const focusMeal = event.target.closest('[data-focus-meal]');
+    if (focusMeal) focusMealCategory(focusMeal.dataset.mealCategory || 'other');
   });
 
   $('#welcomeSetup').addEventListener('click', app.openProfile);
