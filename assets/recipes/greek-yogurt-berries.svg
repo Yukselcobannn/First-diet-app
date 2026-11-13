@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" role="img" aria-labelledby="title desc">
+  <title id="title">Çilekli yoğurt ve yulaf kasesi</title>
+  <desc id="desc">Krem renkli yoğurt, çilek parçaları, yulaf ve taze meyveler bulunan bir kase illüstrasyonu.</desc>
+  <defs><linearGradient id="bg" x2="0" y2="1"><stop stop-color="#fff8e9"/><stop offset="1" stop-color="#f4e5cf"/></linearGradient><linearGradient id="bowl" x2="0" y2="1"><stop stop-color="#e8f0dd"/><stop offset="1" stop-color="#b9c9a9"/></linearGradient></defs>
+  <rect width="800" height="500" rx="38" fill="url(#bg)"/><circle cx="105" cy="90" r="44" fill="#f5c978" opacity=".33"/><circle cx="690" cy="105" r="64" fill="#df8f79" opacity=".18"/>
+  <ellipse cx="408" cy="373" rx="236" ry="47" fill="#b68e68" opacity=".18"/><path d="M190 242h438c-13 132-95 194-219 194S204 374 190 242Z" fill="url(#bowl)"/><ellipse cx="409" cy="245" rx="219" ry="65" fill="#d7e2c9"/><ellipse cx="409" cy="235" rx="196" ry="49" fill="#fffdf6"/>
+  <path d="M246 226c33-25 68-21 93-5 30-29 74-30 107-9 38-22 75-13 96 6 22-11 43-10 62 1-19 35-70 54-192 54-111 0-156-16-166-47Z" fill="#f7f2e3"/>
+  <g fill="#d84f49"><path d="M302 204c4-24 33-28 42-8 8 21-17 42-32 51-13-12-27-25-25-39 1-8 8-12 15-11Z"/><path d="M455 211c3-24 32-28 41-8 8 21-16 42-32 51-13-12-27-25-25-39 1-8 8-12 16-11Z"/><path d="M544 226c2-18 24-21 31-6 6 16-12 31-24 38-10-9-20-18-19-29 1-6 6-9 12-8Z"/></g>
+  <g fill="#5e8a62"><path d="m322 198 4-17 13 9 12-13 2 20Z"/><path d="m475 205 4-16 12 9 11-13 2 19Z"/><path d="m558 221 3-13 10 7 9-10 1 15Z"/></g>
+  <g fill="#c49a57"><ellipse cx="372" cy="212" rx="13" ry="5" transform="rotate(-26 372 212)"/><ellipse cx="410" cy="228" rx="14" ry="5" transform="rotate(19 410 228)"/><ellipse cx="432" cy="199" rx="12" ry="4" transform="rotate(-13 432 199)"/><ellipse cx="516" cy="204" rx="13" ry="5" transform="rotate(25 516 204)"/><ellipse cx="271" cy="234" rx="12" ry="4" transform="rotate(-16 271 234)"/></g>
+  <path d="M218 282c36 91 91 129 191 132" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="12" stroke-linecap="round"/>
+</svg>
